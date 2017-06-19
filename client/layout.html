@@ -1,0 +1,46 @@
+<head>
+  <title>My Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<template name="layout">
+  <div class="ui-container">
+    <div id="side_nav_bar">
+      <nav id="buttons_list">
+        <h1>My name</h1>
+        <p>This is a simple description of me</p>
+        <hr>
+        <a href="#html">About</a>
+        <a href="#css">Blog</a>
+        <a href="#js">Works</a>
+
+        <div id="social">
+          <i class="tiny github icon"></i>
+          <i class="tiny linkedin icon"></i>
+          <i class="tiny qq icon"></i>
+          <i class="tiny mail icon"></i>
+        </div>
+      </nav>
+
+      <div id="collapse_button">
+        <ul>
+          <li><a href="#home">About</a></li>
+          <li><a href="#news">Blog</a></li>
+          <li><a href="#news">Works</a></li>
+          <li id="social_li">
+            <div id="social">
+              <i class="tiny github icon"></i>
+              <i class="tiny linkedin icon"></i>
+              <i class="tiny qq icon"></i>
+              <i class="tiny mail icon"></i>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="mainContent">
+      {{> yield}}
+    </div>
+  </div>
+</template>
