@@ -1,0 +1,15 @@
+.statistic > div.label {
+  color: rgba(0, 0, 0, 0.4)
+}
+
+.ui.fluid.card {
+  box-shadow: none;
+}
+
+span#post_time {
+  font-size: 0.8em;
+}
+
+span#post_tag_display {
+  font-size: 0.8em;
+}

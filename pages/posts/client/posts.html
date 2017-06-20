@@ -1,5 +1,34 @@
 <template name="posts">
-  <div class="fr-view">
-    Here comes the HTML edited with the Froala rich text editor.
-  </div>
+  {{#each post in post_list}}
+    <div class="ui fluid card">
+      <div class="content">
+        <div class="header">{{post.title}}</div>
+        <div class="right floated meta">
+          <span id="post_time"><i class="calendar icon"></i>{{getTime post.createdAt}}</span>
+        </div>
+        <div class="description">
+          <p>{{post.description}}</p>
+        </div>
+      </div>
+      <div class="extra content">
+        <div class="left floated meta">
+          <span id="post_tag_display">
+            <i class="tags icon"></i>
+            {{#each tag in post.tags}}
+              <a>{{tag}}</a>
+            {{/each}}
+          </span>
+        </div>
+
+        <div class="right floated statistic">
+          <div class="value">
+            2,204
+          </div>
+          <div class="label">
+            Views
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/each}}
 </template>
