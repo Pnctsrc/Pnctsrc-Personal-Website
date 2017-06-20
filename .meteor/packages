@@ -25,3 +25,5 @@ juliancwirko:postcss
 jquery
 reactive-dict
 twbs:bootstrap
+froala:editor
+froala:editor-reactive
