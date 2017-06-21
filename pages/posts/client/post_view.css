@@ -1,4 +1,4 @@
-div#post_view_time {
+div.post_time {
   float: right;
   color: rgba(0, 0, 0, 0.4);
   font-size: 1em;

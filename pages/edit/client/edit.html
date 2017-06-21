@@ -1,0 +1,22 @@
+<template name="edit">
+  <div class="ui form">
+    <div class="field">
+    <label>Title</label>
+    <input type="text" id="post_title_edit" value="{{post.title}}">
+    </div>
+
+    <div class="field" id="post_description_edit">
+      <label>Description</label>
+      <textarea>{{post.description}}</textarea>
+    </div>
+  </div>
+  <hr>
+  <div class="fr-view-edit">{{{post.HTML_content}}}</div>
+  <hr>
+  <div class="ui multiple search selection dropdown" id="post_tag_edit">
+    <input name="tags" type="hidden">
+    <i class="tags icon"></i>
+    <div class="default text">&nbsp;&nbsp;&nbsp;Add tags</div>
+  </div>
+  <button class="ui right floated blue button" id="post_submit_edit">Submit</button>
+</template>

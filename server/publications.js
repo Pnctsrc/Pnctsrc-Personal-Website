@@ -3,7 +3,7 @@ Meteor.publish("post_list", function(page_num){
 
   //validating the page number
   var page_number = page_num;
-  if(!/^[0-9]+$/i.test(page_num)){
+  if(!/^[0-9]+$/gi.test(page_num)){
     return [];
   } else if(page_num <= 0) {
     return [];
@@ -17,7 +17,7 @@ Meteor.publish("post_list", function(page_num){
 
 Meteor.publish("get_post", function(post_id){
   //validating the id
-  if(!/^[0-9A-Za-z]{17}$/i.test(post_id)){
+  if(!post_id.match(/^[0-9A-Za-z]{17}(?=(#[0-9a-zA-Z_-]+)?$)/gi)){
     return [];
   }
 

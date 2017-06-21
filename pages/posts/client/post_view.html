@@ -3,11 +3,16 @@
     <div class="content">
       <h1 class="header" id="post_title">{{post.title}}</h1>
       <div class="right floated meta">
-        <span id="post_view_time"><i class="calendar icon"></i>{{getTime post.createdAt}}</span>
+        <span id="post_view_time" class="post_time"><i class="calendar icon"></i>{{getTime post.createdAt}}</span>
       </div>
       <div class="fr-view">
         {{{post.HTML_content}}}
       </div>
+      {{#if post.lastModified}}
+        <div class="right floated meta">
+          <span id="post_view_time_modified" class="post_time">Last modified - {{getTime post.lastModified}}</span>
+        </div>
+      {{/if}}
     </div>
     <div class="extra content">
       <div class="left floated meta">
