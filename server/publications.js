@@ -10,10 +10,18 @@ Meteor.publish("post_list", function(page_num){
   }
 
   return Posts.find({}, {
-    sort: {
-      createdAt: -1
-    },
     limit: posts_per_page,
     skip: (parseInt(page_number) - 1) * posts_per_page
+  })
+})
+
+Meteor.publish("get_post", function(post_id){
+  //validating the id
+  if(!/^[0-9A-Za-z]{17}$/i.test(post_id)){
+    return [];
+  }
+
+  return Posts.find(post_id, {
+    limit: 1,
   })
 })

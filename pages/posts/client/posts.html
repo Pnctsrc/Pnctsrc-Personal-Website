@@ -2,7 +2,7 @@
   {{#each post in post_list}}
     <div class="ui fluid card">
       <div class="content">
-        <div class="header">{{post.title}}</div>
+        <div class="header" id="post_title" post-id="{{post._id}}">{{post.title}}</div>
         <div class="right floated meta">
           <span id="post_time"><i class="calendar icon"></i>{{getTime post.createdAt}}</span>
         </div>

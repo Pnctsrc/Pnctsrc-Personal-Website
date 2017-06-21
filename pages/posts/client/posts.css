@@ -6,10 +6,19 @@
   box-shadow: none;
 }
 
+.ui.fluid.card > .content > div.header:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 span#post_time {
   font-size: 0.8em;
 }
 
 span#post_tag_display {
   font-size: 0.8em;
+}
+
+div#post_title {
+  font-size: 1.6em;
 }

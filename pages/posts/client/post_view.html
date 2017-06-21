@@ -1,0 +1,32 @@
+<template name="postView">
+  <div class="ui fluid card" id="card_view">
+    <div class="content">
+      <h1 class="header" id="post_title">{{post.title}}</h1>
+      <div class="right floated meta">
+        <span id="post_view_time"><i class="calendar icon"></i>{{getTime post.createdAt}}</span>
+      </div>
+      <div class="fr-view">
+        {{{post.HTML_content}}}
+      </div>
+    </div>
+    <div class="extra content">
+      <div class="left floated meta">
+        <span id="post_tag_display">
+          <i class="tags icon"></i>
+          {{#each tag in post.tags}}
+            <a>{{tag}}</a>
+          {{/each}}
+        </span>
+      </div>
+
+      <div class="right floated statistic">
+        <div class="value">
+          2,204
+        </div>
+        <div class="label">
+          Views
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
