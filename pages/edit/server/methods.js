@@ -22,6 +22,23 @@ Meteor.methods({
         lastModified: new Date()
     }})
   },
+  "delete_post": function(post_id, access_key){
+    //only user with access_key can get the s3 hash
+    if(access_key !== Meteor.settings.PNCTSRC_ACCESS_KEY){
+      console.log("key - " + access_key);
+      throw new Meteor.Error(100, "Access denied");
+    }
+
+    //server-side validation
+    if(!/^[0-9A-Za-z]{17}$/ig.test(post_id)){
+      throw new Meteor.Error(404, "Invalid id");
+    } else if(!Posts.findOne(post_id)){
+      throw new Meteor.Error(404, "No such post");
+    }
+
+    //update the database
+    Posts.remove(post_id);
+  },
   "get_s3_signature": function(access_key){
     //only user with access_key can get the s3 hash
     if(access_key !== Meteor.settings.PNCTSRC_ACCESS_KEY){

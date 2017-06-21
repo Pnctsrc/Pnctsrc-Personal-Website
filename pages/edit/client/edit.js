@@ -1,6 +1,6 @@
 Template.edit.onRendered(function(){
   const s3hash = this.data;
-  
+
   $('.fr-view-edit').froalaEditor({
     imageUploadToS3: s3hash.image,
     fileUploadToS3: s3hash.file,
@@ -52,5 +52,18 @@ Template.edit.events({
 
       Router.go("/posts/view/" + post_id);
     });
-  }
+  },
+  "click #post_submit_delete": function(){
+    const access_key = Router.current().params.hash;
+    const post_id = Posts.findOne()._id;
+
+    Meteor.call("delete_post", post_id, access_key, function(err, result){
+      if(err){
+        window.alert(err);
+        return;
+      }
+
+      Router.go("/posts/1");
+    });
+  },
 })
