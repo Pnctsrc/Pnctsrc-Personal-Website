@@ -18,7 +18,8 @@ Meteor.methods({
   },
   "get_s3_signature": function(){
     var FroalaEditor = require('/node_modules/wysiwyg-editor-node-sdk/lib/froalaEditor.js');
-    var configs = {
+
+    var configs_file = {
       // The name of your bucket.
       bucket: Meteor.settings.S3_BUCKET_NAME,
 
@@ -26,7 +27,7 @@ Meteor.methods({
       region: 'us-east-1',
 
       // The folder where to upload the images.
-      keyStart: Meteor.settings.S3_PATH_NAME,
+      keyStart: Meteor.settings.S3_PATH_NAME + "files/",
 
       // File access.
       acl: 'public-read',
@@ -36,8 +37,30 @@ Meteor.methods({
       secretKey: Meteor.settings.AWS_SECRET_KEY
     }
 
-    var s3Hash = FroalaEditor.S3.getHash(configs);
+    var configs_image = {
+      // The name of your bucket.
+      bucket: Meteor.settings.S3_BUCKET_NAME,
 
-    return s3Hash;
+      // S3 region. If you are using the default us-east-1, it this can be ignored.
+      region: 'us-east-1',
+
+      // The folder where to upload the images.
+      keyStart: Meteor.settings.S3_PATH_NAME + "images/",
+
+      // File access.
+      acl: 'public-read',
+
+      // AWS keys.
+      accessKey: Meteor.settings.AWS_ACCESS_KEY,
+      secretKey: Meteor.settings.AWS_SECRET_KEY
+    }
+
+    var s3Hash_file = FroalaEditor.S3.getHash(configs_file);
+    var s3Hash_image = FroalaEditor.S3.getHash(configs_image);
+
+    return {
+      file: s3Hash_file,
+      image: s3Hash_image
+    }
   }
 })

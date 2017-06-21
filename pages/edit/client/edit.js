@@ -4,10 +4,10 @@ Template.edit.onRendered(function(){
       window.alert(err);
       return;
     }
-
+    
     $('.fr-view-edit').froalaEditor({
-      imageUploadToS3: result,
-      fileUploadToS3: result,
+      imageUploadToS3: result.image,
+      fileUploadToS3: result.file,
       codeMirror: true,
       codeMirrorOptions: {
         indentWithTabs: true,
