@@ -1,6 +1,14 @@
 Template.new.onRendered(function(){
   $('div#froala-editor').froalaEditor({
-
+    codeMirror: true,
+    codeMirrorOptions: {
+      indentWithTabs: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      mode: 'text/html',
+      tabMode: 'indent',
+      tabSize: 4
+    },
   });
 
   $('#post_tag')

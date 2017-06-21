@@ -1,6 +1,14 @@
 Template.edit.onRendered(function(){
   $('.fr-view-edit').froalaEditor({
-
+    codeMirror: true,
+    codeMirrorOptions: {
+      indentWithTabs: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      mode: 'text/html',
+      tabMode: 'indent',
+      tabSize: 4
+    },
   });
 
   $('#post_tag_edit')
@@ -17,7 +25,7 @@ Template.edit.onRendered(function(){
 Template.edit.helpers({
   "post": function(){
     return Posts.findOne();
-  }
+  },
 })
 
 Template.edit.events({
