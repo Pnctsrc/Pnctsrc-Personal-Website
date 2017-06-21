@@ -1,13 +1,13 @@
 Meteor.methods({
-  "test": function(){
-    var FroalaEditor = require('/node_modules/wysiwyg-editor-node-sdk/lib/froalaEditor.js');
-  },
-
-  "submit_post": function(object){
+  "submit_post": function(object, access_key){
     //server-side validation
+    if(access_key !== Meteor.settings.PNCTSRC_ACCESS_KEY){
+      console.log("key - " + access_key);
+      throw new Meteor.Error(100, "Access denied");
+    }
 
     //insert into database
-    Posts.insert({
+    return Posts.insert({
         HTML_content: object.HTML_content,
         title: object.title,
         description: object.description,

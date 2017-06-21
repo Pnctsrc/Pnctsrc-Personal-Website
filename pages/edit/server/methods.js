@@ -1,10 +1,16 @@
 Meteor.methods({
-  "submit_post_edit": function(object, post_id){
+  "submit_post_edit": function(object, post_id, access_key){
+    //only user with access_key can get the s3 hash
+    if(access_key !== Meteor.settings.PNCTSRC_ACCESS_KEY){
+      console.log("key - " + access_key);
+      throw new Meteor.Error(100, "Access denied");
+    }
+
     //server-side validation
     if(!/^[0-9A-Za-z]{17}$/ig.test(post_id)){
-      throw Meteor.Error(404, "Invalid id");
+      throw new Meteor.Error(404, "Invalid id");
     } else if(!Posts.findOne(post_id)){
-      throw Meteor.Error(404, "No such post");
+      throw new Meteor.Error(404, "No such post");
     }
 
     //update the database
@@ -16,7 +22,13 @@ Meteor.methods({
         lastModified: new Date()
     }})
   },
-  "get_s3_signature": function(){
+  "get_s3_signature": function(access_key){
+    //only user with access_key can get the s3 hash
+    if(access_key !== Meteor.settings.PNCTSRC_ACCESS_KEY){
+      console.log("key - " + access_key);
+      throw new Meteor.Error(100, "Access denied");
+    }
+
     var FroalaEditor = require('/node_modules/wysiwyg-editor-node-sdk/lib/froalaEditor.js');
 
     var configs_file = {

@@ -1,5 +1,9 @@
 Template.new.onRendered(function(){
+  const s3hash = this.data;
+  
   $('div#froala-editor').froalaEditor({
+    imageUploadToS3: s3hash.image,
+    fileUploadToS3: s3hash.file,
     codeMirror: true,
     codeMirrorOptions: {
       indentWithTabs: true,
@@ -21,6 +25,7 @@ Template.new.onRendered(function(){
 
 Template.new.events({
   "click #post_submit": function(){
+    const access_key = Router.current().params.hash;
     const submit_object = {
       HTML_content: $('#froala-editor').froalaEditor('html.get', true),
       title: $("#post_title").val(),
@@ -28,11 +33,14 @@ Template.new.events({
       tags: $("#post_tag").dropdown("get value").split(",")
     };
 
-    Meteor.call("submit_post", submit_object, function(err, result){
+    Meteor.call("submit_post", submit_object, access_key, function(err, result){
       if(err){
         window.alert(err);
+        Router.go("/posts/1");
         return;
       }
+
+      Router.go("/posts/view/" + result);
     });
   }
 })
