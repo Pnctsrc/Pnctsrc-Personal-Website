@@ -16,6 +16,14 @@
   color: white;
 }
 
+#buttons_list a:hover {
+  font-weight: bold;
+}
+
+#buttons_list a.active {
+  font-weight: bold;
+}
+
 #buttons_list h1 {
   font-size: 70px;
   text-align: center;
