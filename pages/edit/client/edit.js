@@ -1,15 +1,25 @@
 Template.edit.onRendered(function(){
-  $('.fr-view-edit').froalaEditor({
-    codeMirror: true,
-    codeMirrorOptions: {
-      indentWithTabs: true,
-      lineNumbers: true,
-      lineWrapping: true,
-      mode: 'text/html',
-      tabMode: 'indent',
-      tabSize: 4
-    },
-  });
+  Meteor.call("get_s3_signature", function(err, result){
+    if(err){
+      window.alert(err);
+      return;
+    }
+
+    $('.fr-view-edit').froalaEditor({
+      imageUploadToS3: result,
+      fileUploadToS3: result,
+      codeMirror: true,
+      codeMirrorOptions: {
+        indentWithTabs: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        mode: 'text/html',
+        tabMode: 'indent',
+        tabSize: 4
+      },
+      tabSpaces: 4,
+    })
+  })
 
   $('#post_tag_edit')
     .dropdown({

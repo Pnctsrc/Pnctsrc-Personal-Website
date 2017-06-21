@@ -9,6 +9,7 @@ Template.new.onRendered(function(){
       tabMode: 'indent',
       tabSize: 4
     },
+    tabSpaces: 4
   });
 
   $('#post_tag')
