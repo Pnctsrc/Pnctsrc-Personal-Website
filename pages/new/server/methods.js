@@ -7,12 +7,22 @@ Meteor.methods({
     }
 
     //insert into database
-    return Posts.insert({
+    const _id = Posts.insert({
         HTML_content: object.HTML_content,
         title: object.title,
         description: object.description,
         tags: object.tags,
         createdAt: new Date()
     })
+
+    MetaData.update({
+      type: "posts"
+    }, {
+      $set: {
+        total_count: MetaData.findOne({type: "posts"}).total_count + 1
+      }
+    })
+
+    return _id;
   }
 })

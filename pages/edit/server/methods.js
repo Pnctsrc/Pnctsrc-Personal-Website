@@ -38,6 +38,15 @@ Meteor.methods({
 
     //update the database
     Posts.remove(post_id);
+
+    //update the metadata
+    MetaData.update({
+      type: "posts"
+    }, {
+      $set: {
+        total_count: MetaData.findOne({type: "posts"}).total_count - 1
+      }
+    })
   },
   "get_s3_signature": function(access_key){
     //only user with access_key can get the s3 hash

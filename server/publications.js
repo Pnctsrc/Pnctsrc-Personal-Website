@@ -25,3 +25,13 @@ Meteor.publish("get_post", function(post_id){
     limit: 1,
   })
 })
+
+Meteor.publish("metadata", function(type){
+  if(type === "posts" || type === "works"){
+    return MetaData.find({
+      type: type
+    });
+  } else {
+    return [];
+  }
+})
