@@ -9,9 +9,12 @@ Meteor.publish("post_list", function(page_num){
     return [];
   }
 
-  return Posts.find({}, {
+  return Posts.find({},{
     limit: posts_per_page,
-    skip: (parseInt(page_number) - 1) * posts_per_page
+    skip: (parseInt(page_number) - 1) * posts_per_page,
+    sort: {
+      createdAt: -1
+    }
   })
 })
 
