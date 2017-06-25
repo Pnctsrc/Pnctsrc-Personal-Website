@@ -1,5 +1,5 @@
 Meteor.publish("post_list", function(page_num){
-  const posts_per_page = 10;
+  const posts_per_page = MetaData.findOne({type: "posts"}).posts_per_page;
 
   //validating the page number
   var page_number = page_num;
