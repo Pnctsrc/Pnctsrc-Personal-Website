@@ -1,5 +1,8 @@
 Template.new.onRendered(function(){
   const s3hash = this.data;
+  if(!s3hash){
+    location.reload;
+  }
   
   $('div#froala-editor').froalaEditor({
     imageUploadToS3: s3hash.image,
@@ -36,7 +39,7 @@ Template.new.events({
     Meteor.call("submit_post", submit_object, access_key, function(err, result){
       if(err){
         window.alert(err);
-        Router.go("/posts/1");
+        Router.go("/posts?page=1");
         return;
       }
 

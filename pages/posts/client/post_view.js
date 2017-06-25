@@ -11,6 +11,6 @@ Template.postView.helpers({
   },
 
   "getTime": function(date){
-    return $.timeago(date);
+    return $.timeago(date) || "";
   },
 })

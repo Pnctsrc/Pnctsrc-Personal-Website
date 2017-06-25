@@ -1,5 +1,5 @@
 Template.notFound.helpers({
   goToPosts: function(){
-    Router.go("/posts/1");
+    Router.go("/posts?page=1");
   },
 })
