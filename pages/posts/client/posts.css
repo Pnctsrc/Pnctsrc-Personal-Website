@@ -8,7 +8,7 @@
 
 .ui.fluid.card > .content > div.header:hover {
   cursor: pointer;
-  text-decoration: underline;
+  color: rgb(62, 161, 221);
 }
 
 span#post_time {
@@ -21,4 +21,5 @@ span#post_tag_display {
 
 div#post_title {
   font-size: 1.6em;
+  transition: color 0.15s linear;
 }
