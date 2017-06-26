@@ -4,7 +4,11 @@ Template.posts_pagination.onCreated(function(){
 
 Template.posts_pagination.helpers({
   "getPageNum": function(){
-    return Router.current().params.query.page;
+    if(!Router.current().params.query){
+      return "";
+    } else {
+      return Router.current().params.query.page;
+    }
   },
 })
 

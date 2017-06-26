@@ -10,23 +10,25 @@
         <h1>My name</h1>
         <p>This is a simple description of me</p>
         <hr>
-        <a href="/about">About</a>
-        <a href="/posts/1" class="active">Blog</a>
-        <a href="/works">Works</a>
+        <div id="link_list">
+          <a href="/about" class="about_link">About</a>
+          <a href="/posts?page=1" class="active blog_link">Blog</a>
+          <a href="/works" class="works_link">Works</a>
 
-        <div id="social">
-          <i class="tiny github icon"></i>
-          <i class="tiny linkedin icon"></i>
-          <i class="tiny qq icon"></i>
-          <i class="tiny mail icon"></i>
+          <div id="social">
+            <a href="https://github.com/Pnctsrc" target="_blank"><i class="tiny github icon"></i></a>
+            <a href="https://www.linkedin.com/feed/" target="_blank"><i class="tiny linkedin icon"></i></a>
+            <a href="tencent://message/?uin=710677986&Site=pnctsrc.me&Menu=yes" target="_blank"><i class="tiny qq icon"></i></a>
+            <a href="mailto:pnctsrc@gmail.com" target="_blank"><i class="tiny mail icon"></i></a>
+          </div>
         </div>
       </nav>
 
       <div id="collapse_button">
         <ul>
-          <li><a href="/about">About</a></li>
-          <li><a href="/posts/1">Blog</a></li>
-          <li><a href="/works">Works</a></li>
+          <li><a href="/about" class="about_link">About</a></li>
+          <li><a href="/posts?page=1" class="blog_link active">Blog</a></li>
+          <li><a href="/works" class="works_link">Works</a></li>
         </ul>
       </div>
     </div>

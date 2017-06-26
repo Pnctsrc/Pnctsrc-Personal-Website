@@ -39,6 +39,17 @@
   line-height: normal;
   color: white;
   text-align: center;
+  display: inline-block;
+}
+
+#social a {
+  display: inline-block;
+}
+
+div#link_list {
+  padding-left: 110px;
+  padding-right: 110px;
+  text-align: center;
 }
 
 #mainContent {
@@ -78,12 +89,20 @@
   line-height: normal;
 }
 
+#collapse_button li a:hover {
+  font-weight: bold;
+}
+
+#collapse_button li a.active {
+  font-weight: bold;
+}
+
 body {
   font-size: 14px;
   min-width: 140px;/*This overwrites the semantic-ui rule*/
 }
 
-@media (min-width: 320px) {
+@media screen and (min-width: 320px) {
   #mainContent {
     padding-left: 2rem;
     padding-right: 2rem;
@@ -91,7 +110,7 @@ body {
   }
 }
 
-@media (max-width: 370px) {
+@media screen and (max-width: 370px) {
   #collapse_button li {
     float: none;
   }
@@ -105,7 +124,7 @@ body {
   }
 }
 
-@media (min-width: 371px) {
+@media screen and (min-width: 371px) {
   #buttons_list {
     display: none;
   }
@@ -115,7 +134,7 @@ body {
   }
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   #side_nav_bar {
     position: fixed;
     height: 100%;

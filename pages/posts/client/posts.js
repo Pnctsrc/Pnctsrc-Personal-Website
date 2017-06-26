@@ -21,7 +21,9 @@ Template.posts.helpers({
     const current_query = Router.current().params.query;
 
     if(!last_query){//if passed, it is the first time the page is loaded
-      return true
+      return true;
+    } else if(!current_query){//user is leaving the page
+      return false;
     } else {
       return last_query.page !== current_query.page ||
              last_query.category !== current_query.category ||
@@ -59,6 +61,7 @@ Template.posts.helpers({
   },
 
   "showPagination": function(){
+    if(!MetaData.findOne()) return false;
     const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().posts_per_page);
 
     if(total_pages == "1"){
