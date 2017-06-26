@@ -1,37 +1,41 @@
 <template name="postView">
-  <div class="ui fluid card" id="card_view">
-    <div class="content">
-      <h1 class="header" id="post_title">{{post.title}}</h1>
-      <div class="right floated meta">
-        <span id="post_view_time" class="post_time"><i class="calendar icon"></i>{{getTime post.createdAt}}</span>
-      </div>
-      <div class="fr-view">
-        {{{post.HTML_content}}}
-      </div>
-      {{#if post.lastModified}}
+  {{#if dataReady}}
+    <div class="ui fluid card" id="card_view">
+      <div class="content">
+        <h1 class="header" id="post_title">{{post.title}}</h1>
         <div class="right floated meta">
-          <span id="post_view_time_modified" class="post_time">Last modified - {{getTime post.lastModified}}</span>
+          <span id="post_view_time" class="post_time"><i class="calendar icon"></i>{{getTime post.createdAt}}</span>
         </div>
-      {{/if}}
-    </div>
-    <div class="extra content">
-      <div class="left floated meta">
-        <span id="post_tag_display">
-          <i class="tags icon"></i>
-          {{#each tag in post.tags}}
-            <a>{{tag}}</a>
-          {{/each}}
-        </span>
+        <div class="fr-view">
+          {{{post.HTML_content}}}
+        </div>
+        {{#if post.lastModified}}
+          <div class="right floated meta">
+            <span id="post_view_time_modified" class="post_time">Last modified - {{getTime post.lastModified}}</span>
+          </div>
+        {{/if}}
       </div>
+      <div class="extra content">
+        <div class="left floated meta">
+          <span id="post_tag_display">
+            <i class="tags icon"></i>
+            {{#each tag in post.tags}}
+              <a>{{tag}}</a>
+            {{/each}}
+          </span>
+        </div>
 
-      <div class="right floated statistic">
-        <div class="value">
-          2,204
-        </div>
-        <div class="label">
-          Views
+        <div class="right floated statistic">
+          <div class="value">
+            2,204
+          </div>
+          <div class="label">
+            Views
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  {{else}}
+    {{> post_loader postsDict=postViewDict}}
+  {{/if}}
 </template>

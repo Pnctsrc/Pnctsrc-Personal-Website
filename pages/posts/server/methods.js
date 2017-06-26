@@ -73,5 +73,16 @@ Meteor.methods({
     }
 
     return Posts.find(query_object, options_object).fetch();
-  }
+  },
+
+  "get_post_by_id": function(post_id){
+    //validation
+    if(!/^[0-9A-Za-z]{17}$/ig.test(post_id)){
+      throw new Meteor.Error(404, "Invalid id");
+    } else if(!Posts.findOne(post_id)){
+      throw new Meteor.Error(404, "No such post");
+    }
+
+    return Posts.findOne(post_id);
+  },
 })
