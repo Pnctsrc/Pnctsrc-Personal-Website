@@ -85,4 +85,29 @@ Meteor.methods({
 
     return Posts.findOne(post_id);
   },
+
+  "viewCount+1": function(post_id){
+    //validation
+    if(!/^[0-9A-Za-z]{17}$/ig.test(post_id)){
+      throw new Meteor.Error(404, "Invalid id");
+    } else if(!Posts.findOne(post_id)){
+      throw new Meteor.Error(404, "No such post");
+    }
+
+    //update the view count
+    const current_view_count = Posts.findOne(post_id).view_count;
+    if(!current_view_count){
+      Posts.update(post_id, {
+        $set: {
+          view_count: 1
+        }
+      })
+    } else {
+      Posts.update(post_id, {
+        $set: {
+          view_count: current_view_count + 1
+        }
+      })
+    }
+  },
 })

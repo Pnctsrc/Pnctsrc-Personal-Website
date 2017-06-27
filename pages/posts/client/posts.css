@@ -6,8 +6,16 @@
   box-shadow: none;
 }
 
-.ui.fluid.card > .content > div.header:hover {
-  cursor: pointer;
+.ui.fluid.card  .content  a {
+  text-decoration: none;
+  font-size: 1.6em;
+  display: block;
+  width: 100%;
+  color: black;
+  transition: color 0.15s linear;
+}
+
+.ui.fluid.card  .content  a:hover {
   color: rgb(62, 161, 221);
 }
 
@@ -17,9 +25,4 @@ span#post_time {
 
 span#post_tag_display {
   font-size: 0.8em;
-}
-
-div#post_title {
-  font-size: 1.6em;
-  transition: color 0.15s linear;
 }

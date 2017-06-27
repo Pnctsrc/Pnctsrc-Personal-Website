@@ -11,7 +11,7 @@
     {{#each post in post_list}}
       <div class="ui fluid card">
         <div class="content">
-          <div class="header" id="post_title" post-id="{{post._id}}">{{post.title}}</div>
+          <div class="header" id="post_title" post-id="{{post._id}}"><a href="/posts/view/{{post._id}}">{{post.title}}</a></div>
           <div class="right floated meta">
             <span id="post_time"><i class="calendar icon"></i>{{getTime post.createdAt}}</span>
           </div>
@@ -31,7 +31,7 @@
 
           <div class="right floated statistic">
             <div class="value">
-              2,204
+              {{getViewCount post.view_count}}
             </div>
             <div class="label">
               Views

@@ -12,6 +12,7 @@ Meteor.methods({
         title: object.title,
         description: object.description,
         tags: object.tags,
+        view_count: 0,
         createdAt: new Date()
     })
 

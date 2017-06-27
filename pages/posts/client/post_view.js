@@ -16,7 +16,7 @@ Template.postView.onRendered(function(){
       Router.go("/posts?page=1");
       return;
     }
-    
+
     postViewDict.set("data_object", result);
     postViewDict.set("data_ready", true);
 
@@ -24,6 +24,29 @@ Template.postView.onRendered(function(){
       $("div#card_view").css("opacity", 1);
     }, 200);
   })
+
+  //update view count
+  const post_id = Router.current().params._id;
+
+  //check if the post has been visited
+  const post_regexp = new RegExp("(?:(?:^|.*;\\s*)post_visited\\s*\\=\\s*([^;]*).*$)|^.*$");
+  if(!document.cookie.replace(post_regexp, "$1")){
+    const visited_posts_array = [post_id];
+    //set the post to be visited
+    document.cookie = "post_visited=" + JSON.stringify(visited_posts_array) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+
+    //+1 in viewcount
+    Meteor.call("viewCount+1", post_id);
+  } else {
+    const visited_posts_array = JSON.parse(document.cookie.replace(post_regexp, "$1"));
+    if (_.indexOf(visited_posts_array, post_id) == -1) {//post not visited, add to the array
+      visited_posts_array.push(post_id);
+      document.cookie = "post_visited=" + JSON.stringify(visited_posts_array) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+
+      //+1 in viewcount
+      Meteor.call("viewCount+1", post_id);
+    }
+  }
 })
 
 Template.postView.helpers({
@@ -45,5 +68,13 @@ Template.postView.helpers({
 
   "dataReady": function(){
     return Template.instance().postViewDict.get("data_ready");
-  }
+  },
+
+  "getViewCount": function(view_count){
+    if(!view_count){
+      return 0;
+    } else {
+      return view_count;
+    }
+  },
 })
