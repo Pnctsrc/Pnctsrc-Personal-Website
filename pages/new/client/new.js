@@ -1,29 +1,61 @@
-Template.new.onRendered(function(){
-  const s3hash = this.data;
-  if(!s3hash){
-    location.reload;
-  }
-  
-  $('div#froala-editor').froalaEditor({
-    imageUploadToS3: s3hash.image,
-    fileUploadToS3: s3hash.file,
-    codeMirror: true,
-    codeMirrorOptions: {
-      indentWithTabs: true,
-      lineNumbers: true,
-      lineWrapping: true,
-      mode: 'text/html',
-      tabMode: 'indent',
-      tabSize: 4
-    },
-    tabSpaces: 4
-  });
+Template.new.onCreated(function(){
+  this.newDict = new ReactiveDict();
+  this.newDict.set("data_ready", false);
 
-  $('#post_tag')
-    .dropdown({
-      allowAdditions: true
-    })
-  ;
+  //client-side validation
+  const access_key = Router.current().params.hash;
+  if(!access_key){
+    Router.go("/posts?page=1");
+    return;
+  }
+
+  //get initialization data
+  const newDict = this.newDict;
+  Meteor.call("get_s3_signature", access_key, function(err, result){
+    if(err){
+      Router.go("/posts?page=1");
+      window.alert(err);
+      return;
+    }
+
+    //initialize page elements
+    setTimeout(function () {
+      const s3hash = result;
+
+      $('#froala-editor').froalaEditor({
+        imageUploadToS3: s3hash.image,
+        fileUploadToS3: s3hash.file,
+        codeMirror: true,
+        codeMirrorOptions: {
+          indentWithTabs: true,
+          lineNumbers: true,
+          lineWrapping: true,
+          mode: 'text/html',
+          tabMode: 'indent',
+          tabSize: 4
+        },
+        tabSpaces: 4,
+      })
+
+      $('#post_tag')
+        .dropdown({
+          allowAdditions: true
+        })
+      ;
+
+      newDict.set("data_ready", true);//shows content after the initialization is finished
+    }, 300);
+  })
+})
+
+Template.new.helpers({
+  "dataNotReady": function(){
+    return !Template.instance().newDict.get("data_ready");
+  },
+
+  "newDict": function(){
+    return Template.instance().newDict;
+  },
 })
 
 Template.new.events({

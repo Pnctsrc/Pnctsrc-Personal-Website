@@ -1,8 +1,10 @@
 <template name="new">
-  <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
-  </head>
-  
+  {{> codemirror_script}}
+
+  {{#if dataNotReady}}
+    {{> post_loader postsDict=newDict wait_time=0}}
+  {{/if}}
+
   <div class="ui form">
     <div class="field">
     <label>Title</label>
