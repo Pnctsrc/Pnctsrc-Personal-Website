@@ -1,4 +1,4 @@
-Template.new.onCreated(function(){
+Template.newPost.onCreated(function(){
   this.newDict = new ReactiveDict();
   this.newDict.set("data_ready", false);
 
@@ -48,7 +48,7 @@ Template.new.onCreated(function(){
   })
 })
 
-Template.new.helpers({
+Template.newPost.helpers({
   "dataNotReady": function(){
     return !Template.instance().newDict.get("data_ready");
   },
@@ -58,7 +58,7 @@ Template.new.helpers({
   },
 })
 
-Template.new.events({
+Template.newPost.events({
   "click #post_submit": function(){
     const access_key = Router.current().params.hash;
     const submit_object = {

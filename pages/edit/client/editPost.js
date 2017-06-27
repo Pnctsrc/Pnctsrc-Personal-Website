@@ -1,4 +1,4 @@
-Template.edit.onCreated(function(){
+Template.editPost.onCreated(function(){
   this.editDict = new ReactiveDict();
   this.editDict.set("data_ready", false);
 
@@ -75,7 +75,7 @@ Template.edit.onCreated(function(){
   })(post_id);
 })
 
-Template.edit.helpers({
+Template.editPost.helpers({
   "post": function(){
     return Template.instance().editDict.get("post_object");
   },
@@ -89,7 +89,7 @@ Template.edit.helpers({
   },
 })
 
-Template.edit.events({
+Template.editPost.events({
   "click #post_submit_edit": function(){
     const access_key = Router.current().params.hash;
     const post_object = Template.instance().editDict.get("post_object");
