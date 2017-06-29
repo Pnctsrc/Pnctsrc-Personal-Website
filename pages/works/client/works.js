@@ -55,4 +55,19 @@ Template.works.helpers({
   "work_list": function(){
     return Template.instance().worksDict.get("works_array");
   },
+
+  "showPagination": function(){
+    if(!MetaData.findOne()) return false;
+    const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().works_per_page);
+
+    if(total_pages == "1"){
+      return false;
+    } else if (!Template.instance().worksDict.get("works_array")){//if passed, it is the first time the page is loaded
+      return false;
+    } else if (Template.instance().worksDict.get("works_array").length == 0){//when no data gets fetched
+      return false;
+    } else {
+      return true;
+    }
+  },
 })
