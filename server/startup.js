@@ -20,4 +20,23 @@ Meteor.startup(() => {
       }
     })
   }
+
+  const works_count = Works.find().count();
+  const works_per_page = 9;
+  if(!MetaData.findOne({type: "works"})){
+    MetaData.insert({
+      type: "works",
+      total_count: works_count,
+      works_per_page: works_per_page
+    })
+  } else {
+    MetaData.update({
+      type: "works"
+    }, {
+      $set: {
+        total_count: works_count,
+        works_per_page: works_per_page
+      }
+    })
+  }
 });
