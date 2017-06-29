@@ -16,7 +16,8 @@ Template.list_pagination.events({
   "change .page_num": function(){
     const text = $("input.page_num").val();
     const current_page = parseInt(Router.current().params.query.page);
-    const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().posts_per_page);
+    const page_type = Template.instance().data.pageType;
+    var total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne()[page_type + "_per_page"]);
 
     var final_page_num;
 
@@ -37,7 +38,6 @@ Template.list_pagination.events({
     if(final_page_num != current_page){//if it will stay on the same page, data won't be refreshed
       Template.instance().listDict.set("data_ready", false);
     }
-    const page_type = Template.instance().data.pageType;
     Router.go("/" + page_type +"?page=" + final_page_num);
   },
 
@@ -45,7 +45,8 @@ Template.list_pagination.events({
     if(event.which === 13){
       const text = $("input.page_num").val();
       const current_page = parseInt(Router.current().params.query.page);
-      const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().posts_per_page);
+      const page_type = Template.instance().data.pageType;
+      const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne()[page_type + "_per_page"]);
       var final_page_num;
 
       if(!/^-?\d+$/i.test(text)){
@@ -65,29 +66,28 @@ Template.list_pagination.events({
       if(final_page_num != current_page){//if it will stay on the same page, data won't be refreshed
         Template.instance().listDict.set("data_ready", false);
       }
-      const page_type = Template.instance().data.pageType;
       Router.go("/" + page_type +"?page=" + final_page_num);
     }
   },
 
   "click .js-next-page": function(){
     const current_page = parseInt(Router.current().params.query.page);
-    const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().posts_per_page);
+    const page_type = Template.instance().data.pageType;
+    const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne()[page_type + "_per_page"]);
 
     if(current_page + 1 <= total_pages){
       Template.instance().listDict.set("data_ready", false);
-      const page_type = Template.instance().data.pageType;
       Router.go("/" + page_type +"?page=" + (current_page + 1));
     }
   },
 
   "click .js-prev-page": function(){
     const current_page = parseInt(Router.current().params.query.page);
-    const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().posts_per_page);
+    const page_type = Template.instance().data.pageType;
+    const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne()[page_type + "_per_page"]);
 
     if(current_page - 1 >= 1){
       Template.instance().listDict.set("data_ready", false);
-      const page_type = Template.instance().data.pageType;
       Router.go("/" + page_type +"?page=" + (current_page - 1));
     }
   },
