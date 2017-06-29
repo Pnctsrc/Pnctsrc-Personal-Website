@@ -1,3 +1,28 @@
 <template name="works">
-  <h1>This is where the list of works shows up...</h1>
+  {{#if queryChange}}
+    {{worksReFetch}}
+  {{/if}}
+
+  {{#if dataNotReady}}
+    {{> post_loader postsDict=worksDict}}
+  {{/if}}
+
+  <div class="ui cards" id="works_cards">
+    {{#each work in work_list}}
+        <div class="ui card">
+          <div class="image">
+            <img src="images/example.png">
+          </div>
+          <div class="content">
+            <a class="header">{{work.title}}</a>
+            <div class="meta">
+              <span class="date">{{work.date}}</span>
+            </div>
+            <div class="description">
+              {{work.description}}
+            </div>
+          </div>
+        </div>
+    {{/each}}
+  </div>
 </template>
