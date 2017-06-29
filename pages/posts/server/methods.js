@@ -2,7 +2,7 @@ Meteor.methods({
   "get_posts": function(query){
     //validation
     const requested_page = query.page;
-    const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().posts_per_page);
+    const total_pages = Math.ceil(MetaData.findOne({type: "posts"}).total_count / MetaData.findOne({type: "posts"}).posts_per_page);
     if (!/^-?\d+$/i.test(requested_page)) {
 
       return [];
