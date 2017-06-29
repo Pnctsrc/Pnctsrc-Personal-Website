@@ -1,8 +1,8 @@
-Template.posts_pagination.onCreated(function(){
-  this.postsDict = this.data.postsDict;
+Template.list_pagination.onCreated(function(){
+  this.listDict = this.data.listDict;
 })
 
-Template.posts_pagination.helpers({
+Template.list_pagination.helpers({
   "getPageNum": function(){
     if(!Router.current().params.query){
       return "";
@@ -12,11 +12,12 @@ Template.posts_pagination.helpers({
   },
 })
 
-Template.posts_pagination.events({
+Template.list_pagination.events({
   "change .page_num": function(){
     const text = $("input.page_num").val();
     const current_page = parseInt(Router.current().params.query.page);
     const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().posts_per_page);
+
     var final_page_num;
 
     if(!/^-?\d+$/i.test(text)){
@@ -34,9 +35,10 @@ Template.posts_pagination.events({
     }
 
     if(final_page_num != current_page){//if it will stay on the same page, data won't be refreshed
-      Template.instance().postsDict.set("data_ready", false);
+      Template.instance().listDict.set("data_ready", false);
     }
-    Router.go("/posts?page=" + final_page_num);
+    const page_type = Template.instance().data.pageType;
+    Router.go("/" + page_type +"?page=" + final_page_num);
   },
 
   "keypress .page_num": function(event){
@@ -61,9 +63,10 @@ Template.posts_pagination.events({
       }
 
       if(final_page_num != current_page){//if it will stay on the same page, data won't be refreshed
-        Template.instance().postsDict.set("data_ready", false);
+        Template.instance().listDict.set("data_ready", false);
       }
-      Router.go("/posts?page=" + final_page_num);
+      const page_type = Template.instance().data.pageType;
+      Router.go("/" + page_type +"?page=" + final_page_num);
     }
   },
 
@@ -72,8 +75,9 @@ Template.posts_pagination.events({
     const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().posts_per_page);
 
     if(current_page + 1 <= total_pages){
-      Template.instance().postsDict.set("data_ready", false);
-      Router.go("/posts?page=" + (current_page + 1));
+      Template.instance().listDict.set("data_ready", false);
+      const page_type = Template.instance().data.pageType;
+      Router.go("/" + page_type +"?page=" + (current_page + 1));
     }
   },
 
@@ -82,8 +86,9 @@ Template.posts_pagination.events({
     const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().posts_per_page);
 
     if(current_page - 1 >= 1){
-      Template.instance().postsDict.set("data_ready", false);
-      Router.go("/posts?page=" + (current_page - 1));
+      Template.instance().listDict.set("data_ready", false);
+      const page_type = Template.instance().data.pageType;
+      Router.go("/" + page_type +"?page=" + (current_page - 1));
     }
   },
 })

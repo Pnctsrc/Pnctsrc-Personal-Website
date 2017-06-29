@@ -4,7 +4,7 @@
   {{/if}}
 
   {{#if dataNotReady}}
-    {{> post_loader postsDict=postsDict}}
+    {{> page_loader loaderDict=postsDict}}
   {{/if}}
 
   <div class="post_list">
@@ -41,7 +41,8 @@
       </div>
     {{/each}}
   </div>
+
   {{#if showPagination}}
-    {{> posts_pagination postsDict=postsDict}}
+    {{> list_pagination listDict=postsDict pageType="posts"}}
   {{/if}}
 </template>
