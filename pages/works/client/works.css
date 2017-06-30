@@ -1,3 +1,16 @@
 #works_cards {
   margin: 0;
 }
+
+div#works_cards .content a {
+  text-decoration: none;
+  font-size: 1.3em;
+  display: block;
+  width: 100%;
+  color: black;
+  transition: color 0.15s linear;
+}
+
+div#works_cards .content a:hover {
+  color: rgb(62, 161, 221);
+}
