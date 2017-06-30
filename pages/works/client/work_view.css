@@ -1,0 +1,19 @@
+div.work_time {
+  float: right;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 1em;
+}
+
+.fr-view {
+  clear: right;
+  font-size: 1.5em;
+}
+
+div#card_view h1 {
+  font-size: 3.5em;
+}
+
+div#card_view {
+  transition: visibility 0s, opacity 0.35s linear;
+  opacity: 0;
+}

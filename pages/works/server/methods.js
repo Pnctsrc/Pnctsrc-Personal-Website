@@ -74,4 +74,40 @@ Meteor.methods({
 
     return Works.find(query_object, options_object).fetch();
   },
+
+  "get_work_by_id": function(work_id){
+    //validation
+    if(!/^[0-9A-Za-z]{17}$/ig.test(work_id)){
+      throw new Meteor.Error(404, "Invalid id");
+    } else if(!Works.findOne(work_id)){
+      throw new Meteor.Error(404, "No such post");
+    }
+
+    return Works.findOne(work_id);
+  },
+
+  "viewCount+1_work": function(work_id){
+    //validation
+    if(!/^[0-9A-Za-z]{17}$/ig.test(work_id)){
+      throw new Meteor.Error(404, "Invalid id");
+    } else if(!Works.findOne(work_id)){
+      throw new Meteor.Error(404, "No such work");
+    }
+
+    //update the view count
+    const current_view_count = Works.findOne(work_id).view_count;
+    if(!current_view_count){
+      Works.update(work_id, {
+        $set: {
+          view_count: 1
+        }
+      })
+    } else {
+      Works.update(work_id, {
+        $set: {
+          view_count: current_view_count + 1
+        }
+      })
+    }
+  },
 })

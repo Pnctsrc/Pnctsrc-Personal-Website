@@ -1,0 +1,33 @@
+<template name="workView">
+  {{#if dataReady}}
+    <div class="ui fluid card" id="card_view">
+      <div class="content">
+        <h1 class="header" id="work_title">{{work.title}}</h1>
+        <div class="right floated meta">
+          <span id="work_view_time" class="work_time"><i class="calendar icon"></i>{{work.date}}</span>
+        </div>
+        <div class="fr-view">
+          {{{work.HTML_content}}}
+        </div>
+        {{#if work.lastModified}}
+          <div class="right floated meta">
+            <span id="work_view_time_modified" class="work_time">Last modified - {{getTime work.lastModified}}</span>
+          </div>
+        {{/if}}
+      </div>
+      <div class="extra content">
+        <div class="right floated statistic">
+          <div class="value">
+            {{getViewCount work.view_count}}
+          </div>
+          <div class="label">
+            Views
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {{else}}
+    {{> page_loader loaderDict=workViewDict}}
+  {{/if}}
+</template>
