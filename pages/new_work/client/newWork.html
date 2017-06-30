@@ -1,0 +1,55 @@
+<template name="newWork">
+  {{> codemirror_script}}
+
+  {{#if dataNotReady}}
+    {{> page_loader loaderDict=newDict wait_time=0}}
+  {{/if}}
+
+  <div class="ui form">
+    <div class="two fields">
+      <div class="field">
+        <label>Title</label>
+        <input type="text" id="work_title">
+      </div>
+
+      <div class="field" id="thumbnail_preview">
+        <img src="" id="work_thumbnail">
+      </div>
+    </div>
+
+    <div class="three fields">
+      <div class="field">
+        <label>Date of creation</label>
+        <input type="date" id="work_date">
+      </div>
+
+      <div class="field">
+        <label>Thumbnail</label>
+        <input type="file" name="thumbnail" accept="image/*" id="work_pic">
+      </div>
+
+      <div class="field">
+        <label>Work type</label>
+        <div class="ui selection dropdown" id="work_type">
+            <input type="hidden" name="work_type">
+            <i class="dropdown icon"></i>
+            <div class="default text"></div>
+            <div class="menu">
+                <div class="item" data-value="Tech">Tech</div>
+                <div class="item" data-value="Music">Music</div>
+                <div class="item" data-value="Other">Other</div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field" id="work_description">
+      <label>Description</label>
+      <textarea></textarea>
+    </div>
+  </div>
+  <hr>
+  <div id="froala-editor"></div>
+  <hr>
+  <button class="ui right floated blue button" id="work_submit">Submit</button>
+</template>

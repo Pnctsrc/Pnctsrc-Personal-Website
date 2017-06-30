@@ -1,0 +1,9 @@
+input#work_pic {
+  padding: 7px;
+}
+
+img#work_thumbnail {
+  display: none;
+  max-width: 100%;
+  max-height: 250px;
+}
