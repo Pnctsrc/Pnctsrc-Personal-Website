@@ -46,7 +46,7 @@ Meteor.methods({
     }
 
     //update the database
-    Works.remove(post_id);
+    Works.remove(work_id);
 
     //update the metadata
     MetaData.update({
