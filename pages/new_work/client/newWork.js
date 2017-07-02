@@ -59,7 +59,7 @@ Template.newWork.helpers({
 Template.newWork.events({
   "click #work_submit": function(event){
     //set loading status of the button
-    $("#work_submit").attr("class", "ui right floated blue loading button");
+    $("#work_submit").attr("class", "ui right floated blue loading disabled button");
 
     const access_key = Router.current().params.hash;
     const submit_object = {

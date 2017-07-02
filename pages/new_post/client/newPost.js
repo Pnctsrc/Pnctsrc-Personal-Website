@@ -61,7 +61,7 @@ Template.newPost.helpers({
 Template.newPost.events({
   "click #post_submit": function(){
     //set loading status of buttons
-    $("#post_submit").attr("class", "ui right floated blue loading button");
+    $("#post_submit").attr("class", "ui right floated blue loading disabled button");
 
     const access_key = Router.current().params.hash;
     const submit_object = {

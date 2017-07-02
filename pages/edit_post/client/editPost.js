@@ -92,8 +92,8 @@ Template.editPost.helpers({
 Template.editPost.events({
   "click #post_submit_edit": function(){
     //set loading status of buttons
-    $("#post_submit_edit").attr("class", "ui right floated blue loading button");
-    $("#post_submit_delete").attr("class", "ui right floated red loading button");
+    $("#post_submit_edit").attr("class", "ui right floated blue loading disabled button");
+    $("#post_submit_delete").attr("class", "ui right floated red loading disabled button");
 
     const access_key = Router.current().params.hash;
     const post_object = Template.instance().editDict.get("post_object");
@@ -119,8 +119,8 @@ Template.editPost.events({
 
   "click #post_submit_delete": function(){
     //set loading status of buttons
-    $("#post_submit_edit").attr("class", "ui right floated blue loading button");
-    $("#post_submit_delete").attr("class", "ui right floated red loading button");
+    $("#post_submit_edit").attr("class", "ui right floated blue loading disabled button");
+    $("#post_submit_delete").attr("class", "ui right floated red loading disabled button");
 
     const access_key = Router.current().params.hash;
     const post_object = Template.instance().editDict.get("post_object");
