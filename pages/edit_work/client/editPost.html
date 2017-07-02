@@ -1,0 +1,57 @@
+<template name="editWork">
+  {{> codemirror_script}}
+
+  {{#if dataNotReady}}
+    {{> page_loader loaderDict=editDict wait_time=0}}
+  {{/if}}
+
+  <div class="ui form">
+    <div class="two fields">
+      <div class="field">
+        <label>Title</label>
+        <input type="text" id="work_title_edit" value="{{work.title}}">
+      </div>
+
+      <div class="field" id="thumbnail_preview_edit">
+        <img src="{{work.thumbnail}}" id="work_thumbnail_edit">
+      </div>
+    </div>
+
+    <div class="three fields">
+      <div class="field">
+        <label>Date of creation</label>
+        <input type="date" id="work_date_edit" value="{{work.date}}">
+      </div>
+
+      <div class="field">
+        <label>Thumbnail</label>
+        <input type="file" name="thumbnail" accept="image/*" id="work_pic_edit">
+      </div>
+
+      <div class="field">
+        <label>Work type</label>
+        <div class="ui selection dropdown" id="work_type_edit">
+            <input type="hidden" name="work_type">
+            <i class="dropdown icon"></i>
+            <div class="default text"></div>
+            <div class="menu">
+                <div class="item" data-value="Tech">Tech</div>
+                <div class="item" data-value="Music">Music</div>
+                <div class="item" data-value="Other">Other</div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field" id="work_description_edit">
+      <label>Description</label>
+      <textarea>{{work.description}}</textarea>
+    </div>
+  </div>
+  <hr>
+  <div class="fr-view-edit">{{{work.HTML_content}}}</div>
+  <hr>
+  <button class="ui left floated blue button" id="work_restore_thumbnail">Restore thumbnail</button>
+  <button class="ui right floated blue button" id="work_submit_edit">Update</button>
+  <button class="ui right floated red button" id="work_submit_delete">Delete</button>
+</template>
