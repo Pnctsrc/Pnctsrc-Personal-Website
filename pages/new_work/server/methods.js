@@ -7,27 +7,7 @@ Meteor.methods({
     }
 
     if(!image_base64){
-      //insert into database
-      const _id = Works.insert({
-          HTML_content: object.HTML_content,
-          title: object.title,
-          description: object.description,
-          view_count: 0,
-          date: object.date,
-          type: object.type,
-          thumbnail: "",
-          createdAt: new Date()
-      })
-
-      MetaData.update({
-        type: "works"
-      }, {
-        $set: {
-          total_count: MetaData.findOne({type: "works"}).total_count + 1
-        }
-      })
-
-      return _id;
+      throw new Meteor.Error(100, "No thumbnail");
     } else {
       return Meteor.call("upload_thumbnail_to_S3", object, image_base64, file_type);
     };

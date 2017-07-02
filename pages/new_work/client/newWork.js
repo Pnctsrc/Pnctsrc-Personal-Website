@@ -103,15 +103,8 @@ Template.newWork.events({
         });
       })
     } else {
-      Meteor.call("submit_work", submit_object, access_key, function(err, result){
-        if(err){
-          window.alert(err.message);
-          $("#work_submit").attr("class", "ui right floated blue button");
-          return;
-        }
-
-        Router.go("/works/view/" + result);
-      });
+      window.alert("Please choose a thumbnail.");
+      $("#work_submit").attr("class", "ui right floated blue button");
     }
   },
 

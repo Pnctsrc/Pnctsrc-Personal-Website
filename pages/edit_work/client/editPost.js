@@ -86,7 +86,6 @@ Template.editWork.helpers({
 Template.editWork.events({
   "click #work_submit_edit": function(){
     //set loading status of buttons
-    $("#work_restore_thumbnail").attr("class", "ui left floated blue loading button");
     $("#work_submit_edit").attr("class", "ui right floated blue loading button");
     $("#work_submit_delete").attr("class", "ui right floated red loading button");
 
@@ -126,7 +125,6 @@ Template.editWork.events({
         Meteor.call("submit_work_edit", submit_object, work_id, access_key, image_base64, file_type, function(err, result){
           if(err){
             window.alert(err.message);
-            $("#work_restore_thumbnail").attr("class", "ui left floated blue button");
             $("#work_submit_edit").attr("class", "ui right floated blue button");
             $("#work_submit_delete").attr("class", "ui right floated red button");
             return;
@@ -138,28 +136,28 @@ Template.editWork.events({
     } else {
       //check if the original thumbnail
       if($("#work_thumbnail_edit").css("display") === "none"){
-        submit_object.thumbnail = "";
+        window.alert("Please choose a thumbnail.");
+        $("#work_submit_edit").attr("class", "ui right floated blue button");
+        $("#work_submit_delete").attr("class", "ui right floated red button");
       } else {
         submit_object.thumbnail = work_object.thumbnail;
+
+        Meteor.call("submit_work_edit", submit_object, work_id, access_key, function(err, result){
+          if(err){
+            window.alert(err.message);
+            $("#work_submit_edit").attr("class", "ui right floated blue button");
+            $("#work_submit_delete").attr("class", "ui right floated red button");
+            return;
+          }
+
+          Router.go("/works/view/" + result);
+        });
       }
-
-      Meteor.call("submit_work_edit", submit_object, work_id, access_key, function(err, result){
-        if(err){
-          window.alert(err.message);
-          $("#work_restore_thumbnail").attr("class", "ui left floated blue button");
-          $("#work_submit_edit").attr("class", "ui right floated blue button");
-          $("#work_submit_delete").attr("class", "ui right floated red button");
-          return;
-        }
-
-        Router.go("/works/view/" + result);
-      });
     }
   },
 
   "click #work_submit_delete": function(){
     //set loading status of buttons
-    $("#work_restore_thumbnail").attr("class", "ui left floated blue loading button");
     $("#work_submit_edit").attr("class", "ui right floated blue loading button");
     $("#work_submit_delete").attr("class", "ui right floated red loading button");
 
@@ -170,7 +168,6 @@ Template.editWork.events({
     Meteor.call("delete_work", work_id, access_key, function(err, result){
       if(err){
         window.alert(err);
-        $("#work_restore_thumbnail").attr("class", "ui left floated blue button");
         $("#work_submit_edit").attr("class", "ui right floated blue button");
         $("#work_submit_delete").attr("class", "ui right floated red button");
         return;
@@ -180,23 +177,17 @@ Template.editWork.events({
     });
   },
 
-  "click #work_restore_thumbnail": function(){
-    const access_key = Router.current().params.hash;
+  "change #work_pic_edit": function(event){
     const work_object = Template.instance().editDict.get("work_object");
 
-    $("#work_pic_edit").val("");
-    $("#work_thumbnail_edit").attr("src", work_object.thumbnail);
-  },
-
-  "change #work_pic_edit": function(event){
     if($("#work_pic_edit").val()){
       const file_type = event.currentTarget.files[0].type;
-
+      
       //check if there is image to load
       if(file_type.substring(0, 5) !== "image"){
         window.alert("Please upload an image");
         $("#work_pic_edit").val("");
-        $("#work_thumbnail_edit").attr("src", "");
+        $("#work_thumbnail_edit").attr("src", work_object.thumbnail);
         return;
       } else {
         $("#work_thumbnail_edit").css("display", "none");
@@ -212,8 +203,7 @@ Template.editWork.events({
         reader.readAsDataURL(event.currentTarget.files[0]);
       }
     } else {
-      $("#work_thumbnail_edit").attr("src", "");
-      $("#work_thumbnail_edit").css("display", "none");
+      $("#work_thumbnail_edit").attr("src", work_object.thumbnail);
     }
   },
 })
