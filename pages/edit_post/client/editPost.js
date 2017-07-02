@@ -57,15 +57,9 @@ Template.editPost.onCreated(function(){
               tabSpaces: 4,
             })
 
-            $('#post_tag_edit')
-              .dropdown({
-                allowAdditions: true
-              })
+            $('#post_type')
+              .dropdown("set selected", data.type);
             ;
-
-            if(data.tags.length != 0){
-              $("#post_tag_edit").dropdown("set selected", data.tags);
-            }
 
             editDict.set("data_ready", true);//shows content after the initialization is finished
           }, 300);
@@ -102,7 +96,7 @@ Template.editPost.events({
       HTML_content: $('.fr-view-edit').froalaEditor('html.get', true),
       title: $("#post_title_edit").val(),
       description: $("#post_description_edit textarea").val(),
-      tags: $("#post_tag_edit").dropdown("get value").split(",")
+      type: $("#post_type").dropdown("get value")
     };
 
     Meteor.call("submit_post_edit", submit_object, post_id, access_key, function(err, result){

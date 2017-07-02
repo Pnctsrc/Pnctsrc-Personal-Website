@@ -6,9 +6,25 @@
   {{/if}}
 
   <div class="ui form">
-    <div class="field">
-    <label>Title</label>
-    <input type="text" id="post_title">
+    <div class="two fields">
+      <div class="field">
+        <label>Title</label>
+        <input type="text" id="post_title">
+      </div>
+
+      <div class="field">
+        <label>Post type</label>
+        <div class="ui selection dropdown" id="post_type">
+            <input type="hidden" name="work_type">
+            <i class="dropdown icon"></i>
+            <div class="default text"></div>
+            <div class="menu">
+                <div class="item" data-value="Tech">Tech</div>
+                <div class="item" data-value="Music">Music</div>
+                <div class="item" data-value="Other">Other</div>
+            </div>
+        </div>
+      </div>
     </div>
 
     <div class="field" id="post_description">
@@ -19,10 +35,5 @@
   <hr>
   <div id="froala-editor"></div>
   <hr>
-  <div class="ui multiple search selection dropdown" id="post_tag">
-    <input name="tags" type="hidden">
-    <i class="tags icon"></i>
-    <div class="default text">&nbsp;&nbsp;&nbsp;Add tags</div>
-  </div>
   <button class="ui right floated blue button" id="post_submit">Submit</button>
 </template>

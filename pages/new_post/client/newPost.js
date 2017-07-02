@@ -37,10 +37,8 @@ Template.newPost.onCreated(function(){
         tabSpaces: 4,
       })
 
-      $('#post_tag')
-        .dropdown({
-          allowAdditions: true
-        })
+      $('#post_type')
+        .dropdown()
       ;
 
       newDict.set("data_ready", true);//shows content after the initialization is finished
@@ -68,7 +66,7 @@ Template.newPost.events({
       HTML_content: $('#froala-editor').froalaEditor('html.get', true),
       title: $("#post_title").val(),
       description: $("#post_description textarea").val(),
-      tags: $("#post_tag").dropdown("get value").split(",")
+      type: $("#post_type").dropdown("get value")
     };
 
     Meteor.call("submit_post", submit_object, access_key, function(err, result){

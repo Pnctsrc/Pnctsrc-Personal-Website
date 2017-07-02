@@ -45,7 +45,7 @@ Meteor.methods({
     };
 
     if(requested_cate !== "" && requested_cate){
-      query_object.category = requested_cate;
+      query_object.type = requested_cate.charAt(0).toUpperCase() + requested_cate.slice(1);
     }
 
     if(requested_sort !== "" && requested_sort){

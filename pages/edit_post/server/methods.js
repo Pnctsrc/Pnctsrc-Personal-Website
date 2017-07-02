@@ -18,7 +18,7 @@ Meteor.methods({
         HTML_content: object.HTML_content,
         title: object.title,
         description: object.description,
-        tags: object.tags,
+        type: object.type,
         lastModified: new Date()
     }})
   },
