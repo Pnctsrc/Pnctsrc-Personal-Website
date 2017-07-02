@@ -60,6 +60,9 @@ Template.newPost.helpers({
 
 Template.newPost.events({
   "click #post_submit": function(){
+    //set loading status of buttons
+    $("#post_submit").attr("class", "ui right floated blue loading button");
+
     const access_key = Router.current().params.hash;
     const submit_object = {
       HTML_content: $('#froala-editor').froalaEditor('html.get', true),
@@ -71,7 +74,7 @@ Template.newPost.events({
     Meteor.call("submit_post", submit_object, access_key, function(err, result){
       if(err){
         window.alert(err);
-        Router.go("/posts?page=1");
+        $("#post_submit").attr("class", "ui right floated blue button");
         return;
       }
 

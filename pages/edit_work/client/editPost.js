@@ -85,6 +85,11 @@ Template.editWork.helpers({
 
 Template.editWork.events({
   "click #work_submit_edit": function(){
+    //set loading status of buttons
+    $("#work_restore_thumbnail").attr("class", "ui left floated blue loading button");
+    $("#work_submit_edit").attr("class", "ui right floated blue loading button");
+    $("#work_submit_delete").attr("class", "ui right floated red loading button");
+
     const access_key = Router.current().params.hash;
     const work_object = Template.instance().editDict.get("work_object");
     const work_id = work_object._id;
@@ -121,7 +126,9 @@ Template.editWork.events({
         Meteor.call("submit_work_edit", submit_object, work_id, access_key, image_base64, file_type, function(err, result){
           if(err){
             window.alert(err.message);
+            $("#work_restore_thumbnail").attr("class", "ui left floated blue button");
             $("#work_submit_edit").attr("class", "ui right floated blue button");
+            $("#work_submit_delete").attr("class", "ui right floated red button");
             return;
           }
 
@@ -139,7 +146,9 @@ Template.editWork.events({
       Meteor.call("submit_work_edit", submit_object, work_id, access_key, function(err, result){
         if(err){
           window.alert(err.message);
+          $("#work_restore_thumbnail").attr("class", "ui left floated blue button");
           $("#work_submit_edit").attr("class", "ui right floated blue button");
+          $("#work_submit_delete").attr("class", "ui right floated red button");
           return;
         }
 
@@ -149,6 +158,11 @@ Template.editWork.events({
   },
 
   "click #work_submit_delete": function(){
+    //set loading status of buttons
+    $("#work_restore_thumbnail").attr("class", "ui left floated blue loading button");
+    $("#work_submit_edit").attr("class", "ui right floated blue loading button");
+    $("#work_submit_delete").attr("class", "ui right floated red loading button");
+
     const access_key = Router.current().params.hash;
     const work_object = Template.instance().editDict.get("work_object");
     const work_id = work_object._id;
@@ -156,6 +170,9 @@ Template.editWork.events({
     Meteor.call("delete_work", work_id, access_key, function(err, result){
       if(err){
         window.alert(err);
+        $("#work_restore_thumbnail").attr("class", "ui left floated blue button");
+        $("#work_submit_edit").attr("class", "ui right floated blue button");
+        $("#work_submit_delete").attr("class", "ui right floated red button");
         return;
       }
 

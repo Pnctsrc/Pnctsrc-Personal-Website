@@ -91,6 +91,10 @@ Template.editPost.helpers({
 
 Template.editPost.events({
   "click #post_submit_edit": function(){
+    //set loading status of buttons
+    $("#post_submit_edit").attr("class", "ui right floated blue loading button");
+    $("#post_submit_delete").attr("class", "ui right floated red loading button");
+
     const access_key = Router.current().params.hash;
     const post_object = Template.instance().editDict.get("post_object");
     const post_id = post_object._id;
@@ -104,6 +108,8 @@ Template.editPost.events({
     Meteor.call("submit_post_edit", submit_object, post_id, access_key, function(err, result){
       if(err){
         window.alert(err);
+        $("#post_submit_edit").attr("class", "ui right floated blue button");
+        $("#post_submit_delete").attr("class", "ui right floated red button");
         return;
       }
 
@@ -112,6 +118,10 @@ Template.editPost.events({
   },
 
   "click #post_submit_delete": function(){
+    //set loading status of buttons
+    $("#post_submit_edit").attr("class", "ui right floated blue loading button");
+    $("#post_submit_delete").attr("class", "ui right floated red loading button");
+
     const access_key = Router.current().params.hash;
     const post_object = Template.instance().editDict.get("post_object");
     const post_id = post_object._id;
@@ -119,6 +129,8 @@ Template.editPost.events({
     Meteor.call("delete_post", post_id, access_key, function(err, result){
       if(err){
         window.alert(err);
+        $("#post_submit_edit").attr("class", "ui right floated blue button");
+        $("#post_submit_delete").attr("class", "ui right floated red button");
         return;
       }
 
