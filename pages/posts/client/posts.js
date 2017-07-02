@@ -49,6 +49,11 @@ Template.posts.helpers({
            query.category === current_query.category &&
            query.sorting === current_query.sorting){
 
+          //check if there's data
+          if(result.length == 0){
+            Router.go("/posts?page=1");
+          };
+
           postsDict.set("posts_array", result);
           postsDict.set("data_ready", true);
         }

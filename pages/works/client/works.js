@@ -45,6 +45,11 @@ Template.works.helpers({
            query.category === current_query.category &&
            query.sorting === current_query.sorting){
 
+          //check if there's data
+          if(result.length == 0){
+           Router.go("/works?page=1");
+          };
+
           worksDict.set("works_array", result);
           worksDict.set("data_ready", true);
         }
