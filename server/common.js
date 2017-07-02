@@ -7,6 +7,7 @@ SimpleSchema.messages({
 Schemas.Works = new SimpleSchema({
   HTML_content: {
     type: String,
+    min: 1,
     custom: function(){
       if(this.value.match(/(<script>|<\/script>)/gi)){
           return "unsafeHTML"
@@ -16,10 +17,12 @@ Schemas.Works = new SimpleSchema({
   title: {
     type: String,
     max: 200,
+    min: 1,
     unique: true
   },
   description: {
-    type: String
+    type: String,
+    min: 1
   },
   view_count: {
     type: Number,
@@ -50,3 +53,45 @@ Schemas.Works = new SimpleSchema({
 });
 
 Works.attachSchema(Schemas.Works);
+
+Schemas.Posts = new SimpleSchema({
+  HTML_content: {
+    type: String,
+    min: 1,
+    custom: function(){
+      if(this.value.match(/(<script>|<\/script>)/gi)){
+          return "unsafeHTML"
+      }
+    },
+  },
+  title: {
+    type: String,
+    max: 200,
+    min: 1,
+    unique: true
+  },
+  description: {
+    type: String,
+    min: 1
+  },
+  view_count: {
+    type: Number,
+    min: 0,
+    custom: function(){
+      return (typeof this.value === 'number') && (this.value % 1 === 0);
+    }
+  },
+  type: {
+    type: String,
+    allowedValues: ["Tech", "Music", "Other"]
+  },
+  createdAt: {
+    type: Date
+  },
+  lastModified: {
+    type: Date,
+    optional: true
+  },
+});
+
+Posts.attachSchema(Schemas.Posts);
