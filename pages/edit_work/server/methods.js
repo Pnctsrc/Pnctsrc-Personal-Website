@@ -27,7 +27,7 @@ Meteor.methods({
 
       return work_id;
     } else {
-      return Meteor.call("upload_thumbnail_to_S3_edit", object, work_id, image_base64, file_type);
+      return Meteor.call("upload_thumbnail_to_S3_edit", object, work_id, image_base64, file_type, access_key);
     };
   },
 
@@ -58,7 +58,13 @@ Meteor.methods({
     })
   },
 
-  "upload_thumbnail_to_S3_edit": function(object, work_id, image_base64, file_type){
+  "upload_thumbnail_to_S3_edit": function(object, work_id, image_base64, file_type, access_key){
+    //server-side validation
+    if(access_key !== Meteor.settings.PNCTSRC_ACCESS_KEY){
+      console.log("key - " + access_key);
+      throw new Meteor.Error(100, "Access denied");
+    }
+
     //convert base64 to image_file blob
     var image_file = new Buffer(image_base64, 'base64');
 
