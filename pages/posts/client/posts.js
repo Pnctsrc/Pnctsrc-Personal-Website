@@ -37,6 +37,21 @@ Template.posts.helpers({
 
     //start refetching
     (function(query){
+      //get the metadata
+      Meteor.call("get_posts_metadata", query, function(err, result){
+        if(err){
+          window.alert(err);
+          return;
+        }
+
+        if(postsDict.get("posts_array")){//if posts data is ready first
+          postsDict.set("metadata_posts", result);
+          postsDict.set("data_ready", true);
+        } else {
+          postsDict.set("metadata_posts", result);
+        }
+      })
+
       Meteor.call("get_posts", query, function(err, result){
         if(err){
           window.alert(err);
@@ -55,7 +70,10 @@ Template.posts.helpers({
           };
 
           postsDict.set("posts_array", result);
-          postsDict.set("data_ready", true);
+
+          if(postsDict.get("metadata_posts")){
+            postsDict.set("data_ready", true);
+          }
         }
       })
     })(Router.current().params.query);
@@ -66,14 +84,15 @@ Template.posts.helpers({
   },
 
   "showPagination": function(){
-    if(!MetaData.findOne()) return false;
-    const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne().posts_per_page);
+    const postsDict = Template.instance().postsDict;
+    if(!postsDict.get("metadata_posts")) return false;
+    const total_pages = postsDict.get("metadata_posts").total_count;
 
     if(total_pages == "1"){
       return false;
-    } else if (!Template.instance().postsDict.get("posts_array")){//if passed, it is the first time the page is loaded
+    } else if (!postsDict.get("posts_array")){//if passed, it is the first time the page is loaded
       return false;
-    } else if (Template.instance().postsDict.get("posts_array").length == 0){//when no data gets fetched
+    } else if (postsDict.get("posts_array").length == 0){//when no data gets fetched
       return false;
     } else {
       return true;

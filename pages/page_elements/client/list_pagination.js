@@ -17,7 +17,8 @@ Template.list_pagination.events({
     const text = $("input.page_num").val();
     const current_page = parseInt(Router.current().params.query.page);
     const page_type = Template.instance().data.pageType;
-    var total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne()[page_type + "_per_page"]);
+    const listDict = Template.instance().listDict;
+    var total_pages = Math.ceil(listDict.get("metadata_" + page_type).total_count / listDict.get("metadata_" + page_type)[page_type + "_per_page"]);
 
     var final_page_num;
 
@@ -38,7 +39,17 @@ Template.list_pagination.events({
     if(final_page_num != current_page){//if it will stay on the same page, data won't be refreshed
       Template.instance().listDict.set("data_ready", false);
     }
-    Router.go("/" + page_type +"?page=" + final_page_num);
+
+    //get current query parameters
+    var new_query_string = "";
+    const current_query = Router.current().params.query;
+    for(field in current_query){
+      if(field !== "page"){
+        new_query_string += "&" + field + "=" + current_query[field];
+      }
+    }
+
+    Router.go("/" + page_type +"?page=" + final_page_num + new_query_string);
   },
 
   "keypress .page_num": function(event){
@@ -46,7 +57,8 @@ Template.list_pagination.events({
       const text = $("input.page_num").val();
       const current_page = parseInt(Router.current().params.query.page);
       const page_type = Template.instance().data.pageType;
-      const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne()[page_type + "_per_page"]);
+      const listDict = Template.instance().listDict;
+      var total_pages = Math.ceil(listDict.get("metadata_" + page_type).total_count / listDict.get("metadata_" + page_type)[page_type + "_per_page"]);
       var final_page_num;
 
       if(!/^-?\d+$/i.test(text)){
@@ -66,29 +78,61 @@ Template.list_pagination.events({
       if(final_page_num != current_page){//if it will stay on the same page, data won't be refreshed
         Template.instance().listDict.set("data_ready", false);
       }
-      Router.go("/" + page_type +"?page=" + final_page_num);
+
+      //get current query parameters
+      var new_query_string = "";
+      const current_query = Router.current().params.query;
+      for(field in current_query){
+        if(field !== "page"){
+          new_query_string += "&" + field + "=" + current_query[field];
+        }
+      }
+
+      Router.go("/" + page_type +"?page=" + final_page_num + new_query_string);
     }
   },
 
   "click .js-next-page": function(){
     const current_page = parseInt(Router.current().params.query.page);
     const page_type = Template.instance().data.pageType;
-    const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne()[page_type + "_per_page"]);
+    const listDict = Template.instance().listDict;
+    var total_pages = Math.ceil(listDict.get("metadata_" + page_type).total_count / listDict.get("metadata_" + page_type)[page_type + "_per_page"]);
 
     if(current_page + 1 <= total_pages){
       Template.instance().listDict.set("data_ready", false);
-      Router.go("/" + page_type +"?page=" + (current_page + 1));
+
+      //get current query parameters
+      var new_query_string = "";
+      const current_query = Router.current().params.query;
+      for(field in current_query){
+        if(field !== "page"){
+          new_query_string += "&" + field + "=" + current_query[field];
+        }
+      }
+
+      Router.go("/" + page_type +"?page=" + (current_page + 1) + new_query_string);
     }
   },
 
   "click .js-prev-page": function(){
     const current_page = parseInt(Router.current().params.query.page);
     const page_type = Template.instance().data.pageType;
-    const total_pages = Math.ceil(MetaData.findOne().total_count / MetaData.findOne()[page_type + "_per_page"]);
+    const listDict = Template.instance().listDict;
+    var total_pages = Math.ceil(listDict.get("metadata_" + page_type).total_count / listDict.get("metadata_" + page_type)[page_type + "_per_page"]);
 
     if(current_page - 1 >= 1){
       Template.instance().listDict.set("data_ready", false);
-      Router.go("/" + page_type +"?page=" + (current_page - 1));
+
+      //get current query parameters
+      var new_query_string = "";
+      const current_query = Router.current().params.query;
+      for(field in current_query){
+        if(field !== "page"){
+          new_query_string += "&" + field + "=" + current_query[field];
+        }
+      }
+
+      Router.go("/" + page_type +"?page=" + (current_page - 1) + new_query_string);
     }
   },
 })

@@ -42,6 +42,7 @@ Meteor.methods({
     const options_object = {
       limit: posts_per_page,
       skip: (parseInt(requested_page) - 1) * posts_per_page,
+      sort: {}
     };
 
     if(requested_cate !== "" && requested_cate){
@@ -50,11 +51,11 @@ Meteor.methods({
 
     if(requested_sort !== "" && requested_sort){
       if(requested_sort === "date_as"){
-        options_object.sort.createdAt  = {
+        options_object.sort = {
           createdAt: 1
         };
       } else if(requested_sort === "date_ds"){
-        options_object.sort.createdAt  = {
+        options_object.sort = {
           createdAt: -1
         };
       } else if(requested_sort === "view_as"){
@@ -108,6 +109,35 @@ Meteor.methods({
           view_count: current_view_count + 1
         }
       })
+    }
+  },
+
+  "get_posts_metadata": function(query){
+    //validation
+    const requested_cate = query.category;
+    if(requested_cate !== "music" &&
+       requested_cate !== "tech" &&
+       requested_cate !== "other" &&
+       requested_cate !== "" &&
+       requested_cate){
+
+      return;
+    }
+
+    const current_metadata = MetaData.findOne({type: "posts"});
+
+    if(!requested_cate){
+      return {
+        total_count: current_metadata.total_count,
+        posts_per_page: current_metadata.posts_per_page
+      }
+    } else {
+      return {
+        total_count: Posts.find({
+          type: requested_cate.charAt(0).toUpperCase() + requested_cate.slice(1)
+        }).count(),
+        posts_per_page: current_metadata.posts_per_page
+      }
     }
   },
 })
