@@ -59,11 +59,13 @@ Meteor.methods({
         };
       } else if(requested_sort === "view_as"){
         options_object.sort = {
-          viewCount: 1
+          view_count: 1,
+          createdAt: -1
         };
       } else {
         options_object.sort = {
-          viewCount: -1
+          view_count: -1,
+          createdAt: -1
         };
       }
     } else {
