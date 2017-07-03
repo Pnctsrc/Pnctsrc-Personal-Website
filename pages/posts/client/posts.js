@@ -93,7 +93,7 @@ Template.posts.helpers({
   "showPagination": function(){
     const postsDict = Template.instance().postsDict;
     if(!postsDict.get("metadata_posts")) return false;
-    const total_pages = postsDict.get("metadata_posts").total_count;
+    const total_pages = Math.ceil(postsDict.get("metadata_posts").total_count / postsDict.get("metadata_posts").posts_per_page);
 
     if(total_pages == "1"){
       return false;
