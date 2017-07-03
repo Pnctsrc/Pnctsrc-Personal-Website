@@ -23,7 +23,7 @@ Template.filter.events({
     //get current query parameters
     var new_query_string = "";
     const current_query = Router.current().params.query;
-    if(current_category === "all"){
+    if(current_category === "all" || !current_category){
       delete current_query.category;
     } else {
       current_query.category = current_category;
@@ -33,9 +33,7 @@ Template.filter.events({
     }
 
     for(field in current_query){
-      if(field && current_query[field]){
-        new_query_string += "&" + field + "=" + current_query[field];
-      }
+      new_query_string += "&" + field + "=" + current_query[field];
     }
 
     Router.go("/" + Router.current().route._path.substring(1, ) + "?" + new_query_string.substring(1, ));

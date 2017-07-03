@@ -90,7 +90,9 @@ Template.works.helpers({
           };
 
           worksDict.set("works_array", result);
-          worksDict.set("data_ready", true);
+          if(worksDict.get("metadata_works")){
+            worksDict.set("data_ready", true);
+          }
         }
       })
     })(Router.current().params.query);
