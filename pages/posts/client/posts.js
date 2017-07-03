@@ -44,11 +44,18 @@ Template.posts.helpers({
           return;
         }
 
-        if(postsDict.get("posts_array")){//if posts data is ready first
-          postsDict.set("metadata_posts", result);
-          postsDict.set("data_ready", true);
-        } else {
-          postsDict.set("metadata_posts", result);
+        //set result that matches the current URL query
+        const current_query = Router.current().params.query;
+        if(query.page === current_query.page &&
+           query.category === current_query.category &&
+           query.sorting === current_query.sorting){
+
+          if(postsDict.get("posts_array")){//if posts data is ready first
+           postsDict.set("metadata_posts", result);
+           postsDict.set("data_ready", true);
+          } else {
+           postsDict.set("metadata_posts", result);
+          }
         }
       })
 
