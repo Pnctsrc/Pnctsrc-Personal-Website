@@ -31,6 +31,23 @@ Template.works.helpers({
     const worksDict = Template.instance().worksDict;
     worksDict.set("last_query", Router.current().params.query);//update the stored query
 
+    //set values based on URL query
+    const current_query = Router.current().params.query;
+    const category = current_query.category;
+    const sorting = current_query.sorting;
+
+    if(category){
+      $("#filter_type").dropdown("set selected", category);
+    } else {
+      $("#filter_type").dropdown("clear");
+    }
+
+    if(sorting){
+      $("#filter_sorting").dropdown("set selected", sorting);
+    } else {
+      $("#filter_sorting").dropdown("clear");
+    }
+
     //start refetching
     (function(query){
       //get the metadata
