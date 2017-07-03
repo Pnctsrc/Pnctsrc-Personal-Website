@@ -7,6 +7,8 @@
     {{> page_loader loaderDict=worksDict}}
   {{/if}}
 
+  {{> filter}}
+  
   <div class="ui cards" id="works_cards">
     {{#each work in work_list}}
         <div class="ui card">

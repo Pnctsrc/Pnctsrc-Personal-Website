@@ -7,6 +7,8 @@
     {{> page_loader loaderDict=postsDict}}
   {{/if}}
 
+  {{> filter}}
+
   <div class="post_list">
     {{#each post in post_list}}
       <div class="ui fluid card">

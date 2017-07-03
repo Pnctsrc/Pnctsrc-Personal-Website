@@ -1,0 +1,23 @@
+div.ui.dropdown.filter {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 320px) {
+  div#filter {
+    margin-left: 0.5rem !important;
+  }
+}
+
+@media screen and (min-width: 321px) {
+  div#filter {
+    margin-left: -1rem !important;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  div#filter {
+    margin-top: -2rem;
+    margin-left: -1.5rem !important;
+  }
+}
