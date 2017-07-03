@@ -51,25 +51,30 @@ Meteor.methods({
     if(requested_sort !== "" && requested_sort){
       if(requested_sort === "date_as"){
         options_object.sort = {
-          createdAt: 1
+          date: 1,
+          createdAt: -1
         };
       } else if(requested_sort === "date_ds"){
         options_object.sort = {
+          date: -1,
           createdAt: -1
         };
       } else if(requested_sort === "view_as"){
         options_object.sort = {
           view_count: 1,
+          date: -1,
           createdAt: -1
         };
       } else {
         options_object.sort = {
           view_count: -1,
+          date: -1,
           createdAt: -1
         };
       }
     } else {
       options_object.sort = {
+        date: -1,
         createdAt: -1
       };
     }
