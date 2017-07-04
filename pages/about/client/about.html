@@ -1,3 +1,14 @@
 <template name="about">
-  <h1>This is a simple about page.</h1>
+  {{> codemirror_script}}
+
+  {{#if dataNotReady}}
+    {{> page_loader loaderDict=aboutDict wait_time=0}}
+  {{/if}}
+
+  <div class="froala-editor">{{{about.HTML_content}}}</div>
+
+  {{#if isEditing}}
+    <hr>
+    <button class="ui right floated blue button" id="about_submit">Update</button>
+  {{/if}}
 </template>
