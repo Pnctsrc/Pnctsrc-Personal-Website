@@ -11,7 +11,7 @@ Meteor.methods({
     }
 
     if(About.findOne()){
-      About.update(About.findOne()._id, {HTML_content: HTML_content});
+      About.update(About.findOne()._id, {$set:{HTML_content: HTML_content}});
     } else {
       About.insert({HTML_content: HTML_content});
     }
