@@ -95,3 +95,17 @@ Schemas.Posts = new SimpleSchema({
 });
 
 Posts.attachSchema(Schemas.Posts);
+
+Schemas.About = new SimpleSchema({
+  HTML_content: {
+    type: String,
+    min: 1,
+    custom: function(){
+      if(this.value.match(/(<script>|<\/script>)/gi)){
+          return "unsafeHTML"
+      }
+    },
+  },
+});
+
+About.attachSchema(Schemas.About);
