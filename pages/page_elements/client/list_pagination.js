@@ -50,6 +50,7 @@ Template.list_pagination.events({
     }
 
     Router.go("/" + page_type +"?page=" + final_page_num + new_query_string);
+    $('html,body').scrollTop(0);
   },
 
   "keypress .page_num": function(event){
@@ -89,6 +90,7 @@ Template.list_pagination.events({
       }
 
       Router.go("/" + page_type +"?page=" + final_page_num + new_query_string);
+      $('html,body').scrollTop(0);
     }
   },
 
@@ -111,6 +113,7 @@ Template.list_pagination.events({
       }
 
       Router.go("/" + page_type +"?page=" + (current_page + 1) + new_query_string);
+      $('html,body').scrollTop(0);
     }
   },
 
@@ -133,6 +136,7 @@ Template.list_pagination.events({
       }
 
       Router.go("/" + page_type +"?page=" + (current_page - 1) + new_query_string);
+      $('html,body').scrollTop(0);
     }
   },
 })
