@@ -39,4 +39,18 @@ Meteor.startup(() => {
       }
     })
   }
+
+  //set rate limit
+  const methodList = Meteor.default_server.method_handlers;
+  const nameList = _.keys(methodList);
+  const nameListFiltered = _.filter(nameList, function(name){return !name.match(/(__|\/)/gi)});
+
+  DDPRateLimiter.addRule({
+    name(name) {
+      return _.contains(nameListFiltered, name);
+    },
+
+    // Rate limit per client
+    clientAddress() { return true; }
+  }, 10, 10000);
 });
