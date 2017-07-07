@@ -34,3 +34,9 @@ Template.layout.events({
     $("#link_list a[class=" + link_type + "_link]").addClass("active");
   },
 })
+
+Template.layout.helpers({
+  "homepage": function(){
+    return Homepage.findOne();
+  },
+})
