@@ -1,0 +1,31 @@
+<template name="authentication">
+  {{#if noAuth}}
+    <div class="field">
+     <label>Access Key</label>
+     <div class="ui action fluid input" id="key_input">
+       <input type="text">
+       <button class="ui blue button" id="key_input_button">Submit</button>
+     </div>
+   </div>
+  {{/if}}
+
+  {{#if isEditPost}}
+    {{> editPost authDict=authDict}}
+  {{/if}}
+
+  {{#if isEditWork}}
+    {{> editWork authDict=authDict}}
+  {{/if}}
+
+  {{#if isNewWork}}
+    {{> newWork authDict=authDict}}
+  {{/if}}
+
+  {{#if isNewPost}}
+    {{> newPost authDict=authDict}}
+  {{/if}}
+
+  {{#if isEditAbout}}
+    {{> about authDict=authDict}}
+  {{/if}}
+</template>

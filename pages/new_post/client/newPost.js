@@ -3,10 +3,13 @@ Template.newPost.onCreated(function(){
   this.newDict.set("data_ready", false);
 
   //client-side validation
-  const access_key = Router.current().params.hash;
-  if(!access_key){
+  var access_key;
+  if(!this.data.authDict){
     Router.go("/posts?page=1");
     return;
+  } else {
+    this.authDict = this.data.authDict;
+    access_key = this.authDict.get("access_key");
   }
 
   //get initialization data
@@ -61,7 +64,7 @@ Template.newPost.events({
     //set loading status of buttons
     $("#post_submit").attr("class", "ui right floated blue loading disabled button");
 
-    const access_key = Router.current().params.hash;
+    const access_key = Template.instance().authDict.get("access_key");
     const submit_object = {
       HTML_content: $('#froala-editor').froalaEditor('html.get', true),
       title: $("#post_title").val(),

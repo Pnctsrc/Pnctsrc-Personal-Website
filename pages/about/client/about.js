@@ -4,7 +4,7 @@ Template.about.onCreated(function(){
 
   const aboutDict = this.aboutDict;
   if(this.data){//if editing
-    Meteor.call("get_s3_signature", this.data, function(err, result){
+    Meteor.call("get_s3_signature", this.data.authDict.get("access_key"), function(err, result){
       if(err){
         Router.go("/about");
         window.alert(err);

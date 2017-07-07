@@ -9,10 +9,13 @@ Template.editPost.onCreated(function(){
     return;
   }
 
-  const access_key = Router.current().params.hash;
-  if(!access_key){
+  var access_key;
+  if(!this.data.authDict){
     Router.go("/posts?page=1");
     return;
+  } else {
+    this.authDict = this.data.authDict;
+    access_key = this.authDict.get("access_key");
   }
 
   //get initialization data
@@ -89,7 +92,7 @@ Template.editPost.events({
     $("#post_submit_edit").attr("class", "ui right floated blue loading disabled button");
     $("#post_submit_delete").attr("class", "ui right floated red loading disabled button");
 
-    const access_key = Router.current().params.hash;
+    const access_key = Template.instance().authDict.get("access_key");
     const post_object = Template.instance().editDict.get("post_object");
     const post_id = post_object._id;
     const submit_object = {
@@ -116,7 +119,7 @@ Template.editPost.events({
     $("#post_submit_edit").attr("class", "ui right floated blue loading disabled button");
     $("#post_submit_delete").attr("class", "ui right floated red loading disabled button");
 
-    const access_key = Router.current().params.hash;
+    const access_key = Template.instance().authDict.get("access_key");
     const post_object = Template.instance().editDict.get("post_object");
     const post_id = post_object._id;
 
