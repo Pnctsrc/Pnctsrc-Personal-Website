@@ -6,6 +6,8 @@
 
 #buttons_list {
   color: white;
+  position: absolute;
+  top: calc(40% - 172.3px);
 }
 
 #buttons_list a {
