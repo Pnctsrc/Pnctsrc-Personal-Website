@@ -83,7 +83,7 @@ Template.about.events({
     const HTML_content = $('.froala-editor').froalaEditor('html.get', true);
     const aboutDict = Template.instance().aboutDict;
 
-    Meteor.call("update_about", HTML_content, Template.instance().data, function(err, result){
+    Meteor.call("update_about", HTML_content, Template.instance().data.authDict.get("access_key"), function(err, result){
       if(err){
         window.alert(err);
         $("#about_submit").attr("class", "ui right floated blue button");
