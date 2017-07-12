@@ -25,7 +25,7 @@ Meteor.methods({
           lastModified: new Date()
       }})
 
-      return work_id;
+      return Works.findOne(work_id).title;
     } else {
       return Meteor.call("upload_thumbnail_to_S3_edit", object, work_id, image_base64, file_type, access_key);
     };
@@ -99,7 +99,7 @@ Meteor.methods({
           lastModified: new Date()
       }})
 
-      return work_id;
+      return Works.findOne(work_id).title;
     }).catch(function(err) {
       throw new Meteor.Error(100, err);
     });

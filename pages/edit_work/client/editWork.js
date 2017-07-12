@@ -3,8 +3,8 @@ Template.editWork.onCreated(function(){
   this.editDict.set("data_ready", false);
 
   //client-side validation
-  const work_id = Router.current().params._id.match(/^[0-9A-Za-z]{17}(?=(#[0-9a-zA-Z_-]+)?$)/i)[0];
-  if(!work_id){
+  const work_title = Router.current().params.work_title;
+  if(!work_title){
     Router.go("/works?page=1");
     return;
   }
@@ -21,7 +21,7 @@ Template.editWork.onCreated(function(){
   //get initialization data
   const editDict = this.editDict;
   const template = this;
-  (function(work_id){
+  (function(work_title){
     Meteor.call("get_s3_signature", access_key, function(err, result){
       if(err){
         Router.go("/works?page=1");
@@ -30,9 +30,9 @@ Template.editWork.onCreated(function(){
       }
 
       //get the post
-      const current_work_id = Router.current().params._id.match(/^[0-9A-Za-z]{17}(?=(#[0-9a-zA-Z_-]+)?$)/i)[0];
-      if(current_work_id === work_id){
-        Meteor.call("get_work_by_id", work_id, function(err, data){
+      const current_work_title = Router.current().params.work_title;
+      if(current_work_title === work_title){
+        Meteor.call("get_work_by_title", work_title, function(err, data){
           if(err){
             Router.go("/works?page=1");
             window.alert(err);
@@ -69,7 +69,7 @@ Template.editWork.onCreated(function(){
         })
       }
     })
-  })(work_id);
+  })(work_title);
 })
 
 Template.editWork.helpers({
@@ -133,7 +133,7 @@ Template.editWork.events({
             return;
           }
 
-          Router.go("/works/view/" + result);
+          Router.go("/works/view/" + encodeURIComponent(result.replace(/ +/g, "_")));
         });
       })
     } else {
@@ -153,7 +153,7 @@ Template.editWork.events({
             return;
           }
 
-          Router.go("/works/view/" + result);
+          Router.go("/works/view/" + encodeURIComponent(result.replace(/ +/g, "_")));
         });
       }
     }
