@@ -1,0 +1,10 @@
+#social {
+  line-height: normal;
+  text-align: center;
+}
+
+#social a {
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1.2em;
+}
