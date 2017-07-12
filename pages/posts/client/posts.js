@@ -130,4 +130,8 @@ Template.posts.helpers({
       return view_count;
     }
   },
+
+  "getTitleURL": function(post_title){
+    return post_title.replace(/ +/g, "-");
+  },
 })
