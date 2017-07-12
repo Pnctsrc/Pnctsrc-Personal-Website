@@ -10,7 +10,7 @@ Template.postView.onRendered(function(){
   }
 
   const postViewDict = Template.instance().postViewDict;
-  Meteor.call("get_post_by_id", Router.current().params._id, function(err, result){
+  Meteor.call("get_post_by_title", Router.current().params.post_title, function(err, result){
     if(err){
       window.alert(err);
       Router.go("/posts?page=1");
