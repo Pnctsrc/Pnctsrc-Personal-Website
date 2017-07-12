@@ -117,4 +117,8 @@ Template.works.helpers({
       return true;
     }
   },
+
+  "getTitleURL": function(work_title){
+    return work_title.replace(/ +/g, "-");
+  },
 })
