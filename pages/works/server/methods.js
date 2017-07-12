@@ -98,9 +98,9 @@ Meteor.methods({
 
     //validation
     if(!/^[0-9A-Za-z !$%^&*()_+|~=`{}\[\]:";'<>?,.\/]+$/ig.test(title_replaced)){
-      throw new Meteor.Error(404, "Invalid id");
+      throw new Meteor.Error(404, "Invalid title");
     } else if(!Works.findOne({title: title_replaced})){
-      throw new Meteor.Error(404, "No such post");
+      throw new Meteor.Error(404, "No such work");
     }
 
     return Works.findOne({title: title_replaced});
