@@ -14,14 +14,8 @@
           <a href="/about" class="about_link">About</a>
           <a href="/posts?page=1" class="blog_link">Blog</a>
           <a href="/works?page=1" class="works_link">Works</a>
-
-          <div id="social">
-            <a href="https://github.com/Pnctsrc" target="_blank"><i class="tiny github icon"></i></a>
-            <a href="https://www.linkedin.com/in/luyi-bai-0aa279ab/" target="_blank"><i class="tiny linkedin icon"></i></a>
-            <a href="tencent://message/?uin=710677986&Site=pnctsrc.me&Menu=yes" target="_blank"><i class="tiny qq icon"></i></a>
-            <a href="mailto:pnctsrc@gmail.com" target="_blank"><i class="tiny mail icon"></i></a>
-          </div>
         </div>
+        <div class="copyright">© {{homepage.copyrightYear}} <a href="{{homepage.siteURL}}">Pnctsrc.me</a></div>
       </nav>
 
       <div id="collapse_button">
@@ -35,6 +29,8 @@
 
     <div id="mainContent">
       {{> yield}}
+
+      <div class="copyright bottom">© {{homepage.copyrightYear}} <a href="{{homepage.siteURL}}">Pnctsrc.me</a></div>
     </div>
   </div>
 </template>

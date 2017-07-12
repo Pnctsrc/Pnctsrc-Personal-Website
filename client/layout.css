@@ -1,7 +1,36 @@
+.copyright {
+  font-size: 1.3rem;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.copyright a {
+  display: inline-block;
+  color: inherit;
+}
+
+.copyright.bottom {
+  display: none;
+}
+
 #side_nav_bar {
   background-color: #383838;
   width: 100%;
   font-size: 35px;
+}
+
+#link_list a {
+  display: block;
+  text-align: center;
+  line-height: normal;
+}
+
+#link_list a:hover {
+  font-weight: bold;
+}
+
+#link_list a.active {
+  font-weight: bold;
 }
 
 #buttons_list {
@@ -11,19 +40,8 @@
 }
 
 #buttons_list a {
-  display: block;
-  text-align: center;
   text-decoration: none;
-  line-height: normal;
   color: white;
-}
-
-#buttons_list a:hover {
-  font-weight: bold;
-}
-
-#buttons_list a.active {
-  font-weight: bold;
 }
 
 #buttons_list h1 {
@@ -35,17 +53,6 @@
   text-align: center;
   line-height: normal;
   font-size: 15px;
-}
-
-#social {
-  line-height: normal;
-  color: white;
-  text-align: center;
-  display: inline-block;
-}
-
-#social a {
-  display: inline-block;
 }
 
 div#link_list {
@@ -132,6 +139,12 @@ body {
   }
 
   #collapse_button {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .copyright.bottom {
     display: block;
   }
 }
