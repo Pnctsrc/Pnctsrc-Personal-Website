@@ -18,7 +18,8 @@ Schemas.Works = new SimpleSchema({
     type: String,
     max: 200,
     min: 1,
-    unique: true
+    unique: true,
+    regEx: /^[0-9A-Za-z !$%^&*()_+|~=`{}\[\]:";'<>?,.\/]+$/
   },
   description: {
     type: String,
@@ -68,7 +69,8 @@ Schemas.Posts = new SimpleSchema({
     type: String,
     max: 200,
     min: 1,
-    unique: true
+    unique: true,
+    regEx: /^[0-9A-Za-z !$%^&*()_+|~=`{}\[\]:";'<>?,.\/]+$/
   },
   description: {
     type: String,
