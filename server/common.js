@@ -2,6 +2,7 @@ Schemas = {};
 
 SimpleSchema.messages({
     "unsafeHTML": "HTML is unsafe",
+    "invalidTitle": "Invalid title",
 })
 
 Schemas.Works = new SimpleSchema({
@@ -19,7 +20,11 @@ Schemas.Works = new SimpleSchema({
     max: 200,
     min: 1,
     unique: true,
-    regEx: /^[0-9A-Za-z !$%^&*()_+|~=`{}\[\]:";'<>?,.\/]+$/
+    custom: function(){
+      if(this.value.match(/_/gi)){
+          return "invalidTitle"
+      }
+    },
   },
   description: {
     type: String,
@@ -70,7 +75,11 @@ Schemas.Posts = new SimpleSchema({
     max: 200,
     min: 1,
     unique: true,
-    regEx: /^[0-9A-Za-z !$%^&*()_+|~=`{}\[\]:";'<>?,.\/]+$/
+    custom: function(){
+      if(this.value.match(/_/gi)){
+          return "invalidTitle"
+      }
+    },
   },
   description: {
     type: String,

@@ -102,7 +102,7 @@ Template.newWork.events({
             return;
           }
 
-          Router.go("/works/view/" + result);
+          Router.go("/works/view/" + encodeURIComponent(result.replace(/ +/g, "_")));
         });
       })
     } else {

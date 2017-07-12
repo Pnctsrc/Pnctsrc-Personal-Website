@@ -119,6 +119,6 @@ Template.works.helpers({
   },
 
   "getTitleURL": function(work_title){
-    return work_title.replace(/ +/g, "_").replace(/#/g, "%23").replace(/\?/g, "%3F");
+    return encodeURIComponent(work_title.replace(/ +/g, "_"));
   },
 })

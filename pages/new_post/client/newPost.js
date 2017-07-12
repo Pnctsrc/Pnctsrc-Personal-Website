@@ -79,7 +79,7 @@ Template.newPost.events({
         return;
       }
 
-      Router.go("/posts/view/" + result);
+      Router.go("/posts/view/" + encodeURIComponent(result.replace(/ +/g, "_")));
     });
   }
 })

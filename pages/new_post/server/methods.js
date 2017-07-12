@@ -24,6 +24,6 @@ Meteor.methods({
       }
     })
 
-    return _id;
+    return object.title;
   }
 })

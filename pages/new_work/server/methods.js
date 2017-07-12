@@ -63,7 +63,7 @@ Meteor.methods({
         }
       })
 
-      return _id;
+      return object.title;
     }).catch(function(err) {
       throw new Meteor.Error(100, err);
     });
