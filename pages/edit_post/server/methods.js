@@ -21,6 +21,8 @@ Meteor.methods({
         type: object.type,
         lastModified: new Date()
     }})
+    
+    return Posts.findOne(post_id).title;
   },
   "delete_post": function(post_id, access_key){
     //only user with access_key can get the s3 hash
