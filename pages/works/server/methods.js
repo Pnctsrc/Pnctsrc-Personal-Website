@@ -94,10 +94,10 @@ Meteor.methods({
   },
 
   "get_work_by_title": function(work_title){
-    const title_replaced = work_title.replace(/-/g, " ");
+    const title_replaced = work_title.replace(/_/g, " ").replace(/%23/g, "#").replace(/%3F/g, "?");
 
     //validation
-    if(!/^[0-9A-Za-z !$%^&*()_+|~=`{}\[\]:";'<>?,.\/]+$/ig.test(title_replaced)){
+    if(!/^[0-9A-Za-z #!$%^&*()\-+|~=`{}\[\]:";'<>?,.\/]+$/ig.test(title_replaced)){
       throw new Meteor.Error(404, "Invalid title");
     } else if(!Works.findOne({title: title_replaced})){
       throw new Meteor.Error(404, "No such work");

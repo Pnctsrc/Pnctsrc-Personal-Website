@@ -132,6 +132,6 @@ Template.posts.helpers({
   },
 
   "getTitleURL": function(post_title){
-    return post_title.replace(/ +/g, "-");
+    return post_title.replace(/ +/g, "_").replace(/#/g, "%23").replace(/\?/g, "%3F");
   },
 })

@@ -90,10 +90,10 @@ Meteor.methods({
   },
 
   "get_post_by_title": function(post_title){
-    const title_replaced = post_title.replace(/-/g, " ");
+    const title_replaced = post_title.replace(/_/g, " ").replace(/%23/g, "#").replace(/%3F/g, "?");
 
     //validation
-    if(!/^[0-9A-Za-z !$%^&*()_+|~=`{}\[\]:";'<>?,.\/]+$/ig.test(title_replaced)){
+    if(!/^[0-9A-Za-z #!$%^&*()\-+|~=`{}\[\]:";'<>?,.\/]+$/ig.test(title_replaced)){
       throw new Meteor.Error(404, "Invalid title");
     } else if(!Posts.findOne({title: title_replaced})){
       throw new Meteor.Error(404, "No such post");
