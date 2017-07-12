@@ -37,6 +37,7 @@
   color: white;
   position: absolute;
   top: calc(40% - 172.3px);
+  width: 100%;
 }
 
 #buttons_list a {
