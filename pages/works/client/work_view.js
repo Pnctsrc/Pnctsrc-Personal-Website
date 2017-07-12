@@ -10,7 +10,7 @@ Template.workView.onRendered(function(){
   }
 
   const workViewDict = Template.instance().workViewDict;
-  Meteor.call("get_work_by_id", Router.current().params._id, function(err, result){
+  Meteor.call("get_work_by_title", Router.current().params.work_title, function(err, result){
     if(err){
       window.alert(err);
       Router.go("/works?page=1");

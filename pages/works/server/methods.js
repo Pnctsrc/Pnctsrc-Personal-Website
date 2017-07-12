@@ -93,6 +93,20 @@ Meteor.methods({
     return Works.findOne(work_id);
   },
 
+  "get_work_by_title": function(work_title){
+    const title_replaced = work_title.replace(/-/g, " ");
+
+    //validation
+    if(!/^[0-9A-Za-z !$%^&*()_+|~=`{}\[\]:";'<>?,.\/]+$/ig.test(title_replaced)){
+      throw new Meteor.Error(404, "Invalid id");
+    } else if(!Works.findOne({title: title_replaced})){
+      throw new Meteor.Error(404, "No such post");
+    }
+
+    return Works.findOne({title: title_replaced});
+  },
+
+
   "viewCount+1_work": function(work_id){
     //validation
     if(!/^[0-9A-Za-z]{17}$/ig.test(work_id)){
