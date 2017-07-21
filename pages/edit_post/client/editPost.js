@@ -22,7 +22,7 @@ Template.editPost.onCreated(function(){
   const editDict = this.editDict;
   const template = this;
   (function(post_title){
-    Meteor.call("get_s3_signature", access_key, function(err, result){
+    Meteor.call("validate_access", access_key, function(err, result){
       if(err){
         Router.go("/posts?page=1");
         window.alert(err);
@@ -38,16 +38,13 @@ Template.editPost.onCreated(function(){
             window.alert(err);
             return;
           }
-          template.data = result;//if the data gets fetched before the page is rendered
+
           editDict.set("post_object", data);
 
           //initialize page elements
           setTimeout(function () {
-            const s3hash = result;
-
             $('.fr-view-edit').froalaEditor({
-              imageUploadToS3: s3hash.image,
-              fileUploadToS3: s3hash.file,
+              imageUploadURL: '/api/v1/pic?api_key=' + encodeURIComponent(access_key),
               codeMirror: true,
               codeMirrorOptions: {
                 indentWithTabs: true,

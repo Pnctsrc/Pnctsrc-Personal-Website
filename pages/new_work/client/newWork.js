@@ -14,7 +14,7 @@ Template.newWork.onCreated(function(){
 
   //get initialization data
   const newDict = this.newDict;
-  Meteor.call("get_s3_signature", access_key, function(err, result){
+  Meteor.call("validate_access", access_key, function(err, result){
     if(err){
       Router.go("/works?page=1");
       window.alert(err);
@@ -26,8 +26,7 @@ Template.newWork.onCreated(function(){
       const s3hash = result;
 
       $('#froala-editor').froalaEditor({
-        imageUploadToS3: s3hash.image,
-        fileUploadToS3: s3hash.file,
+        imageUploadURL: '/api/v1/pic?api_key=' + encodeURIComponent(access_key),
         codeMirror: true,
         codeMirrorOptions: {
           indentWithTabs: true,
