@@ -74,7 +74,19 @@ API = {
         context.request.pipe(busboy);
       },
       PUT: function(context, connection){},
-      DELETE: function(context, connection){}
+      DELETE: function(context, connection){
+        var fs = require('fs');
+        const fileName = connection.data.src.substring(connection.data.src.lastIndexOf('/') + 1);
+        const path = Meteor.settings.IMAGE_PATH + fileName;
+        
+        //check if the file exists
+        if(fs.existsSync(path)){
+          fs.unlinkSync(path);
+          API.utility.response(context, 200, {message: "Success."});
+        } else {
+          API.utility.sendError(context, 404, "No such Image");
+        }
+      }
     }
   },
   resources: {},
