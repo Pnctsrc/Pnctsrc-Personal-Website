@@ -59,6 +59,17 @@ Template.editWork.onCreated(function(){
               tabSpaces: 4,
             })
 
+            $('.fr-view-edit').on('froalaEditor.image.error', function (e, editor, error, response) {
+              if(error && error.code != 3){
+                window.alert(error.message);
+              } else {
+                if(response){
+                  const result = JSON.parse(response);
+                  window.alert(result.message + " [" + result.error +"]");
+                }
+              }
+            });
+
             $('#work_type_edit')
               .dropdown('set selected', data.type);
             ;

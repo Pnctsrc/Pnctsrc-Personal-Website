@@ -39,6 +39,17 @@ Template.newPost.onCreated(function(){
         tabSpaces: 4,
       })
 
+      $('#froala-editor').on('froalaEditor.image.error', function (e, editor, error, response) {
+        if(error && error.code != 3){
+          window.alert(error.message);
+        } else {
+          if(response){
+            const result = JSON.parse(response);
+            window.alert(result.message + " [" + result.error +"]");
+          }
+        }
+      });
+
       $('#post_type')
         .dropdown()
       ;
