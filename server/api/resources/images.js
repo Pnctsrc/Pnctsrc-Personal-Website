@@ -32,13 +32,15 @@ Router.route('/resources/images/:filename', function(){
   }
 
   function response(context, statusCode, data){
+    context.response.statusCode = statusCode;
+
     if(hasErr){
       context.response.setHeader('Content-Type', 'application/json');
+      context.response.end(JSON.stringify(data));
     } else {
       context.response.setHeader('Content-Type', 'image/' + fileType.replace("e", ""));
+      context.response.end(data);
     }
-    context.response.statusCode = statusCode;
-    context.response.end(data);
   }
 }, {
   where: 'server'
