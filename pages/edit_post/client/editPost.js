@@ -68,6 +68,18 @@ Template.editPost.onCreated(function(){
               }
             });
 
+            $('.fr-view-edit').on('froalaEditor.image.beforeRemove', function (e, editor, $img) {
+              $.ajax({
+                type: "DELETE",
+                url: "/api/v1/pic",
+                data: {
+                  src: $img[0].currentSrc,
+                  api_key: access_key
+                },
+                dataType: "application/json"
+              });
+            });
+
             $('#post_type')
               .dropdown("set selected", data.type);
             ;
