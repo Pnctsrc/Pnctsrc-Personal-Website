@@ -195,7 +195,17 @@ API = {
       },
       PUT: function(context, connection){},
       DELETE: function(context, connection){
+        var fs = require('fs');
+        const fileName = connection.data.filename;
+        const path = Meteor.settings.FILE_PATH + fileName;
 
+        //check if the file exists
+        if(fs.existsSync(path)){
+          fs.unlinkSync(path);
+          API.utility.response(context, 200, {message: "Success."});
+        } else {
+          API.utility.sendError(context, 404, "No such file.");
+        }
       }
     }
   },
