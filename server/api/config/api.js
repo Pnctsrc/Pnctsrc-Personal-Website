@@ -40,7 +40,7 @@ API = {
             error: 400,
             message: "Invalid file name."
           }, true)
-        } else if (_.indexOf(["jpg", "jpeg", "png"], fileType) === -1){
+        } else if (_.indexOf(Meteor.settings.ALLOWED_IMAGE_TYPE, fileType) === -1){
           API.utility.responseIMG(context, 400, {
             error: 400,
             message: "Invalid file type."
@@ -81,7 +81,7 @@ API = {
             }
           })
 
-          if(_.indexOf(["jpg", "jpeg", "png"], fileExtension) === -1){
+          if(_.indexOf(Meteor.settings.ALLOWED_IMAGE_TYPE, fileExtension) === -1){
             API.utility.sendError(context, 400, "Image type not allowed.");
             ifError = true;
           }
@@ -129,7 +129,7 @@ API = {
             error: 400,
             message: "Invalid file name."
           }, true)
-        } else if (_.indexOf(["pdf", "zip"], fileType) === -1){
+        } else if (_.indexOf(Meteor.settings.ALLOWED_FILE_TYPE, fileType) === -1){
           API.utility.responseFILE(context, 400, {
             error: 400,
             message: "Invalid file type."
@@ -158,7 +158,13 @@ API = {
         var ifError = false;//true if any error happens later
         busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
           //validate the file
-          if(!mimetype.match(/(pdf|zip)/)){
+          var regex_string = "(";
+          for(var type of Meteor.settings.ALLOWED_FILE_TYPE){
+            regex_string += type + "|";
+          }
+          regex_string = regex_string.substring(0, regex_string.length - 1) + ")";
+          var type_regex = new RegExp(regex_string);
+          if(!filename.substring(filename.lastIndexOf(".") + 1).match(type_regex)){
             API.utility.sendError(context, 400, "File type not allowed.");
             ifError = true;
           }
