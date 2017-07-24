@@ -10,7 +10,7 @@ Router.route('/resources/images/:filename', function(){
       error: 400,
       message: "Invalid file name."
     })
-  } else if (_.indexOf(["jpg", "jepg", "png"], fileType) === -1){
+  } else if (_.indexOf(["jpg", "jpeg", "png"], fileType) === -1){
     hasErr = true;
     response(this, 400, {
       error: 400,
