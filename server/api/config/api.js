@@ -116,6 +116,61 @@ API = {
           API.utility.sendError(context, 404, "No such Image");
         }
       }
+    },
+    files: {
+      GET: function(context, connection){
+
+      },
+      POST: function(context, connection){
+        var Busboy = require('busboy');
+        var path = require('path');
+        var fs = require('fs');
+        var busboy = new Busboy({headers: context.request.headers});
+
+        var final_filename;
+        var ifError = false;//true if any error happens later
+        busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+          //validate the file
+          if(!mimetype.match(/(pdf|zip)/)){
+            API.utility.sendError(context, 400, "File type not allowed.");
+            ifError = true;
+          }
+
+          var saveTo = Meteor.settings.FILE_PATH + filename;
+          if(fs.existsSync(saveTo)){
+            API.utility.sendError(context, 400, "File already exists.");
+            ifError = true;
+          }
+
+          var file_size = 0;
+          var fileExtension = mimetype.match(/(pdf|zip)/)[0];
+          file.on('data', function(data){
+            file_size += data.length;
+
+            if(file_size > 10485760){
+              API.utility.sendError(context, 400, "File size larger than 10MB.");
+              ifError = true;
+            }
+          })
+
+          if(ifError) return;
+
+          file.pipe(fs.createWriteStream(saveTo));
+          final_filename = filename;
+        });
+
+        busboy.on('finish', function() {
+          if(ifError) return;
+
+          API.utility.response(context, 200, {link: "http://localhost:3000/resources/files/" + final_filename});
+        });
+
+        context.request.pipe(busboy);
+      },
+      PUT: function(context, connection){},
+      DELETE: function(context, connection){
+
+      }
     }
   },
   resources: {},
