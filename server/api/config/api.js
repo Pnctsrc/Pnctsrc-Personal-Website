@@ -158,15 +158,20 @@ API = {
         var ifError = false;//true if any error happens later
         busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
           //validate the file
-          var regex_string = "(";
-          for(var type of Meteor.settings.ALLOWED_FILE_TYPE){
-            regex_string += type + "|";
-          }
-          regex_string = regex_string.substring(0, regex_string.length - 1) + ")";
-          var type_regex = new RegExp(regex_string);
-          if(!filename.substring(filename.lastIndexOf(".") + 1).match(type_regex)){
-            API.utility.sendError(context, 400, "File type not allowed.");
+          if(!filename.match(/\./)){
+            API.utility.sendError(context, 400, "Invalid file name.");
             ifError = true;
+          } else {
+            var regex_string = "(";
+            for(var type of Meteor.settings.ALLOWED_FILE_TYPE){
+              regex_string += type + "|";
+            }
+            regex_string = regex_string.substring(0, regex_string.length - 1) + ")";
+            var type_regex = new RegExp(regex_string);
+            if(!filename.substring(filename.lastIndexOf(".") + 1).match(type_regex)){
+              API.utility.sendError(context, 400, "File type not allowed.");
+              ifError = true;
+            }
           }
 
           var saveTo = Meteor.settings.FILE_PATH + filename;
