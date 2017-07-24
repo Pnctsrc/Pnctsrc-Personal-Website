@@ -45,6 +45,7 @@ Template.editPost.onCreated(function(){
           setTimeout(function () {
             $('.fr-view-edit').froalaEditor({
               imageUploadURL: '/api/v1/pic?api_key=' + encodeURIComponent(access_key),
+              fileUploadURL: '/api/v1/file?api_key=' + encodeURIComponent(access_key),
               codeMirror: true,
               codeMirrorOptions: {
                 indentWithTabs: true,
@@ -74,6 +75,33 @@ Template.editPost.onCreated(function(){
                 url: "/api/v1/pic",
                 data: {
                   src: $img[0].currentSrc,
+                  api_key: access_key
+                },
+                dataType: "application/json"
+              });
+            });
+
+            $('.fr-view-edit').on('froalaEditor.file.error', function (e, editor, error, response) {
+              if(error && error.code != 3){
+                window.alert(error.message);
+              } else {
+                if(response){
+                  const result = JSON.parse(response);
+                  window.alert(result.message + " [" + result.error +"]");
+                }
+              }
+            });
+
+            $('.fr-view-edit').on('froalaEditor.file.inserted', function (e, editor, $file, response) {
+              $file.attr("target", "_blank");
+            });
+
+            $('.fr-view-edit').on('froalaEditor.file.unlink', function (e, editor, link) {
+              $.ajax({
+                type: "DELETE",
+                url: "/api/v1/file",
+                data: {
+                  filename: link.href.substring(link.href.lastIndexOf("/") + 1),
                   api_key: access_key
                 },
                 dataType: "application/json"
