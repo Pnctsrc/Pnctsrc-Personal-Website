@@ -170,7 +170,6 @@ API = {
           }
 
           var file_size = 0;
-          var fileExtension = mimetype.match(/(pdf|zip)/)[0];
           file.on('data', function(data){
             file_size += data.length;
 
