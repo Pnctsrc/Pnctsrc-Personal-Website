@@ -22,7 +22,8 @@ Meteor.methods({
 
     //delete the previous thumbnail if exists
     if(work_id){
-      const fileName = object.thumbnail.substring(object.thumbnail.lastIndexOf('/') + 1);
+      const current_thumbnail = Works.findOne(work_id).thumbnail;
+      const fileName = current_thumbnail.substring(current_thumbnail.lastIndexOf('/') + 1);
       const path = Meteor.settings.IMAGE_PATH + fileName;
       if(fs.existsSync(path)){
         fs.unlinkSync(path);
