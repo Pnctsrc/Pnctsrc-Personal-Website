@@ -28,8 +28,37 @@ API = {
     }
   },
   methods: {
-    pic: {
-      GET: function(context, connection){},
+    images: {
+      GET: function(context, connection){
+        const fileName = connection.data.fileName;
+
+        //validate type
+        const fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        if(!fileName.match(/\./)){
+          API.utility.responseIMG(context, 400, {
+            error: 400,
+            message: "Invalid file name."
+          }, true)
+        } else if (_.indexOf(["jpg", "jpeg", "png"], fileType) === -1){
+          API.utility.responseIMG(context, 400, {
+            error: 400,
+            message: "Invalid file type."
+          }, true)
+        } else {
+          //check if the image exists
+          const fs = require("fs");
+          if(fs.existsSync(Meteor.settings.IMAGE_PATH + fileName)){
+            const data = fs.readFileSync(Meteor.settings.IMAGE_PATH + fileName);
+            API.utility.responseIMG(context, 200, data, false, fileType);
+          } else {
+            API.utility.responseIMG(context, 404, {
+              error: 404,
+              message: "No such image."
+            }, true)
+          }
+        }
+      },
       POST: function(context, connection){
         var Busboy = require('busboy');
         var path = require('path');
@@ -78,7 +107,7 @@ API = {
         var fs = require('fs');
         const fileName = connection.data.src.substring(connection.data.src.lastIndexOf('/') + 1);
         const path = Meteor.settings.IMAGE_PATH + fileName;
-        
+
         //check if the file exists
         if(fs.existsSync(path)){
           fs.unlinkSync(path);
@@ -117,6 +146,17 @@ API = {
         error: 400,
         message: message
       });
+    },
+    responseIMG: function(context, statusCode, data, hasErr, fileType){
+      context.response.statusCode = statusCode;
+
+      if(hasErr){
+        context.response.setHeader('Content-Type', 'application/json');
+        context.response.end(JSON.stringify(data));
+      } else {
+        context.response.setHeader('Content-Type', 'image/' + fileType.replace("e", ""));
+        context.response.end(data);
+      }
     }
   }
 };
