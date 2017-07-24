@@ -3,6 +3,7 @@ Schemas = {};
 SimpleSchema.messages({
     "unsafeHTML": "HTML is unsafe",
     "invalidTitle": "Invalid title",
+    "notUniqueTitle": "Title is not unique"
 })
 
 Schemas.Works = new SimpleSchema({
@@ -19,10 +20,16 @@ Schemas.Works = new SimpleSchema({
     type: String,
     max: 200,
     min: 1,
-    unique: true,
     custom: function(){
       if(this.value.match(/_/gi)){
           return "invalidTitle"
+      }
+
+      const uniqueDocument = Works.findOne({title: this.value});
+      if(uniqueDocument){
+        if((this.isUpdate && uniqueDocument._id !== this.docId) || this.isInsert){
+          return "notUniqueTitle"
+        }
       }
     },
   },
@@ -47,7 +54,7 @@ Schemas.Works = new SimpleSchema({
   },
   thumbnail: {
     type: String,
-    regEx: SimpleSchema.RegEx.Url
+    regEx: /^\/resources\/images\/thumbnail_\d+\.(jpg|jpeg|png)$/
   },
   createdAt: {
     type: Date
@@ -74,10 +81,16 @@ Schemas.Posts = new SimpleSchema({
     type: String,
     max: 200,
     min: 1,
-    unique: true,
     custom: function(){
       if(this.value.match(/_/gi)){
           return "invalidTitle"
+      }
+
+      const uniqueDocument = Posts.findOne({title: this.value});
+      if(uniqueDocument){
+        if((this.isUpdate && uniqueDocument._id !== this.docId) || this.isInsert){
+          return "notUniqueTitle"
+        }
       }
     },
   },
