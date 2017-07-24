@@ -117,7 +117,7 @@ Template.newWork.events({
 
       //send the data to the sever
       imgToBase64(image_file, function(image_base64){
-        Meteor.call("submit_work", submit_object, access_key, image_base64, file_type, function(err, result){
+        Meteor.call("submit_work", submit_object, access_key, image_base64, file_type.substring(6), function(err, result){
           if(err){
             window.alert(err.message);
             $("#work_submit").attr("class", "ui right floated blue button");
