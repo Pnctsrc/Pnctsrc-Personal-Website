@@ -119,7 +119,34 @@ API = {
     },
     files: {
       GET: function(context, connection){
+        const fileName = connection.data.fileName;
 
+        //validate type
+        const fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        if(!fileName.match(/\./)){
+          API.utility.responseFILE(context, 400, {
+            error: 400,
+            message: "Invalid file name."
+          }, true)
+        } else if (_.indexOf(["pdf", "zip"], fileType) === -1){
+          API.utility.responseFILE(context, 400, {
+            error: 400,
+            message: "Invalid file type."
+          }, true)
+        } else {
+          //check if the image exists
+          const fs = require("fs");
+          if(fs.existsSync(Meteor.settings.FILE_PATH + fileName)){
+            const data = fs.readFileSync(Meteor.settings.FILE_PATH + fileName);
+            API.utility.responseFILE(context, 200, data, false);
+          } else {
+            API.utility.responseFILE(context, 404, {
+              error: 404,
+              message: "No such file."
+            }, true)
+          }
+        }
       },
       POST: function(context, connection){
         var Busboy = require('busboy');
@@ -210,6 +237,17 @@ API = {
         context.response.end(JSON.stringify(data));
       } else {
         context.response.setHeader('Content-Type', 'image/' + fileType.replace("e", ""));
+        context.response.end(data);
+      }
+    },
+    responseFILE: function(context, statusCode, data, hasErr){
+      context.response.statusCode = statusCode;
+
+      if(hasErr){
+        context.response.setHeader('Content-Type', 'application/json');
+        context.response.end(JSON.stringify(data));
+      } else {
+        context.response.setHeader('Content-Type', 'application/octet-stream');
         context.response.end(data);
       }
     }
