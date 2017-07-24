@@ -147,7 +147,7 @@ Template.editWork.events({
 
       //send the data to the sever
       imgToBase64(image_file, function(image_base64){
-        Meteor.call("submit_work_edit", submit_object, work_id, access_key, image_base64, file_type, function(err, result){
+        Meteor.call("submit_work_edit", submit_object, work_id, access_key, image_base64, file_type.substring(6), function(err, result){
           if(err){
             window.alert(err.message);
             $("#work_submit_edit").attr("class", "ui right floated blue button");
