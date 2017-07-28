@@ -13,6 +13,63 @@ Template.filter.onRendered(function(){
   if(sorting){
     $("#filter_sorting").dropdown("set selected", sorting);
   };
+
+  $('.ui.category.search')
+  .search({
+    type          : 'category',
+    minCharacters : 3,
+    apiSettings   : {
+      onResponse: function(result) {
+        if(result.post_result.length == 0 && result.work_result.length == 0){
+          return;
+        }
+
+        var response = {
+          results : {
+            Posts: {
+              name: "Posts",
+              results: []
+            },
+            Works: {
+              name: "Works",
+              results: []
+            }
+          }
+        };
+
+        //push the results
+        maxResults = 5;
+        $.each(result.post_result, function(index, post){
+          if(index > maxResults){
+            return;
+          }
+
+          response.results.Posts.results.push({
+            title: post.title,
+            description: post.description,
+            url: "/posts/view/" + encodeURIComponent(post.title.replace(/ +/g, "_"))
+          })
+        })
+
+        $.each(result.work_result, function(index, work){
+          if(index > maxResults){
+            return;
+          }
+
+          response.results.Works.results.push({
+            title: work.title,
+            description: work.description,
+            url: "/works/view/" + encodeURIComponent(work.title.replace(/ +/g, "_"))
+          })
+        })
+
+        return response;
+      },
+      url: '/api/v1/search?keyword={query}',
+      showNoResults: true
+    }
+  })
+;
 })
 
 Template.filter.events({

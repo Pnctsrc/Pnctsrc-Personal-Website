@@ -28,6 +28,29 @@ API = {
     }
   },
   methods: {
+    search: {
+      GET: function(context, connection){
+        const keyword = connection.data.keyword.replace(/[^a-z0-9]/gi, "\\$&");
+
+        if(keyword.match(/^ *$/gi)){
+          API.utility.sendError(context, 400, "Invalid keyword");
+          return;
+        }
+
+        const search_regex = new RegExp(keyword, "gi");
+        const post_title_array = Posts.find({title: {$regex: search_regex}}, {fields: {title: 1, description: 1}}).fetch();
+        const work_title_array = Works.find({title: {$regex: search_regex}}, {fields: {title: 1, description: 1}}).fetch();
+        const result = {
+          post_result: post_title_array,
+          work_result: work_title_array
+        };
+
+        API.utility.response(context, 200, result);
+      },
+      POST: function(context, connection){},
+      PUT: function(context, connection){},
+      DELETE: function(context, connection){}
+    },
     images: {
       GET: function(context, connection){
         const fileName = connection.data.fileName;
