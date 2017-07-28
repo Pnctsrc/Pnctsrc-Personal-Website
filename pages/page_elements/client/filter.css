@@ -3,6 +3,16 @@ div.ui.dropdown.filter {
   margin-bottom: 1rem;
 }
 
+input#filter_search {
+  width: 100%;
+  border: none;
+  padding-left: 5px;
+}
+
+div.ui.category.search {
+  display: inline;
+}
+
 @media screen and (max-width: 320px) {
   div#filter {
     margin-left: 0.5rem !important;
