@@ -22,6 +22,15 @@ Template.postView.onRendered(function(){
 
     setTimeout(function () {
       $("div#card_view").css("opacity", 1);
+
+      //initialize the code blocks
+      const hljs = require("highlight.js");
+      hljs.configure({
+        tabReplace: '  '
+      })
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
     }, 200);
 
     //update view count

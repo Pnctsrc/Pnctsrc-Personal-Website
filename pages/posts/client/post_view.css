@@ -17,3 +17,14 @@ div#card_view {
   transition: visibility 0s, opacity 0.35s linear;
   opacity: 0;
 }
+
+.fr-view > pre {
+  text-align: center;
+}
+
+.fr-view > pre > code {
+  border-radius: 10px;
+  display: inline-block !important;
+  overflow-x: visible !important;
+  text-align: left;
+}
