@@ -4,7 +4,9 @@ Template.about.onCreated(function(){
 
   const aboutDict = this.aboutDict;
   if(this.data){//if editing
-    Meteor.call("get_s3_signature", this.data.authDict.get("access_key"), function(err, result){
+    const access_key = this.data.authDict.get("access_key");
+    
+    Meteor.call("authenticate", access_key, function(err, result){
       if(err){
         Router.go("/about");
         window.alert(err);
@@ -20,13 +22,10 @@ Template.about.onCreated(function(){
 
         aboutDict.set("about_object", data);
 
-        //initialize page elements
-        const s3hash = result;
-
         setTimeout(function () {
           $('.froala-editor').froalaEditor({
-            imageUploadToS3: s3hash.image,
-            fileUploadToS3: s3hash.file,
+            imageUploadURL: '/api/v1/pic?api_key=' + encodeURIComponent(access_key),
+            fileUploadURL: '/api/v1/file?api_key=' + encodeURIComponent(access_key),
             codeMirror: true,
             codeMirrorOptions: {
               indentWithTabs: true,
