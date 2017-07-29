@@ -67,7 +67,11 @@ Template.filter.onRendered(function(){
       },
       url: '/api/v1/search?keyword={query}',
       showNoResults: true
-    }
+    },
+    onSelect: function(result, response){
+      Router.go(result.url);
+      return false;
+    },
   })
 ;
 })
