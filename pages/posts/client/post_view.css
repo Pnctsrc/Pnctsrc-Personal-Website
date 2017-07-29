@@ -27,4 +27,5 @@ div#card_view {
   display: inline-block !important;
   overflow-x: visible !important;
   text-align: left;
+  line-height: normal;
 }
