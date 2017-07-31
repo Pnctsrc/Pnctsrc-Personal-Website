@@ -40,3 +40,14 @@ Template.layout.helpers({
     return Homepage.findOne();
   },
 })
+
+Template.layout.events({
+  "click .js-login": function(event){
+ 		event.preventDefault();
+ 		Meteor.loginWithGoogle(function(err){
+			if(err){
+				window.alert(err);
+      };
+		});
+ 	},
+})
