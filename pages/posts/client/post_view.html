@@ -1,5 +1,6 @@
 <template name="postView">
   {{#if dataReady}}
+    {{> comments viewDict=postViewDict}}
     <div class="ui fluid card" id="card_view">
       <div class="content">
         <h1 class="header" id="post_title">{{post.title}}</h1>
@@ -26,6 +27,9 @@
         </div>
       </div>
     </div>
+
+    <hr>
+
   {{else}}
     {{> page_loader loaderDict=postViewDict}}
   {{/if}}

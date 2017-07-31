@@ -1,0 +1,4 @@
+.ui.attached.reply.form {
+  transition: visibility 0s, opacity 0.35s linear;
+  opacity: 0;
+}
