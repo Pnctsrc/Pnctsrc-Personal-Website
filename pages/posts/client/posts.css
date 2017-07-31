@@ -1,12 +1,12 @@
-.statistic > div.label {
+.post_list .statistic > div.label {
   color: rgba(0, 0, 0, 0.4)
 }
 
-.ui.fluid.card {
+.post_list .ui.fluid.card {
   box-shadow: none;
 }
 
-.ui.fluid.card  .content  a {
+.post_list .ui.fluid.card  .content  a {
   text-decoration: none;
   font-size: 1.6em;
   display: block;
@@ -15,14 +15,14 @@
   transition: color 0.15s linear;
 }
 
-.ui.fluid.card  .content  a:hover {
+.post_list .ui.fluid.card  .content  a:hover {
   color: rgb(62, 161, 221);
 }
 
-span#post_time {
+.post_list span#post_time {
   font-size: 0.8em;
 }
 
-span#post_tag_display {
+.post_list span#post_tag_display {
   font-size: 0.8em;
 }
