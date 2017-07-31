@@ -138,7 +138,7 @@ Template.editPost.events({
   "click #post_submit_edit": function(){
     //set loading status of buttons
     $("#post_submit_edit").attr("class", "ui right floated blue loading disabled button");
-    $("#post_submit_delete").attr("class", "ui right floated red loading disabled button");
+    $("#post_submit_delete").attr("class", "ui left floated red loading disabled button");
 
     const access_key = Template.instance().authDict.get("access_key");
     const post_object = Template.instance().editDict.get("post_object");
@@ -154,7 +154,7 @@ Template.editPost.events({
       if(err){
         window.alert(err);
         $("#post_submit_edit").attr("class", "ui right floated blue button");
-        $("#post_submit_delete").attr("class", "ui right floated red button");
+        $("#post_submit_delete").attr("class", "ui left floated red button");
         return;
       }
 
@@ -165,7 +165,7 @@ Template.editPost.events({
   "click #post_submit_delete": function(){
     //set loading status of buttons
     $("#post_submit_edit").attr("class", "ui right floated blue loading disabled button");
-    $("#post_submit_delete").attr("class", "ui right floated red loading disabled button");
+    $("#post_submit_delete").attr("class", "ui left floated red loading disabled button");
 
     const access_key = Template.instance().authDict.get("access_key");
     const post_object = Template.instance().editDict.get("post_object");
@@ -175,7 +175,7 @@ Template.editPost.events({
       if(err){
         window.alert(err);
         $("#post_submit_edit").attr("class", "ui right floated blue button");
-        $("#post_submit_delete").attr("class", "ui right floated red button");
+        $("#post_submit_delete").attr("class", "ui left floated red button");
         return;
       }
 

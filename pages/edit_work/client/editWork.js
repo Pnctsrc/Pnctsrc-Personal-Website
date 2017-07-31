@@ -140,7 +140,7 @@ Template.editWork.events({
   "click #work_submit_edit": function(){
     //set loading status of buttons
     $("#work_submit_edit").attr("class", "ui right floated blue loading disabled button");
-    $("#work_submit_delete_edit").attr("class", "ui right floated red loading disabled button");
+    $("#work_submit_delete_edit").attr("class", "ui left floated red loading disabled button");
 
     const access_key = Template.instance().authDict.get("access_key");
     const work_object = Template.instance().editDict.get("work_object");
@@ -179,7 +179,7 @@ Template.editWork.events({
           if(err){
             window.alert(err.message);
             $("#work_submit_edit").attr("class", "ui right floated blue button");
-            $("#work_submit_delete_edit").attr("class", "ui right floated red button");
+            $("#work_submit_delete_edit").attr("class", "ui left floated red button");
             return;
           }
 
@@ -191,7 +191,7 @@ Template.editWork.events({
       if($("#work_thumbnail_edit").css("display") === "none"){
         window.alert("Please choose a thumbnail.");
         $("#work_submit_edit").attr("class", "ui right floated blue button");
-        $("#work_submit_delete_edit").attr("class", "ui right floated red button");
+        $("#work_submit_delete_edit").attr("class", "ui left floated red button");
       } else {
         submit_object.thumbnail = work_object.thumbnail;
 
@@ -199,7 +199,7 @@ Template.editWork.events({
           if(err){
             window.alert(err.message);
             $("#work_submit_edit").attr("class", "ui right floated blue button");
-            $("#work_submit_delete_edit").attr("class", "ui right floated red button");
+            $("#work_submit_delete_edit").attr("class", "ui left floated red button");
             return;
           }
 
@@ -212,7 +212,7 @@ Template.editWork.events({
   "click #work_submit_delete_edit": function(){
     //set loading status of buttons
     $("#work_submit_edit").attr("class", "ui right floated blue loading disabled button");
-    $("#work_submit_delete_edit").attr("class", "ui right floated red loading disabled button");
+    $("#work_submit_delete_edit").attr("class", "ui left floated red loading disabled button");
 
     const access_key = Template.instance().authDict.get("access_key");
     const work_object = Template.instance().editDict.get("work_object");
@@ -222,7 +222,7 @@ Template.editWork.events({
       if(err){
         window.alert(err);
         $("#work_submit_edit").attr("class", "ui right floated blue button");
-        $("#work_submit_delete_edit").attr("class", "ui right floated red button");
+        $("#work_submit_delete_edit").attr("class", "ui left floated red button");
         return;
       }
 
