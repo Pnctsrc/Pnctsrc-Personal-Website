@@ -2,3 +2,22 @@
   transition: visibility 0s, opacity 0.35s linear;
   opacity: 0;
 }
+
+.ui.comments .comment .text {
+  word-wrap:break-word;
+}
+
+.ui.comments .reply.form textarea {
+  max-width: 500px;
+}
+
+.ui.minimal.comments {
+  overflow-x: auto;
+  width: 100%;
+  display: grid;
+  max-width: none;
+}
+
+.ui.minimal.comments .actions {
+  position: inherit !important;
+}

@@ -3,6 +3,16 @@ Template.comments.onCreated(function(){
   this.subscribe("comments", this.commentsDict.get("data_object")._id);
 })
 
+Template.comments.onRendered(function(){
+  $(window).resize(function() {
+    const comment_width = $(".ui.minimal.comments").width();
+    const form_width = $('.ui.attached.reply.form').width();
+    const reply_width = $(".ui.minimal.comments > .ui.reply.form").width();
+    $('.ui.attached.reply.form > .field').css('padding-right', (form_width - comment_width) + "px");
+    $(".ui.minimal.comments > .ui.reply.form > .field").css("padding-right", (reply_width - comment_width) + "px");
+  });
+})
+
 Template.comments.helpers({
   "commentsArray": function(){
     return Comments.find({parent_comment: ""}, {$sort: {createdAt: -1}}).fetch();
@@ -45,8 +55,10 @@ Template.comments.events({
     $(replay_box_html).insertAfter(event.currentTarget.parentNode.parentNode);
     setTimeout(function(){
       $(".ui.attached.reply.form").css("opacity", "1");
-    }, 100);
-
+      const comment_width = $(".ui.minimal.comments").width();
+      const form_width = $('.ui.attached.reply.form').width();
+      $('.ui.attached.reply.form > .field').css('padding-right', (form_width - comment_width) + "px");
+    })
   },
   "click .js-new-comment": function(event, instance){
     //get the current post data
@@ -54,7 +66,6 @@ Template.comments.events({
 
     const comment = {
       username: $(".js-name").val(),
-      email: $(".js-email").val(),
       createdAt: new Date(),
       parent_comment: "",
       text: $(".ui.reply.form textarea").val(),
@@ -74,6 +85,12 @@ Template.comments.events({
 
 Template.comment_row.onCreated(function(){
   this.commentsDict = this.data.commentsDict;
+})
+
+Template.comment_row.onRendered(function(){
+  const comment_width = $(".ui.minimal.comments").width();
+  const reply_width = $(".ui.minimal.comments > .ui.reply.form").width();
+  $(".ui.minimal.comments > .ui.reply.form > .field").css("padding-right", (reply_width - comment_width) + "px");
 })
 
 Template.comment_row.helpers({
@@ -114,8 +131,6 @@ Template.comment_row.events({
     const text_input = $(".ui.attached.reply.form textarea").val();
 
     const comment = {
-      username: "Pnc",
-      createdAt: new Date(),
       parent_comment: current_comment._id,
       text: text_input,
       post_id: current_post._id
