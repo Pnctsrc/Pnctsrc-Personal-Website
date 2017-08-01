@@ -1,0 +1,18 @@
+<template name="me">
+  {{#if currentUser}}
+    <div class="me_nav">
+      <div class="ui secondary pointing menu">
+        <a class="item {{ifActive 'profile'}}">Profile</a>
+        <a class="item {{ifActive 'notifications'}}">Notifications</a>
+      </div>
+    </div>
+
+    <div class="me_content">
+      {{> profile}}
+    </div>
+  {{else}}
+    <div class="profile-message">
+      <h1>Please <a class="profile-login">log in</a> to see your profile.</h1>
+    </div>
+  {{/if}}
+</template>

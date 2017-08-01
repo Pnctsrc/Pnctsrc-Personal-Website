@@ -11,18 +11,32 @@
         <p>{{homepage.description}}</p>
         <hr>
         <div id="link_list">
-          <a href="/about" class="about_link">About</a>
-          <a href="/posts?page=1" class="blog_link">Blog</a>
-          <a href="/works?page=1" class="works_link">Works</a>
+          <a href="/about" class="{{ifActive 'about'}}">About</a>
+          <a href="/posts?page=1" class="{{ifActive 'posts'}}">Blog</a>
+          <a href="/works?page=1" class="{{ifActive 'works'}}">Works</a>
+        </div>
+        <div class="login">
+          {{#if currentUser}}
+            <a href="/me/profile" class="js-profile {{ifActive 'me'}}">Profile</a>
+          {{else}}
+            <a class="js-login">Sign in</a>
+          {{/if}}
         </div>
         <div class="copyright">© {{homepage.copyrightYear}} <a href="{{homepage.siteURL}}">Pnctsrc.me</a></div>
       </nav>
 
       <div id="collapse_button">
         <ul>
-          <li><a href="/about" class="about_link">About</a></li>
-          <li><a href="/posts?page=1" class="blog_link">Blog</a></li>
-          <li><a href="/works?page=1" class="works_link">Works</a></li>
+          <li><a href="/about" class="{{ifActive 'about'}}">About</a></li>
+          <li><a href="/posts?page=1" class="{{ifActive 'posts'}}">Blog</a></li>
+          <li><a href="/works?page=1" class="{{ifActive 'works'}}">Works</a></li>
+          <li style="padding-bottom: 5px">
+              {{#if currentUser}}
+                <a href="/me/profile" class="js-profile {{ifActive 'me'}}">Profile</a>
+              {{else}}
+                <a class="js-login">Sign in</a>
+              {{/if}}
+          </li>
         </ul>
       </div>
     </div>

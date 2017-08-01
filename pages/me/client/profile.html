@@ -1,0 +1,25 @@
+<template name="profile">
+    <form class="ui form" id="userProfileForm">
+        <div class="two fields">
+            <div class="field">
+                <label>First name</label>
+                <input class="js-first-name" type="text" name="firstname" value="{{getFirstname}}">
+            </div>
+            <div class="field">
+                <label>Last name</label>
+                <input class="js-last-name" type="text" name="lastname" value="{{getLastname}}">
+            </div>
+        </div>
+        <div class="field">
+            <label>Email</label>
+            <input type="email" name="email" readonly="" value="{{getUserEmail}}">
+        </div>
+
+        <div class="ui primary submit button js-save-change">Save Changes</div>
+        <div class="ui right floated red button js-log-out">Log Out</div>
+        <div class="ui blue hidden message">
+            <p>The changes you made have been successfully saved.</p>
+        </div>
+        <div class="ui error message"></div>
+    </form>
+</template>

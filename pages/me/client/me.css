@@ -1,0 +1,11 @@
+.me_nav {
+  margin-bottom: 20px;
+}
+
+a.profile-login:hover {
+  cursor: pointer;
+}
+
+div.profile-message {
+  text-align: center;
+}
