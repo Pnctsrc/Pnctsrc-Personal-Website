@@ -4,3 +4,9 @@ Template.me.helpers({
     return name === page_type ? "active" : "";
   }
 })
+
+Template.me.events({
+  "click .profile-login": function(){
+ 		Meteor.loginWithGoogle();
+  }
+})
