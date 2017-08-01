@@ -72,5 +72,8 @@ Template.profile.events({
   			$('.blue.message').transition('scale');
   		}, 3000)
     })
+  },
+  "click .js-log-out": function(){
+    Meteor.logout();
   }
 })
