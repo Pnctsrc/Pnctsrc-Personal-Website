@@ -20,8 +20,17 @@
   line-height: normal;
 }
 
-.login > a:hover {
+.login > a.js-login:hover {
   cursor: pointer;
+  font-weight: bold;
+}
+
+.login > a:hover {
+  font-weight: bold;
+}
+
+.login > a.active {
+  font-weight: bold;
 }
 
 #side_nav_bar {
