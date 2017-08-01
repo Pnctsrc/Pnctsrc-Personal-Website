@@ -1,0 +1,12 @@
+<template name="me">
+  <div class="me_nav">
+    <div class="ui secondary pointing menu">
+      <a class="item {{ifActive 'profile'}}">Profile</a>
+      <a class="item {{ifActive 'notifications'}}">Notifications</a>
+    </div>
+  </div>
+
+  <div class="me_content">
+    {{> profile}}
+  </div>
+</template>
