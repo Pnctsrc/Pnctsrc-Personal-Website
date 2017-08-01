@@ -33,9 +33,9 @@ div.results.transition {
   }
 }
 
-@media screen and (max-width: 370px) {
+@media screen and (max-width: 396px) {
   div.results.transition {
-    top: 215px !important;
+    top: 265px !important;
   }
 }
 
