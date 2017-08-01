@@ -120,11 +120,15 @@ div#link_list {
 }
 
 #collapse_button li a:hover {
-  font-weight: bold;
+  text-shadow: 1px 0 0 currentColor;
 }
 
 #collapse_button li a.active {
-  font-weight: bold;
+  text-shadow: 1px 0 0 currentColor;
+}
+
+#collapse_button li a.js-login:hover {
+  cursor: pointer;
 }
 
 body {
@@ -140,7 +144,7 @@ body {
   }
 }
 
-@media screen and (max-width: 370px) {
+@media screen and (max-width: 396px) {
   #collapse_button li {
     float: none;
   }
@@ -154,7 +158,7 @@ body {
   }
 }
 
-@media screen and (min-width: 371px) {
+@media screen and (min-width: 397px) {
   #buttons_list {
     display: none;
   }

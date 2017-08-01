@@ -45,7 +45,6 @@ Template.profile.events({
   "click .js-save-change": function(event){
     if(!$(".ui.form").form("is valid")) return;
 
-
     //check difference
     const profile = Meteor.users.findOne();
     const first_name = $(".js-first-name").val();
