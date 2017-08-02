@@ -5,6 +5,7 @@
 
 .ui.comments .comment .text {
   word-wrap:break-word;
+  max-width: 500px;
 }
 
 .ui.comments .reply.form textarea {
