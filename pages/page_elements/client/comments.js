@@ -5,11 +5,13 @@ Template.comments.onCreated(function(){
 
 Template.comments.onRendered(function(){
   $(window).resize(function() {
-    const comment_width = $(".ui.minimal.comments").width();
-    const form_width = $('.ui.attached.reply.form').width();
-    const reply_width = $(".ui.minimal.comments > .ui.reply.form").width();
-    $('.ui.attached.reply.form > .field').css('padding-right', (form_width - comment_width) + "px");
-    $(".ui.minimal.comments > .ui.reply.form > .field").css("padding-right", (reply_width - comment_width) + "px");
+    if(Meteor.userId()){
+      const comment_width = $(".ui.minimal.comments").width();
+      const form_width = $('.ui.attached.reply.form').width();
+      const reply_width = $(".ui.minimal.comments > .ui.reply.form").width();
+      $('.ui.attached.reply.form > .field').css('padding-right', (form_width - comment_width) + "px");
+      $(".ui.minimal.comments > .ui.reply.form > .field").css("padding-right", (reply_width - comment_width) + "px");
+    }
   });
 })
 
@@ -88,9 +90,11 @@ Template.comment_row.onCreated(function(){
 })
 
 Template.comment_row.onRendered(function(){
-  const comment_width = $(".ui.minimal.comments").width();
-  const reply_width = $(".ui.minimal.comments > .ui.reply.form").width();
-  $(".ui.minimal.comments > .ui.reply.form > .field").css("padding-right", (reply_width - comment_width) + "px");
+  if(Meteor.userId()){
+    const comment_width = $(".ui.minimal.comments").width();
+    const reply_width = $(".ui.minimal.comments > .ui.reply.form").width();
+    $(".ui.minimal.comments > .ui.reply.form > .field").css("padding-right", (reply_width - comment_width) + "px");
+  }
 })
 
 Template.comment_row.helpers({
@@ -104,7 +108,7 @@ Template.comment_row.helpers({
       var d = new Date(inputFormat);
       return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join('-');
     }
-
+    
     return convertDate(date);
   },
   "commentsArray": function(comment){

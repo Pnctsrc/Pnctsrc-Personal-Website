@@ -5,12 +5,15 @@
       {{> comment_row comment=comment commentsDict=commentsDict}}
     {{/each}}
 
-    <form class="ui reply form">
-      <div class="field">
-        <textarea></textarea>
-      </div>
-      <div class="ui blue button js-new-comment">Reply</div>
-    </form>
+    {{#if currentUser}}
+      <div class="ui divider"></div>
+      <form class="ui reply form">
+        <div class="field">
+          <textarea></textarea>
+        </div>
+        <div class="ui blue button js-new-comment">Reply</div>
+      </form>
+    {{/if}}
   </div>
 </template>
 
@@ -22,9 +25,11 @@
         <span class="date">{{getTime comment.createdAt}}</span>
       </div>
       <div class="text">{{comment.text}}</div>
-      <div class="actions">
-        <a class="reply">Reply</a>
-      </div>
+      {{#if currentUser}}
+        <div class="actions">
+          <a class="reply">Reply</a>
+        </div>
+      {{/if}}
     </div>
 
     {{#if hasComments comment}}
