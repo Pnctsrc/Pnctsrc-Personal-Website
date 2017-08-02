@@ -28,6 +28,9 @@
       {{#if currentUser}}
         <div class="actions">
           <a class="reply">Reply</a>
+          {{#if sameUser comment.userId}}
+            <a class="delete js-delete-comment">Delete</a>
+          {{/if}}
         </div>
       {{/if}}
     </div>

@@ -128,6 +128,9 @@ Template.comment_row.helpers({
   },
   "commentsDict": function(){
     return Template.instance().commentsDict;
+  },
+  "sameUser": function(target_user){
+    return target_user === Meteor.userId();
   }
 })
 
@@ -176,4 +179,23 @@ Template.comment_row.events({
       $(".ui.attached.reply.form").remove();
     });
   },
+  "click .js-delete-comment": function(event, instance){
+    //make sure the template is correct
+    if(event.currentTarget.parentNode.parentNode !== $(instance.firstNode)[0].firstElementChild) return;
+    const current_comment = this.comment;
+
+    //warn if it has comments inside
+    if(Comments.findOne({parent_comment: current_comment._id})){
+      if(!window.confirm("You'll also delete all the ralated comments. Are you sure you want to delete this comment?")){
+        return;
+      }
+    }
+
+    Meteor.call("delete_comment", current_comment._id, function(err){
+      if(err){
+        window.alert(err);
+        return;
+      }
+    })
+  }
 })
