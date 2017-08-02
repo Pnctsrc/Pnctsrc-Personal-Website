@@ -6,6 +6,7 @@ Meteor.methods({
     }
 
     comment.userId = this.userId;
+    comment.createdAt = new Date();
     Comments.insert(comment);
   }
 })
