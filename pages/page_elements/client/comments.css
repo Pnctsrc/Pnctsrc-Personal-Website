@@ -16,6 +16,7 @@
   width: 100%;
   display: grid;
   max-width: none;
+  font-size: 0.8em;
 }
 
 .ui.minimal.comments .actions {
