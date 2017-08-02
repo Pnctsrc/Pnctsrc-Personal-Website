@@ -159,7 +159,12 @@ Template.comment_row.events({
       if(target_parent_userId === Meteor.userId()){//keep the same thread for the same two users
         parent_comment = target_parent;
       } else {
-        parent_comment = current_comment._id;
+        //check existing thread
+        if(Comments.findOne({parent_comment: target_parent, userId: Meteor.userId()})){//if the conversation has already started
+          parent_comment = target_parent;
+        } else {
+          parent_comment = current_comment._id;
+        }
       }
     }
 
