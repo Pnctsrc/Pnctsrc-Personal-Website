@@ -108,8 +108,17 @@ Template.comment_row.helpers({
       var d = new Date(inputFormat);
       return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join('-');
     }
-    
-    return convertDate(date);
+
+    var timeDiff = Math.abs(date.getTime() - (new Date()).getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    if(diffDays == 1){
+      return $.timeago(date);
+    } else if (diffDays <= 7){
+      return $.timeago(date) + " @ " + convertDate(date);
+    } else {
+      return convertDate(date);
+    }
   },
   "commentsArray": function(comment){
     return Comments.find({parent_comment: comment._id}, {$sort: {createdAt: -1}}).fetch();
