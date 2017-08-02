@@ -129,9 +129,27 @@ Template.comment_row.events({
     //get the current comment data
     const current_comment = this.comment;
     const text_input = $(".ui.attached.reply.form textarea").val();
+    var parent_comment;
+
+    const target_user = current_comment.userId;
+    const target_parent = current_comment.parent_comment;
+    //if reply to self - always same level
+    if(target_user === Meteor.userId()){
+      parent_comment = target_parent;
+    } else if(!target_parent){//if it is a comment at the first level - no parent
+      parent_comment = current_comment._id;
+    } else {
+      const target_parent_userId = Comments.findOne(target_parent).userId;
+      if(target_parent_userId === Meteor.userId()){//keep the same thread for the same two users
+        parent_comment = target_parent;
+      } else {
+        parent_comment = current_comment._id;
+      }
+    }
 
     const comment = {
-      parent_comment: current_comment._id,
+      parent_comment: parent_comment,
+      target_comment: current_comment._id,
       text: text_input,
       post_id: current_post._id
     }
