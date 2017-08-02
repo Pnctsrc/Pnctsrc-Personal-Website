@@ -8,6 +8,14 @@
   max-width: 500px;
 }
 
+.ui.comments .comment .author {
+  display: inline;
+}
+
+.ui.comments .comment > .content {
+  cursor: default;
+}
+
 .ui.comments .reply.form textarea {
   max-width: 500px;
 }
