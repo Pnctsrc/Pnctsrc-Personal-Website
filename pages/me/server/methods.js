@@ -19,5 +19,23 @@ Meteor.methods({
         console.log(err);
       }
     });
+  },
+  "set_read": function(notification_id){
+    //validate
+    if(!this.userId){
+      throw new Meteor.Error("403", "Not logged in.");
+    } else if(!notification_id){
+      throw new Meteor.Error("400", "No notification id.");
+    } else if(!Notifications.findOne(notification_id)){
+      throw new Meteor.Error("400", "No such notification.");
+    }
+
+    const notification_user = Notifications.findOne(notification_id).userId;
+    if(this.userId !== notification_user){
+      throw new Meteor.Error("400", "Not the same user.");
+    }
+
+    //mark as read
+    Notifications.update(notification_id, {$set: {read: true}});
   }
 })

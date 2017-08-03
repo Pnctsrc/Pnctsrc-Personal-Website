@@ -6,7 +6,7 @@
     </div>
 
     <div class="ui tab active" data-tab="tab-name">
-      {{#if hasNotifications}}
+      {{#if hasNotifications 'new'}}
         <div class="operations">
           <div class="actions">
             <a class="js-all-read">Mark all as read</a>
@@ -23,7 +23,7 @@
       {{/if}}
     </div>
     <div class="ui tab" data-tab="tab-name2">
-      {{#if hasNotifications}}
+      {{#if hasNotifications 'all'}}
         <div class="operations">
           <div class="actions">
             <a class="js-delete-all">Clear all</a>

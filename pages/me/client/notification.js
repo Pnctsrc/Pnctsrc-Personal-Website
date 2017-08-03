@@ -3,11 +3,19 @@ Template.notification.onRendered(function(){
 })
 
 Template.notification.helpers({
-  "notification_list": function(){
-    return Notifications.find().fetch();
+  "notification_list": function(filter){
+    if(filter == "new"){
+      return Notifications.find({read: false}).fetch();
+    } else {
+      return Notifications.find().fetch();
+    }
   },
-  "hasNotifications": function(){
-    return Notifications.findOne();
+  "hasNotifications": function(filter){
+    if(filter == "new"){
+      return Notifications.findOne({read: false});
+    } else {
+      return Notifications.findOne();
+    }
   }
 })
 
@@ -34,4 +42,16 @@ Template.notification_row.helpers({
       return convertDate(date);
     }
   },
+})
+
+Template.notification_row.events({
+  "click div.text > p > a": function(){
+    if(this.notification.read) return;
+    Meteor.call("set_read", this.notification._id, function(err){
+      if(err){
+        window.alert(err);
+        return;
+      }
+    })
+  }
 })
