@@ -29,14 +29,14 @@ Template.comments.onRendered(function(){
 
              const textarea = $("#editor .ql-custom textarea");
              if(textarea.css("display") === "none"){
-               $("#editor .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
-               $("#editor .ql-formats > span").css("visibility", "hidden");
+               $(".ui.reply.form.bottom .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
+               $(".ui.reply.form.bottom .ql-formats > span").css("visibility", "hidden");
                textarea.css("display", "block");
              } else {
                var html = txtArea.value;
                this.quill.pasteHTML(html);
-               $("#editor .ql-formats > button[class!='ql-source']").css("visibility", "visible");
-               $("#editor .ql-formats > span").css("visibility", "visible");
+               $(".ui.reply.form.bottom .ql-formats > button[class!='ql-source']").css("visibility", "visible");
+               $(".ui.reply.form.bottom .ql-formats > span").css("visibility", "visible");
                textarea.css("display", "none");
              }
            },
@@ -118,14 +118,14 @@ Template.comments.events({
              'source': function(){
                const textarea = $("#editor-reply .ql-custom textarea");
                if(textarea.css("display") === "none"){
-                 $("#editor-reply .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
-                 $("#editor-reply .ql-formats > span").css("visibility", "hidden");
+                 $(".ui.attached.reply.form .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
+                 $(".ui.attached.reply.form .ql-formats > span").css("visibility", "hidden");
                  textarea.css("display", "block");
                } else {
                  var html = txtArea.value;
                  this.quill.pasteHTML(html);
-                 $("#editor-reply .ql-formats > button[class!='ql-source']").css("visibility", "visible");
-                 $("#editor-reply .ql-formats > span").css("visibility", "visible");
+                 $(".ui.attached.reply.form .ql-formats > button[class!='ql-source']").css("visibility", "visible");
+                 $(".ui.attached.reply.form .ql-formats > span").css("visibility", "visible");
                  textarea.css("display", "none");
                }
              },
