@@ -65,5 +65,13 @@ Meteor.methods({
     }
 
     Notifications.update({userId: this.userId, read: false}, {$set: {read: true}}, {multi: true});
-  }
+  },
+  "delete_all_notifications": function(){
+    //validate
+    if(!this.userId){
+      throw new Meteor.Error("403", "Not logged in.");
+    }
+
+    Notifications.remove({userId: this.userId});
+  },
 })

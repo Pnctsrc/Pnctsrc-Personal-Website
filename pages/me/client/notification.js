@@ -27,6 +27,14 @@ Template.notification.events({
         return;
       }
     })
+  },
+  "click .js-delete-all": function(){
+    Meteor.call("delete_all_notifications", function(err){
+      if(err){
+        window.alert(err);
+        return;
+      }
+    })
   }
 })
 
