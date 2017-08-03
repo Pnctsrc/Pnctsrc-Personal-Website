@@ -53,5 +53,14 @@ Template.notification_row.events({
         return;
       }
     })
+  },
+  "click .read": function(){
+    if(this.notification.read) return;
+    Meteor.call("set_read", this.notification._id, function(err){
+      if(err){
+        window.alert(err);
+        return;
+      }
+    })
   }
 })
