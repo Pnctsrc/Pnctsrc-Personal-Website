@@ -14,13 +14,14 @@ Meteor.methods({
     Comments.insert(comment);
 
     //send notification
-    if(comment.target_comment){
+    const target_comment = Comments.findOne(comment.target_comment);
+    if(comment.target_comment && target_comment.userId !== comment.userId){
       const notification = {
         sender: comment.userId,
-        userId: Comments.findOne(comment.target_comment).userId,
+        userId: target_comment.userId,
         read: false,
         comment_id: comment.target_comment,
-        document_id: Comments.findOne(comment.target_comment).document_id,
+        document_id: target_comment.document_id,
         createdAt: comment.createdAt,
         type: type
       }
