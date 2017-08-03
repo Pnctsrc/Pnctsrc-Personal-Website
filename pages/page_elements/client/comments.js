@@ -165,6 +165,9 @@ Template.comments.events({
     if(html_content.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
       window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr>, <s>, <em>, <u> are OK to use.");
       return;
+    } else if($(html_content).text().length == 0 || /^ *$/gi.test($(html_content).text())){
+      window.alert("Empty comment.");
+      return;
     }
 
     const comment = {
@@ -252,6 +255,9 @@ Template.comment_row.events({
     //validate text_input
     if(text_input.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
       window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr>, <s>, <em>, <u> are OK to use.");
+      return;
+    } else if($(text_input).text().length == 0 || /^ *$/gi.test($(text_input).text())){
+      window.alert("Empty comment.");
       return;
     }
 
