@@ -1,15 +1,15 @@
-.ui.attached.reply.form {
+div.document_comment .ui.attached.reply.form {
   transition: visibility 0s, opacity 0.35s linear;
   opacity: 0;
 }
 
-.ui.comments .comment .text {
+div.document_comment .ui.comments .comment .text {
   word-wrap:break-word;
   max-width: 500px;
   padding: 0;
 }
 
-.ui.comments .comment .text blockquote {
+div.document_comment .ui.comments .comment .text blockquote {
   border-left: 4px solid #ccc;
   margin-bottom: 5px;
   margin-top: 5px;
@@ -17,23 +17,23 @@
   margin-left: 0;
 }
 
-.ui.comments .comment .author {
+div.document_comment .ui.comments .comment .author {
   display: inline;
 }
 
-.ui.comments .comment > .content {
+div.document_comment .ui.comments .comment > .content {
   cursor: default;
 }
 
-.ui.comments .reply.form textarea {
+div.document_comment .ui.comments .reply.form textarea {
   max-width: 500px;
 }
 
-.ui.reply.form .ui.message {
+div.document_comment .ui.reply.form .ui.message {
   max-width: 500px;
 }
 
-.ui.minimal.comments {
+div.document_comment .ui.minimal.comments {
   overflow-x: auto;
   width: 100%;
   display: grid;
@@ -41,32 +41,32 @@
   font-size: 0.8em;
 }
 
-.ui.minimal.comments .actions {
+div.document_comment .ui.minimal.comments .actions {
   position: inherit !important;
 }
 
-.ui.form .field {
+div.document_comment .ui.form .field {
   max-width: 500px;
 }
 
-div#editor, div#editor-reply .ql-editor {
+div.document_comment div#editor .ql-editor, div.document_comment div#editor-reply .ql-editor {
   min-height: 140px;
 }
 
-pre.ql-syntax {
+div.document_comment pre.ql-syntax {
   background-color: rgb(238, 238, 238);
   border-radius: 5px;
   padding: 5px !important;
 }
 
-.ql-source:after {
+div.document_comment .ql-source:after {
   content: "\f120";
   font-family: FontAwesome;
   font-size: 1.3em;
   font-weight: bold;
 }
 
-.ql-custom > textarea {
+div.document_comment .ql-custom > textarea {
   width: 100% !important;
   height: 100% !important;
   margin: 0px !important;
