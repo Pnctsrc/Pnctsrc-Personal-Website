@@ -45,7 +45,7 @@
   max-width: 500px;
 }
 
-div#editor .ql-editor {
+div#editor, div#editor-reply .ql-editor {
   min-height: 140px;
 }
 

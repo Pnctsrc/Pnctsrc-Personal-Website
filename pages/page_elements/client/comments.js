@@ -27,16 +27,16 @@ Template.comments.onRendered(function(){
              //show warning
              $(".ui.message.hidden").transition('fade');
 
-             const textarea = $(".ql-custom textarea");
+             const textarea = $("#editor .ql-custom textarea");
              if(textarea.css("display") === "none"){
-               $(".ql-formats > button[class!='ql-source']").css("visibility", "hidden");
-               $(".ql-formats > span").css("visibility", "hidden");
+               $("#editor .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
+               $("#editor .ql-formats > span").css("visibility", "hidden");
                textarea.css("display", "block");
              } else {
                var html = txtArea.value;
                this.quill.pasteHTML(html);
-               $(".ql-formats > button[class!='ql-source']").css("visibility", "visible");
-               $(".ql-formats > span").css("visibility", "visible");
+               $("#editor .ql-formats > button[class!='ql-source']").css("visibility", "visible");
+               $("#editor .ql-formats > span").css("visibility", "visible");
                textarea.css("display", "none");
              }
            },
@@ -76,8 +76,8 @@ Template.comments.helpers({
 })
 
 Template.comments.events({
-  "click .actions .reply": function(event){
-    const replay_box_html = "<form class=\"ui attached reply form\"><div class=\"field\">\<textarea></textarea></div><div class=\"ui blue button js-reply-comment\">Reply</div></form>";
+  "click .actions .reply": function(event, instance){
+    const replay_box_html = "<form class=\"ui attached reply form\"><div class=\"field\"><div id=\"editor-reply\"></div></div><div class=\"ui blue button js-reply-comment\">Reply</div></form>";
 
     //remove all previous reply forms on different comments
     if($(".ui.attached.reply.form")[0]){
@@ -106,11 +106,53 @@ Template.comments.events({
 
     //attach a new form
     $(replay_box_html).insertAfter(event.currentTarget.parentNode.parentNode);
+    import Quill from 'quill'
+
+    var quill_buttons = [{ 'header': 1 }, { 'header': 2 }, 'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', { 'list': 'ordered'}, { 'list': 'bullet' }, { 'indent': '-1'}, { 'indent': '+1' }, { 'align': [] },'clean', 'source'];
+    var quill = new Quill('#editor-reply', {
+      theme: 'snow',
+      modules: {
+         toolbar: {
+           container: quill_buttons,
+           handlers: {
+             'source': function(){
+               const textarea = $("#editor-reply .ql-custom textarea");
+               if(textarea.css("display") === "none"){
+                 $("#editor-reply .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
+                 $("#editor-reply .ql-formats > span").css("visibility", "hidden");
+                 textarea.css("display", "block");
+               } else {
+                 var html = txtArea.value;
+                 this.quill.pasteHTML(html);
+                 $("#editor-reply .ql-formats > button[class!='ql-source']").css("visibility", "visible");
+                 $("#editor-reply .ql-formats > span").css("visibility", "visible");
+                 textarea.css("display", "none");
+               }
+             },
+           }
+         }
+       },
+    });
+
+    //add source view
+    var txtArea = document.createElement('textarea');
+    var htmlEditor = quill.addContainer('ql-custom');
+    htmlEditor.appendChild(txtArea);
+    quill.on('text-change', () => {
+      var beautify = require('js-beautify').html_beautify;
+      const html_content = $("#editor-reply .ql-editor")[0].innerHTML;
+      txtArea.value = beautify(html_content);
+    })
+
+    instance.editor_reply = quill;
+
+    //show editor
+    $(".ui.attached.reply.form").css("opacity", "1");
+    const comment_width = $(".ui.minimal.comments").width();
+    const form_width = $('.ui.attached.reply.form').width();
+    $('.ui.attached.reply.form > .field').css('padding-right', (form_width - comment_width) + "px");
     setTimeout(function(){
-      $(".ui.attached.reply.form").css("opacity", "1");
-      const comment_width = $(".ui.minimal.comments").width();
-      const form_width = $('.ui.attached.reply.form').width();
-      $('.ui.attached.reply.form > .field').css('padding-right', (form_width - comment_width) + "px");
+
     })
   },
   "click .js-new-comment": function(event, instance){
@@ -205,9 +247,15 @@ Template.comment_row.events({
 
     //get the current comment data
     const current_comment = this.comment;
-    const text_input = $(".ui.attached.reply.form textarea").val();
-    var parent_comment;
+    const text_input = $("#editor-reply .ql-editor")[0].innerHTML;
 
+    //validate text_input
+    if(text_input.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr)).)*>/gi)){
+      window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr> are OK to use.");
+      return;
+    }
+
+    var parent_comment;
     const target_user = current_comment.userId;
     const target_parent = current_comment.parent_comment;
     //if reply to self - always same level
