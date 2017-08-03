@@ -29,6 +29,10 @@
   max-width: 500px;
 }
 
+.ui.reply.form .ui.message {
+  max-width: 500px;
+}
+
 .ui.minimal.comments {
   overflow-x: auto;
   width: 100%;
