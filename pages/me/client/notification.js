@@ -62,5 +62,13 @@ Template.notification_row.events({
         return;
       }
     })
+  },
+  "click .delete": function(){
+    Meteor.call("delete_notification", this.notification._id, function(err){
+      if(err){
+        window.alert(err);
+        return;
+      }
+    })
   }
 })

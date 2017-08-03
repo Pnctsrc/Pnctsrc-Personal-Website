@@ -38,5 +38,24 @@ Meteor.methods({
 
     //mark as read
     Notifications.update(notification_id, {$set: {read: true}});
+  },
+  "delete_notification": function(notification_id){
+    //validate
+    const notification = Notifications.findOne(notification_id);
+    if(!this.userId){
+      throw new Meteor.Error("403", "Not logged in.");
+    } else if(!notification_id){
+      throw new Meteor.Error("400", "No notification id.");
+    } else if(!notification){
+      throw new Meteor.Error("400", "No such notification.");
+    }
+
+    const notification_user = notification.userId;
+    if(this.userId !== notification_user){
+      throw new Meteor.Error("400", "Not the same user.");
+    }
+
+    //delete notification
+    Notifications.remove(notification_id);
   }
 })
