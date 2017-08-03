@@ -29,14 +29,14 @@ Template.comments.onRendered(function(){
 
              const textarea = $("#editor .ql-custom textarea");
              if(textarea.css("display") === "none"){
-               $("#editor .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
-               $("#editor .ql-formats > span").css("visibility", "hidden");
+               $(".ui.reply.form.bottom .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
+               $(".ui.reply.form.bottom .ql-formats > span").css("visibility", "hidden");
                textarea.css("display", "block");
              } else {
                var html = txtArea.value;
                this.quill.pasteHTML(html);
-               $("#editor .ql-formats > button[class!='ql-source']").css("visibility", "visible");
-               $("#editor .ql-formats > span").css("visibility", "visible");
+               $(".ui.reply.form.bottom .ql-formats > button[class!='ql-source']").css("visibility", "visible");
+               $(".ui.reply.form.bottom .ql-formats > span").css("visibility", "visible");
                textarea.css("display", "none");
              }
            },
@@ -72,6 +72,14 @@ Template.comments.helpers({
   },
   "commentsDict": function(){
     return Template.instance().commentsDict;
+  },
+  "hasComments": function(){
+    const data = Template.instance().commentsDict.get("data_object");
+    if(data){
+      return Comments.findOne({document_id: data._id});
+    } else {
+      return false;
+    }
   }
 })
 
@@ -118,14 +126,14 @@ Template.comments.events({
              'source': function(){
                const textarea = $("#editor-reply .ql-custom textarea");
                if(textarea.css("display") === "none"){
-                 $("#editor-reply .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
-                 $("#editor-reply .ql-formats > span").css("visibility", "hidden");
+                 $(".ui.attached.reply.form .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
+                 $(".ui.attached.reply.form .ql-formats > span").css("visibility", "hidden");
                  textarea.css("display", "block");
                } else {
                  var html = txtArea.value;
                  this.quill.pasteHTML(html);
-                 $("#editor-reply .ql-formats > button[class!='ql-source']").css("visibility", "visible");
-                 $("#editor-reply .ql-formats > span").css("visibility", "visible");
+                 $(".ui.attached.reply.form .ql-formats > button[class!='ql-source']").css("visibility", "visible");
+                 $(".ui.attached.reply.form .ql-formats > span").css("visibility", "visible");
                  textarea.css("display", "none");
                }
              },
@@ -156,14 +164,17 @@ Template.comments.events({
     })
   },
   "click .js-new-comment": function(event, instance){
-    //get the current post data
-    const current_post = instance.commentsDict.get("data_object");
+    //get the current post/work data
+    const current_document = instance.commentsDict.get("data_object");
     const quill = instance.editor;
     const html_content = $("#editor .ql-editor")[0].innerHTML;
 
     //validate text_input
-    if(html_content.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr)).)*>/gi)){
-      window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr> are OK to use.");
+    if(html_content.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
+      window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr>, <s>, <em>, <u> are OK to use.");
+      return;
+    } else if($(html_content).text().length == 0 || /^ *$/gi.test($(html_content).text())){
+      window.alert("Empty comment.");
       return;
     }
 
@@ -171,7 +182,7 @@ Template.comments.events({
       parent_comment: "",
       target_comment: "",
       text: html_content,
-      post_id: current_post._id
+      document_id: current_document._id
     }
 
     Meteor.call("insert_comment", comment, function(err){
@@ -242,16 +253,19 @@ Template.comment_row.events({
     //make sure the template is correct
     if(event.currentTarget.parentNode.parentNode !== instance.firstNode) return;
 
-    //get the current post data
-    const current_post = instance.commentsDict.get("data_object");
+    //get the current post/work data
+    const current_document = instance.commentsDict.get("data_object");
 
     //get the current comment data
     const current_comment = this.comment;
     const text_input = $("#editor-reply .ql-editor")[0].innerHTML;
 
     //validate text_input
-    if(text_input.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr)).)*>/gi)){
-      window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr> are OK to use.");
+    if(text_input.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
+      window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr>, <s>, <em>, <u> are OK to use.");
+      return;
+    } else if($(text_input).text().length == 0 || /^ *$/gi.test($(text_input).text())){
+      window.alert("Empty comment.");
       return;
     }
 
@@ -281,7 +295,7 @@ Template.comment_row.events({
       parent_comment: parent_comment,
       target_comment: current_comment._id,
       text: text_input,
-      post_id: current_post._id
+      document_id: current_document._id
     }
 
     Meteor.call("insert_comment", comment, function(err){

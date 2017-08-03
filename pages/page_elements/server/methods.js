@@ -3,8 +3,10 @@ Meteor.methods({
     //validate
     if(!this.userId){
       throw new Meteor.Error("403", "Not logged in.");
-    } else if(comment.text.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr)).)*>/gi)){
+    } else if(comment.text.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
       throw new Meteor.Error("400", "Invalid HTML.");
+    } else if(comment.text.replace(/<\/?(\w|\d)+>/gi, "").length == 0 || /^ *$/gi.test(comment.text)){
+      throw new Meteor.Error("400", "Empty HTML content.");
     }
 
     comment.userId = this.userId;
@@ -12,15 +14,17 @@ Meteor.methods({
     Comments.insert(comment);
 
     //send notification
-    const notification = {
-      sender: comment.userId,
-      userId: Comments.findOne(comment.target_comment).userId,
-      read: false,
-      document_id: comment.target_comment,
-      createdAt: comment.createdAt
-    }
+    if(comment.target_comment){
+      const notification = {
+        sender: comment.userId,
+        userId: Comments.findOne(comment.target_comment).userId,
+        read: false,
+        document_id: comment.target_comment,
+        createdAt: comment.createdAt
+      }
 
-    Notifications.insert(notification);
+      Notifications.insert(notification);
+    }
   },
   "delete_comment": function(comment_id){
     //validate
