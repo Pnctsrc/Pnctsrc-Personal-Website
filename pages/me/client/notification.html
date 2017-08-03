@@ -1,3 +1,58 @@
 <template name="notification">
-  This is where the notifications show up.
+  <div class="notification">
+    <div class="ui secondary menu">
+      <a class="item active" data-tab="tab-name">New notifications</a>
+      <a class="item" data-tab="tab-name2">All notifications</a>
+    </div>
+
+    <div class="ui tab active" data-tab="tab-name">
+      {{#if hasNotifications}}
+        <div class="operations">
+          <div class="actions">
+            <a class="js-all-read">Mark all as read</a>
+            <a class="js-delete-all">Clear all</a>
+          </div>
+        </div>
+        <div class="ui minimal comments">
+          {{#each notification in notification_list 'new'}}
+            {{> notification_row notification=notification}}
+          {{/each}}
+        </div>
+      {{else}}
+        <p>You have no new notifications</p>
+      {{/if}}
+    </div>
+    <div class="ui tab" data-tab="tab-name2">
+      {{#if hasNotifications}}
+        <div class="operations">
+          <div class="actions">
+            <a class="js-delete-all">Clear all</a>
+          </div>
+        </div>
+        <div class="ui minimal comments">
+          {{#each notification in notification_list 'all'}}
+            {{> notification_row notification=notification}}
+          {{/each}}
+        </div>
+      {{else}}
+        <p>You have no notifications</p>
+      {{/if}}
+    </div>
+  </div>
+</template>
+
+<template name="notification_row">
+  <div class="comment">
+    <div class="content">
+      <a class="author">{{notification.sender}}</a>
+      <div class="metadata">
+        <span class="date">{{getTime notification.createdAt}}</span>
+      </div>
+      <div class="text">{{{notification.text}}}</div>
+      <div class="actions">
+        <a class="read">Read</a>
+        <a class="delete">Delete</a>
+      </div>
+    </div>
+  </div>
 </template>

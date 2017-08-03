@@ -20,27 +20,27 @@ Meteor.publish({
     });
 
     var handle = Comments.find({post_id: post_id}).observeChanges({
-    added: function(id) {
-      const comment = Comments.findOne(id);
-      const profile = Meteor.users.findOne(comment.userId);
-      const first_name = profile.pnctsrc.first_name;
-      const last_name = profile.pnctsrc.last_name;
-      const username = (first_name + " " + last_name).replace(/ +/gi, " ").trim();
-      if(/^ +$/gi.test(username)){
-        comment.username = "Member";
-        self.added("comments", id, comment);
-      } else {
-        comment.username = username;
-        self.added("comments", id, comment);
+      added: function(id) {
+        const comment = Comments.findOne(id);
+        const profile = Meteor.users.findOne(comment.userId);
+        const first_name = profile.pnctsrc.first_name;
+        const last_name = profile.pnctsrc.last_name;
+        const username = (first_name + " " + last_name).replace(/ +/gi, " ").trim();
+        if(/^ +$/gi.test(username)){
+          comment.username = "Member";
+          self.added("comments", id, comment);
+        } else {
+          comment.username = username;
+          self.added("comments", id, comment);
+        }
+      },
+      changed: function(id, fields){
+        self.changed("comments", id, fields);
+      },
+      removed: function(id){
+        self.removed("comments", id);
       }
-    },
-    changed: function(id, fields){
-      self.changed("comments", id, fields);
-    },
-    removed: function(id){
-      self.removed("comments", id);
-    }
-  })
+    })
 
     this.ready();
     this.onStop(() => handle.stop());
@@ -55,5 +55,8 @@ Meteor.publish({
         "services.google.email": 1
       }
     });
+  },
+  "notifications": function(){
+    return Notifications.find({userId: this.userId});
   }
 })

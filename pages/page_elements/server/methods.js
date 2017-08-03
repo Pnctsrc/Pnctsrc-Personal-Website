@@ -10,6 +10,17 @@ Meteor.methods({
     comment.userId = this.userId;
     comment.createdAt = new Date();
     Comments.insert(comment);
+
+    //send notification
+    const notification = {
+      sender: comment.userId,
+      userId: Comments.findOne(comment.target_comment).userId,
+      read: false,
+      document_id: comment.target_comment,
+      createdAt: comment.createdAt
+    }
+
+    Notifications.insert(notification);
   },
   "delete_comment": function(comment_id){
     //validate

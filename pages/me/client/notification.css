@@ -1,0 +1,26 @@
+.ui.tab.active > .operations{
+    display: flow-root;
+}
+
+.ui.tab.active > .operations > .actions {
+    float: right;
+}
+
+.ui.tab.active > .operations > .actions a {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0em 0.75em 0em 0em;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 0.85em;
+}
+
+div.notification .ui.minimal.comments {
+  margin-top: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  div.notification .ui.minimal.comments .actions {
+    position: inherit;
+    opacity: 1;
+  }
+}
