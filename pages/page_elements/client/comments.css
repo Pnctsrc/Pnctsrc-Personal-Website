@@ -8,6 +8,14 @@
   max-width: 500px;
 }
 
+.ui.comments .comment .text blockquote {
+  border-left: 4px solid #ccc;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-left: 16px;
+  margin-left: 0;
+}
+
 .ui.comments .comment .author {
   display: inline;
 }
