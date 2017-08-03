@@ -156,8 +156,8 @@ Template.comments.events({
     })
   },
   "click .js-new-comment": function(event, instance){
-    //get the current post data
-    const current_post = instance.commentsDict.get("data_object");
+    //get the current post/work data
+    const current_document = instance.commentsDict.get("data_object");
     const quill = instance.editor;
     const html_content = $("#editor .ql-editor")[0].innerHTML;
 
@@ -174,7 +174,7 @@ Template.comments.events({
       parent_comment: "",
       target_comment: "",
       text: html_content,
-      post_id: current_post._id
+      document_id: current_document._id
     }
 
     Meteor.call("insert_comment", comment, function(err){
@@ -245,8 +245,8 @@ Template.comment_row.events({
     //make sure the template is correct
     if(event.currentTarget.parentNode.parentNode !== instance.firstNode) return;
 
-    //get the current post data
-    const current_post = instance.commentsDict.get("data_object");
+    //get the current post/work data
+    const current_document = instance.commentsDict.get("data_object");
 
     //get the current comment data
     const current_comment = this.comment;
@@ -287,7 +287,7 @@ Template.comment_row.events({
       parent_comment: parent_comment,
       target_comment: current_comment._id,
       text: text_input,
-      post_id: current_post._id
+      document_id: current_document._id
     }
 
     Meteor.call("insert_comment", comment, function(err){

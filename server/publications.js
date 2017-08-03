@@ -2,9 +2,9 @@ Meteor.publish({
   "homepage": function(){
     return Homepage.find();
   },
-  "comments": function(post_id){
+  "comments": function(document_id){
     const self = this;
-    Comments.find({post_id: post_id}).forEach(function(comment){
+    Comments.find({document_id: document_id}).forEach(function(comment){
       const comment_id = comment._id;
       const profile = Meteor.users.findOne(comment.userId);
       const first_name = profile.pnctsrc.first_name;
@@ -19,7 +19,7 @@ Meteor.publish({
       }
     });
 
-    var handle = Comments.find({post_id: post_id}).observeChanges({
+    var handle = Comments.find({document_id: document_id}).observeChanges({
     added: function(id) {
       const comment = Comments.findOne(id);
       const profile = Meteor.users.findOne(comment.userId);
