@@ -137,7 +137,7 @@ Template.comments.events({
         window.alert(err);
         return;
       }
-
+      quill.pasteHTML("");
       $(".ui.reply.form textarea").val("");
     });
   },
