@@ -72,6 +72,14 @@ Template.comments.helpers({
   },
   "commentsDict": function(){
     return Template.instance().commentsDict;
+  },
+  "hasComments": function(){
+    const data = Template.instance().commentsDict.get("data_object");
+    if(data){
+      return Comments.findOne({document_id: data._id});
+    } else {
+      return false;
+    }
   }
 })
 

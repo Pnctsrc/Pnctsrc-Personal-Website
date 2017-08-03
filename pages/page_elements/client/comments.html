@@ -8,7 +8,9 @@
     {{/each}}
 
     {{#if currentUser}}
-      <div class="ui divider"></div>
+      {{#if hasComments}}
+        <div class="ui divider"></div>
+      {{/if}}
       <form class="ui reply form bottom">
         <div class="ui message hidden">
           <i class="close icon"></i>
