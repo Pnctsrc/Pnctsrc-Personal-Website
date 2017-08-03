@@ -119,6 +119,12 @@ Template.comments.events({
     const quill = instance.editor;
     const html_content = $("#editor .ql-editor")[0].innerHTML;
 
+    //validate text_input
+    if(html_content.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr)).)*>/gi)){
+      window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr> are OK to use.");
+      return;
+    }
+
     const comment = {
       parent_comment: "",
       target_comment: "",
