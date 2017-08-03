@@ -41,11 +41,33 @@ Meteor.methods({
 
     //remove all related comments
     if(Comments.findOne({parent_comment: comment_id})){
+      const user_list = new Set();
       var related_comments = Comments.find({parent_comment: comment_id}).fetch();
+
       while(related_comments.length != 0){
         const current_doc = related_comments.splice(0, 1)[0];
         related_comments = related_comments.concat(Comments.find({parent_comment: current_doc._id}).fetch());
-        Comments.remove(current_doc._id);
+        Comments.update(current_doc._id, {$set: {document_id: "deleted_" + current_doc.document_id}});
+        if(current_doc.userId !== this.userId){
+          user_list.add(current_doc.userId);
+        }
+      }
+
+      //send Notifications
+      const comment_document = Comments.findOne(comment_id);
+      const date = new Date();
+      for(var userId of user_list){
+        const notification = {
+          userId: userId,
+          sender: this.userId,
+          createdAt: date,
+          read: false,
+          comment_id: "deleted_" + comment_id,
+          document_id: comment_document.document_id,
+          type: Posts.findOne(comment_document.document_id) ? "posts" : "works"
+        }
+
+        Notifications.insert(notification);
       }
     }
 

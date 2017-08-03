@@ -62,7 +62,7 @@ Meteor.publish({
       const notification_id = notification._id;
 
       //process text
-      var URL, target_document;
+      var URL, target_document, text;
       if(notification.type === "posts"){
         target_document = Posts.findOne(notification.document_id);
         URL = "/posts/view/" + encodeURIComponent(target_document.title.replace(/ +/g, "_"));
@@ -70,7 +70,12 @@ Meteor.publish({
         target_document = Works.findOne(notification.document_id);
         URL = "/works/view/" + encodeURIComponent(target_document.title.replace(/ +/g, "_"));
       }
-      const text = "<p>Replied to your comment in " + "<a target='_blank' href=\"" + URL +"\">" + target_document.title + "</a></p>";
+
+      if(notification.comment_id.match(/deleted_/gi)){
+        text = "<p>Deleted his/her comment in " + "<a target='_blank' href=\"" + URL +"\">" + target_document.title + "</a>, so all your comments replated to this comment have been deleted.</p>";
+      } else {
+        text = "<p>Replied to your comment in " + "<a target='_blank' href=\"" + URL +"\">" + target_document.title + "</a></p>";
+      }
       notification.text = text;
 
       //process user info
