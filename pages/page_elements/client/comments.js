@@ -13,6 +13,42 @@ Template.comments.onRendered(function(){
       $(".ui.minimal.comments > .ui.reply.form > .field").css("padding-right", (reply_width - comment_width) + "px");
     }
   });
+
+  import Quill from 'quill'
+
+  var quill_buttons = [{ 'header': 1 }, { 'header': 2 }, 'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', { 'list': 'ordered'}, { 'list': 'bullet' }, { 'indent': '-1'}, { 'indent': '+1' }, { 'align': [] },'clean', 'source'];
+  var quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+       toolbar: {
+         container: quill_buttons,
+         handlers: {
+           'source': function(){
+             const textarea = $(".ql-custom textarea");
+             if(textarea.css("display") === "none"){
+               textarea.css("display", "block");
+             } else {
+               var html = txtArea.value;
+               this.quill.pasteHTML(html);
+               textarea.css("display", "none");
+             }
+           },
+         }
+       }
+     },
+  });
+
+  //add source view
+  var txtArea = document.createElement('textarea');
+  var htmlEditor = quill.addContainer('ql-custom');
+  htmlEditor.appendChild(txtArea);
+  quill.on('text-change', () => {
+    var beautify = require('js-beautify').html_beautify;
+    const html_content = $("#editor .ql-editor")[0].innerHTML;
+    txtArea.value = beautify(html_content);
+  })
+
+  this.editor = quill;
 })
 
 Template.comments.helpers({
@@ -65,12 +101,13 @@ Template.comments.events({
   "click .js-new-comment": function(event, instance){
     //get the current post data
     const current_post = instance.commentsDict.get("data_object");
+    const quill = instance.editor;
+    const html_content = $("#editor .ql-editor")[0].innerHTML;
 
     const comment = {
-      username: $(".js-name").val(),
-      createdAt: new Date(),
       parent_comment: "",
-      text: $(".ui.reply.form textarea").val(),
+      target_comment: "",
+      text: html_content,
       post_id: current_post._id
     }
 
@@ -131,6 +168,9 @@ Template.comment_row.helpers({
   },
   "sameUser": function(target_user){
     return target_user === Meteor.userId();
+  },
+  "getText": function(text){
+    return text.replace(/(?:\r\n|\r|\n)/g, '<br />');
   }
 })
 

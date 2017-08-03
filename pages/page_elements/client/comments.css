@@ -31,3 +31,43 @@
 .ui.minimal.comments .actions {
   position: inherit !important;
 }
+
+.ui.form .field {
+  max-width: 500px;
+}
+
+div#editor .ql-editor {
+  min-height: 140px;
+}
+
+pre.ql-syntax {
+  background-color: rgb(238, 238, 238);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.ql-source:after {
+  content: "\f120";
+  font-family: FontAwesome;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.ql-custom > textarea {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0px !important;
+  background: rgb(29, 29, 29) !important;
+  box-sizing: border-box !important;
+  color: rgb(204, 204, 204) !important;
+  font-size: 1em !important;
+  padding: 20px !important;
+  line-height: 24px !important;
+  position: absolute !important;
+  top: 0px !important;
+  bottom: 0px !important;
+  border-radius: 0 !important;
+  resize: none !important;
+  border: 0px !important;
+  display: none;
+}

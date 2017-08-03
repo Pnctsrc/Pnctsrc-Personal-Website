@@ -1,4 +1,6 @@
 <template name="comments">
+  <link href="//cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+  
   <div class="ui minimal comments">
     <h3 class="ui dividing header">Comments</h3>
     {{#each comment in commentsArray}}
@@ -9,7 +11,7 @@
       <div class="ui divider"></div>
       <form class="ui reply form">
         <div class="field">
-          <textarea></textarea>
+          <div id="editor"></div>
         </div>
         <div class="ui blue button js-new-comment">Reply</div>
       </form>
@@ -20,11 +22,11 @@
 <template name="comment_row">
   <div class="comment">
     <div class="content">
-      <a class="author">{{comment.username}}</a>
+      <div class="author">{{comment.username}}</div>
       <div class="metadata">
         <span class="date">{{getTime comment.createdAt}}</span>
       </div>
-      <div class="text">{{comment.text}}</div>
+      <div class="text">{{{comment.text}}}</div>
       {{#if currentUser}}
         <div class="actions">
           <a class="reply">Reply</a>
