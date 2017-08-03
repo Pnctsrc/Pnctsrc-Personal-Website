@@ -57,6 +57,74 @@ Meteor.publish({
     });
   },
   "notifications": function(){
-    return Notifications.find({userId: this.userId});
+    const self = this;
+    Notifications.find({userId: this.userId}).forEach(function(notification){
+      const notification_id = notification._id;
+
+      //process text
+      var URL, target_document;
+      if(notification.type === "posts"){
+        target_document = Posts.findOne(notification.document_id);
+        URL = "/posts/view/" + encodeURIComponent(target_document.title.replace(/ +/g, "_"));
+      } else {
+        target_document = Works.findOne(notification.document_id);
+        URL = "/works/view/" + encodeURIComponent(target_document.title.replace(/ +/g, "_"));
+      }
+      const text = "<p>Replied to your comment in " + "<a target='_blank' href=\"" + URL +"\">" + target_document.title + "</a></p>";
+      notification.text = text;
+
+      //process user info
+      const profile = Meteor.users.findOne(notification.sender);
+      const first_name = profile.pnctsrc.first_name;
+      const last_name = profile.pnctsrc.last_name;
+      const username = (first_name + " " + last_name).replace(/ +/gi, " ").trim();
+      if(/^ +$/gi.test(username)){
+        notification.username = "Member";
+        self.added("notifications", notification_id, notification);
+      } else {
+        notification.username = username;
+        self.added("notifications", notification_id, notification);
+      }
+    });
+
+    var handle = Notifications.find({userId: this.userId}).observeChanges({
+      added: function(id) {
+        const notification_id = id;
+        const notification = Notifications.findOne(notification_id);
+        //process text
+        var URL, target_document;
+        if(notification.type === "posts"){
+          target_document = Posts.findOne(notification.document_id);
+          URL = "/posts/view/" + encodeURIComponent(target_document.title.replace(/ +/g, "_"));
+        } else {
+          target_document = Works.findOne(notification.document_id);
+          URL = "/works/view/" + encodeURIComponent(target_document.title.replace(/ +/g, "_"));
+        }
+        const text = "<p>Replied to your comment in " + "<a target='_blank' href=\"" + URL +"\">" + target_document.title + "</a></p>";
+        notification.text = text;
+
+        //process user info
+        const profile = Meteor.users.findOne(notification.sender);
+        const first_name = profile.pnctsrc.first_name;
+        const last_name = profile.pnctsrc.last_name;
+        const username = (first_name + " " + last_name).replace(/ +/gi, " ").trim();
+        if(/^ +$/gi.test(username)){
+          notification.username = "Member";
+          self.added("notifications", notification_id, notification);
+        } else {
+          notification.username = username;
+          self.added("notifications", notification_id, notification);
+        }
+      },
+      changed: function(id, fields){
+        self.changed("notifications", id, fields);
+      },
+      removed: function(id){
+        self.removed("notifications", id);
+      }
+    })
+
+    this.ready();
+    this.onStop(() => handle.stop());
   }
 })

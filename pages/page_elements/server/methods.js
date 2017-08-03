@@ -1,5 +1,5 @@
 Meteor.methods({
-  "insert_comment": function(comment){
+  "insert_comment": function(comment, type){
     //validate
     if(!this.userId){
       throw new Meteor.Error("403", "Not logged in.");
@@ -19,8 +19,10 @@ Meteor.methods({
         sender: comment.userId,
         userId: Comments.findOne(comment.target_comment).userId,
         read: false,
-        document_id: comment.target_comment,
-        createdAt: comment.createdAt
+        comment_id: comment.target_comment,
+        document_id: Comments.findOne(comment.target_comment).document_id,
+        createdAt: comment.createdAt,
+        type: type
       }
 
       Notifications.insert(notification);

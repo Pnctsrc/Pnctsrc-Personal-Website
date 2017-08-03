@@ -298,7 +298,7 @@ Template.comment_row.events({
       document_id: current_document._id
     }
 
-    Meteor.call("insert_comment", comment, function(err){
+    Meteor.call("insert_comment", comment, Router.current().route._path.match(/(works|posts)/)[0], function(err){
       if(err){
         window.alert(err);
         return;
