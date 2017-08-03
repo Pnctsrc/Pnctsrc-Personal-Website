@@ -19,6 +19,17 @@ Template.notification.helpers({
   }
 })
 
+Template.notification.events({
+  "click .js-all-read": function(){
+    Meteor.call("set_all_read", function(err){
+      if(err){
+        window.alert(err);
+        return;
+      }
+    })
+  }
+})
+
 Template.notification_row.helpers({
   "getTime": function(date){
     if(!date){
@@ -70,5 +81,5 @@ Template.notification_row.events({
         return;
       }
     })
-  }
+  },
 })
