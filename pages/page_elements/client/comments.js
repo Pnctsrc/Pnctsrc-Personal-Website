@@ -24,12 +24,19 @@ Template.comments.onRendered(function(){
          container: quill_buttons,
          handlers: {
            'source': function(){
+             //show warning
+             $(".ui.message.hidden").transition('fade');
+
              const textarea = $(".ql-custom textarea");
              if(textarea.css("display") === "none"){
+               $(".ql-formats > button[class!='ql-source']").css("visibility", "hidden");
+               $(".ql-formats > span").css("visibility", "hidden");
                textarea.css("display", "block");
              } else {
                var html = txtArea.value;
                this.quill.pasteHTML(html);
+               $(".ql-formats > button[class!='ql-source']").css("visibility", "visible");
+               $(".ql-formats > span").css("visibility", "visible");
                textarea.css("display", "none");
              }
            },
@@ -49,6 +56,14 @@ Template.comments.onRendered(function(){
   })
 
   this.editor = quill;
+
+  //initialize message
+  $('.message .close').on('click', function(){
+    $(this).closest('.message').transition('fade');
+    setTimeout(function(){
+      $(".ui.message").remove();
+    }, 500)
+  })
 })
 
 Template.comments.helpers({

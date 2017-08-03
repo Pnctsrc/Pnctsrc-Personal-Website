@@ -6,6 +6,7 @@
 .ui.comments .comment .text {
   word-wrap:break-word;
   max-width: 500px;
+  padding: 0;
 }
 
 .ui.comments .comment .text blockquote {
@@ -51,7 +52,7 @@ div#editor .ql-editor {
 pre.ql-syntax {
   background-color: rgb(238, 238, 238);
   border-radius: 5px;
-  padding: 5px;
+  padding: 5px !important;
 }
 
 .ql-source:after {
