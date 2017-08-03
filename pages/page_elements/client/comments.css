@@ -78,4 +78,6 @@ pre.ql-syntax {
   resize: none !important;
   border: 0px !important;
   display: none;
+  min-height: 140px !important;
+  max-height: none !important;
 }
