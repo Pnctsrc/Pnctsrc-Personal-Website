@@ -231,21 +231,24 @@ Template.comment_row.helpers({
       return convertDate(date);
     }
   },
-  "commentsArray": function(comment){
-    return Comments.find({parent_comment: comment._id}, {$sort: {createdAt: -1}}).fetch();
+  "commentsArray": function(){
+    return Comments.find({parent_comment: this.comment._id}, {$sort: {createdAt: -1}}).fetch();
   },
-  "hasComments": function(comment){
-    return Comments.find({parent_comment: comment._id}).count() > 0;
+  "hasComments": function(){
+    return Comments.find({parent_comment: this.comment._id}).count() > 0;
   },
   "commentsDict": function(){
     return Template.instance().commentsDict;
   },
-  "sameUser": function(target_user){
-    return target_user === Meteor.userId();
+  "sameUser": function(){
+    return this.comment.userId === Meteor.userId();
   },
   "getText": function(text){
     return text.replace(/(?:\r\n|\r|\n)/g, '<br />');
-  }
+  },
+  "hasSubComments": function(){
+    return Comments.findOne({parent_comment: this.comment._id});
+  },
 })
 
 Template.comment_row.events({
@@ -325,5 +328,16 @@ Template.comment_row.events({
         return;
       }
     })
+  },
+  "click .js-hide-comment": function(event, instance){
+    //toggle comments display
+    const current_display = event.currentTarget.parentNode.parentNode.nextElementSibling.style.display;
+    if(!current_display){
+      event.currentTarget.parentNode.parentNode.nextElementSibling.style.display = "none";
+      event.currentTarget.innerHTML = 'Show&darr;';
+    } else {
+      event.currentTarget.parentNode.parentNode.nextElementSibling.style.display = "";
+      event.currentTarget.innerHTML = 'Hide&uarr;';
+    }
   }
 })

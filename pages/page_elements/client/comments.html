@@ -39,16 +39,19 @@
       {{#if currentUser}}
         <div class="actions">
           <a class="reply">Reply</a>
-          {{#if sameUser comment.userId}}
+          {{#if sameUser}}
             <a class="delete js-delete-comment">Delete</a>
+          {{/if}}
+          {{#if hasSubComments}}
+            <a class="hide js-hide-comment">Hide&uarr;</a>
           {{/if}}
         </div>
       {{/if}}
     </div>
 
-    {{#if hasComments comment}}
+    {{#if hasComments}}
       <div class="comments">
-        {{#each comment in commentsArray comment}}
+        {{#each comment in commentsArray}}
           {{> comment_row comment=comment commentsDict=commentsDict}}
         {{/each}}
       </div>
