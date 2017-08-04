@@ -77,14 +77,16 @@ Meteor.methods({
     }
 
     //delete notifications for documents that do not exist
-    Notifications.remove({
-      sender: comment_document.userId,
-      comment_id: comment_document.target_comment,
-      from_comment: comment_id,
-      document_id: comment_document.document_id,
-      type: Posts.findOne(comment_document.document_id) ? "posts" : "works",
-      userId: Comments.findOne(comment_document.target_comment).userId
-    });
+    if(comment_document.userId !== this.userId){//ignore notifications for the same user
+      Notifications.remove({
+        sender: comment_document.userId,
+        comment_id: comment_document.target_comment,
+        from_comment: comment_id,
+        document_id: comment_document.document_id,
+        type: Posts.findOne(comment_document.document_id) ? "posts" : "works",
+        userId: Comments.findOne(comment_document.target_comment).userId
+      });
+    }
 
     Comments.remove(comment_id);
   }
