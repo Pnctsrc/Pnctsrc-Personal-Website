@@ -72,7 +72,7 @@ Meteor.publish({
       }
 
       if(notification.from_comment.match(/deleted_/gi)){
-        text = "<p>Deleted his/her comment in " + "<a target='_blank' href=\"" + URL +"\">" + target_document.title + "</a>, so all your comments replated to this comment have been deleted.</p>";
+        text = "<p>Deleted his/her comment in " + "<a target='_blank' href=\"" + URL +"\">" + target_document.title + "</a>, so all your comments related to this comment have been deleted.</p>";
       } else {
         text = "<p>Replied to your comment in " + "<a target='_blank' href=\"" + URL +"\">" + target_document.title + "</a></p>";
       }
