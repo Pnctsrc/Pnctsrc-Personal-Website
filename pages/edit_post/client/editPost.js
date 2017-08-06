@@ -118,7 +118,7 @@ Template.editPost.events({
     const post_object = Template.instance().editDict.get("post_object");
     const post_id = post_object._id;
     const submit_object = {
-      HTML_content: $('.fr-view-edit').froalaEditor('html.get', true),
+      HTML_content: $('#summernote').summernote('code'),
       title: $("#post_title_edit").val(),
       description: $("#post_description_edit textarea").val(),
       type: $("#post_type").dropdown("get value")
