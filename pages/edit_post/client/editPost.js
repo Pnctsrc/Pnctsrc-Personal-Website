@@ -43,7 +43,26 @@ Template.editPost.onCreated(function(){
 
           //initialize page elements
           setTimeout(function () {
-            $('#summernote').summernote();
+            $('#summernote').summernote({
+              callbacks: {
+                onImageUpload: function(files) {
+                  // upload image to server and create imgNode...
+                  data = new FormData();
+                  data.append("file", files[0]);
+                  $.ajax({
+                      data: data,
+                      type: "POST",
+                      url: "/api/v1/pic?api_key=" + encodeURIComponent(access_key),
+                      cache: false,
+                      contentType: false,
+                      processData: false,
+                      success: function(url) {
+                        $('#summernote').summernote('insertImage', url.link);
+                      }
+                  });
+                }
+              }
+            });
 
             $(".note-popover").appendTo(".summernote_popover_wrapper");
 
