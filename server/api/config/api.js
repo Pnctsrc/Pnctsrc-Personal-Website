@@ -97,6 +97,7 @@ API = {
           var file_size = 0;
           file.on('data', function(data){
             file_size += data.length;
+            if(ifError) return;
 
             if(file_size > 10485760){
               API.utility.sendError(context, 400, "Image size larger than 10MB.");
@@ -109,10 +110,15 @@ API = {
             ifError = true;
           }
 
-          if(ifError) return;
-
           final_filename = (new Date()).getTime() + "." + fileExtension;
           var saveTo = Meteor.settings.IMAGE_PATH + final_filename;
+
+          if(ifError) {
+            if(fs.existsSync(saveTo)){
+              fs.unlinkSync(saveTo);
+            }
+            return;
+          }
 
           file.pipe(fs.createWriteStream(saveTo));
         });
