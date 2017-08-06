@@ -58,6 +58,11 @@ Template.editPost.onCreated(function(){
                       processData: false,
                       success: function(url) {
                         $('#summernote').summernote('insertImage', url.link);
+                      },
+                      error: function(err){
+                        const error = err.responseJSON;
+                        window.alert(error.message + "[" + error.error + "]");
+                        return;
                       }
                   });
                 }
