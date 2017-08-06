@@ -1,5 +1,7 @@
 <template name="editPost">
-  {{> codemirror_script}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/components/dropdown.js"></script>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.css" rel="stylesheet">
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 
   {{#if dataNotReady}}
     {{> page_loader loaderDict=editDict wait_time=0}}
@@ -33,7 +35,10 @@
     </div>
   </div>
   <hr>
-  <div class="fr-view-edit">{{{post.HTML_content}}}</div>
+  <div class="summernote_wrapper">
+    <div id="summernote">{{{post.HTML_content}}}</div>
+  </div>
+  <div class="summernote_popover_wrapper"></div>
   <hr>
   <button class="ui left floated red button" id="post_submit_delete">Delete</button>
   <button class="ui right floated blue button" id="post_submit_edit">Update</button>

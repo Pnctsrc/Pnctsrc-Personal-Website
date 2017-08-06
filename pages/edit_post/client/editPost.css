@@ -1,3 +1,9 @@
 div#post_tag_edit {
   font-size: 13px;
 }
+
+@media screen and (min-width: 769px) {
+  .summernote_wrapper .popover.bottom, .summernote_popover_wrapper .popover.bottom {
+    margin-left: -362px;
+  }
+}
