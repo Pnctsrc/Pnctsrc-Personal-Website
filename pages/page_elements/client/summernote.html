@@ -1,0 +1,10 @@
+<template name="summernote">
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.css" rel="stylesheet">
+  {{#if dataReady}}
+    {{> summernote_editor HTML_content=HTML_content editorDict=editorDict}}
+  {{/if}}
+</template>
+
+<template name="summernote_editor">
+  <div id="summernote">{{{HTML_content}}}</div>
+</template>

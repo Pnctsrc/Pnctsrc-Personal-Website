@@ -1,8 +1,4 @@
 <template name="editPost">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/components/dropdown.js"></script>
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.css" rel="stylesheet">
-  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
-
   {{#if dataNotReady}}
     {{> page_loader loaderDict=editDict wait_time=0}}
   {{/if}}
@@ -36,7 +32,7 @@
   </div>
   <hr>
   <div class="summernote_wrapper">
-    <div id="summernote">{{{post.HTML_content}}}</div>
+    {{> summernote HTML_content=post.HTML_content editorDict=editDict}}
   </div>
   <div class="summernote_popover_wrapper"></div>
   <hr>

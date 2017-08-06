@@ -39,55 +39,11 @@ Template.editPost.onCreated(function(){
             return;
           }
 
-          editDict.set("post_object", data);
+          editDict.set("data_object", data);
 
-          //initialize page elements
-          setTimeout(function () {
-            $('#summernote').summernote({
-              callbacks: {
-                onImageUpload: function(files) {
-                  // upload image to server and create imgNode...
-                  data = new FormData();
-                  data.append("file", files[0]);
-                  $.ajax({
-                    data: data,
-                    type: "POST",
-                    url: "/api/v1/pic?api_key=" + encodeURIComponent(access_key),
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function(url) {
-                      $('#summernote').summernote('insertImage', url.link);
-                    },
-                    error: function(err){
-                      const error = err.responseJSON;
-                      window.alert(error.message + "[" + error.error + "]");
-                      return;
-                    }
-                  });
-                },
-                onMediaDelete: function($img){
-                  $.ajax({
-                    type: "DELETE",
-                    url: "/api/v1/pic",
-                    data: {
-                      src: $img[0].src,
-                      api_key: access_key
-                    },
-                    dataType: "application/json"
-                  });
-                }
-              }
-            });
-
-            $(".note-popover").appendTo(".summernote_popover_wrapper");
-
-            $('#post_type')
-              .dropdown("set selected", data.type);
-            ;
-
-            editDict.set("data_ready", true);//shows content after the initialization is finished
-          }, 300);
+          $('#post_type')
+            .dropdown("set selected", data.type);
+          ;
         })
       }
     })
@@ -96,7 +52,7 @@ Template.editPost.onCreated(function(){
 
 Template.editPost.helpers({
   "post": function(){
-    return Template.instance().editDict.get("post_object");
+    return Template.instance().editDict.get("data_object");
   },
 
   "editDict": function(){
@@ -115,7 +71,7 @@ Template.editPost.events({
     $("#post_submit_delete").attr("class", "ui left floated red loading disabled button");
 
     const access_key = Template.instance().authDict.get("access_key");
-    const post_object = Template.instance().editDict.get("post_object");
+    const post_object = Template.instance().editDict.get("data_object");
     const post_id = post_object._id;
     const submit_object = {
       HTML_content: $('#summernote').summernote('code'),
@@ -142,7 +98,7 @@ Template.editPost.events({
     $("#post_submit_delete").attr("class", "ui left floated red loading disabled button");
 
     const access_key = Template.instance().authDict.get("access_key");
-    const post_object = Template.instance().editDict.get("post_object");
+    const post_object = Template.instance().editDict.get("data_object");
     const post_id = post_object._id;
 
     Meteor.call("delete_post", post_id, access_key, function(err, result){
