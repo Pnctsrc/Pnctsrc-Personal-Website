@@ -50,20 +50,31 @@ Template.editPost.onCreated(function(){
                   data = new FormData();
                   data.append("file", files[0]);
                   $.ajax({
-                      data: data,
-                      type: "POST",
-                      url: "/api/v1/pic?api_key=" + encodeURIComponent(access_key),
-                      cache: false,
-                      contentType: false,
-                      processData: false,
-                      success: function(url) {
-                        $('#summernote').summernote('insertImage', url.link);
-                      },
-                      error: function(err){
-                        const error = err.responseJSON;
-                        window.alert(error.message + "[" + error.error + "]");
-                        return;
-                      }
+                    data: data,
+                    type: "POST",
+                    url: "/api/v1/pic?api_key=" + encodeURIComponent(access_key),
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(url) {
+                      $('#summernote').summernote('insertImage', url.link);
+                    },
+                    error: function(err){
+                      const error = err.responseJSON;
+                      window.alert(error.message + "[" + error.error + "]");
+                      return;
+                    }
+                  });
+                },
+                onMediaDelete: function($img){
+                  $.ajax({
+                    type: "DELETE",
+                    url: "/api/v1/pic",
+                    data: {
+                      src: $img[0].src,
+                      api_key: access_key
+                    },
+                    dataType: "application/json"
                   });
                 }
               }
