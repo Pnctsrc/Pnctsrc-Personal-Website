@@ -97,3 +97,8 @@ Template.summernote_editor.onRendered(function(){
     self.editorDict.set("data_ready", true);//shows content after the initialization is finished
   }, 300);
 })
+
+Template.summernote_editor.onDestroyed(function(){
+  $(window).unbind("resize");
+  $(window).unbind("scroll");
+})
