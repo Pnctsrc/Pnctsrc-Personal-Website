@@ -1,16 +1,14 @@
 <template name="about">
-  {{> codemirror_script}}
-
   {{#if dataNotReady}}
     {{> page_loader loaderDict=aboutDict wait_time=0}}
   {{/if}}
 
-  <div class="froala-editor">{{{about.HTML_content}}}</div>
-
   {{#if isEditing}}
+    {{> summernote HTML_content=about.HTML_content editorDict=aboutDict}}
     <hr>
     <button class="ui right floated blue button" id="about_submit">Update</button>
   {{else}}
+    {{{about.HTML_content}}}
     <hr>
     <div id="social">
       <a href="https://github.com/Pnctsrc" target="_blank"><i class="github icon"></i></a>
