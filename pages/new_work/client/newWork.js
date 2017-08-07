@@ -21,81 +21,11 @@ Template.newWork.onCreated(function(){
       return;
     }
 
-    //initialize page elements
-    setTimeout(function () {
-      const s3hash = result;
+    newDict.set("data_object", true);
 
-      $('#froala-editor').froalaEditor({
-        imageUploadURL: '/api/v1/pic?api_key=' + encodeURIComponent(access_key),
-        fileUploadURL: '/api/v1/file?api_key=' + encodeURIComponent(access_key),
-        codeMirror: true,
-        codeMirrorOptions: {
-          indentWithTabs: true,
-          lineNumbers: true,
-          lineWrapping: true,
-          mode: 'text/html',
-          tabMode: 'indent',
-          tabSize: 4
-        },
-        tabSpaces: 4,
-      })
-
-      $('#froala-editor').on('froalaEditor.image.error', function (e, editor, error, response) {
-        if(error && error.code != 3){
-          window.alert(error.message);
-        } else {
-          if(response){
-            const result = JSON.parse(response);
-            window.alert(result.message + " [" + result.error +"]");
-          }
-        }
-      });
-
-      $('#froala-editor').on('froalaEditor.image.beforeRemove', function (e, editor, $img) {
-        $.ajax({
-          type: "DELETE",
-          url: "/api/v1/pic",
-          data: {
-            src: $img[0].currentSrc,
-            api_key: access_key
-          },
-          dataType: "application/json"
-        });
-      });
-
-      $('#froala-editor').on('froalaEditor.file.error', function (e, editor, error, response) {
-        if(error && error.code != 3){
-          window.alert(error.message);
-        } else {
-          if(response){
-            const result = JSON.parse(response);
-            window.alert(result.message + " [" + result.error +"]");
-          }
-        }
-      });
-
-      $('#froala-editor').on('froalaEditor.file.inserted', function (e, editor, $file, response) {
-        $file.attr("target", "_blank");
-      });
-
-      $('#froala-editor').on('froalaEditor.file.unlink', function (e, editor, link) {
-        $.ajax({
-          type: "DELETE",
-          url: "/api/v1/file",
-          data: {
-            filename: link.href.substring(link.href.lastIndexOf("/") + 1),
-            api_key: access_key
-          },
-          dataType: "application/json"
-        });
-      });
-
-      $('#work_type')
-        .dropdown()
-      ;
-
-      newDict.set("data_ready", true);//shows content after the initialization is finished
-    }, 300);
+    $('#work_type')
+      .dropdown()
+    ;
   })
 })
 
@@ -116,7 +46,7 @@ Template.newWork.events({
 
     const access_key = Template.instance().authDict.get("access_key");
     const submit_object = {
-      HTML_content: $('#froala-editor').froalaEditor('html.get', true),
+      HTML_content: $('#summernote').summernote('code'),
       title: $("#work_title").val(),
       description: $("#work_description textarea").val(),
       date: $("#work_date").val(),
