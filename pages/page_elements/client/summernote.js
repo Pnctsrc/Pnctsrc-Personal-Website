@@ -60,7 +60,16 @@ Template.summernote_editor.onRendered(function(){
     $('#summernote').summernote({
       callbacks: {
         onImageUpload: function(files) {
-          // upload image to server and create imgNode...
+          //client side validation
+          const image_file = files[0];
+          if(image_file.size > 10485760){
+            window.alert("Image size can't be larger than 10MB.");
+            return;
+          } else if (!image_file.type.match(/(png|jpeg|jpg)/)){
+            window.alert("Only allow png, jpg or jpeg image.");
+            return;
+          }
+
           data = new FormData();
           data.append("file", files[0]);
           $.ajax({
