@@ -49,7 +49,7 @@
     </div>
   </div>
   <hr>
-  <div class="fr-view-edit">{{{work.HTML_content}}}</div>
+  {{> summernote HTML_content=work.HTML_content editorDict=editDict}}
   <hr>
 
   <button class="ui left floated red button" id="work_submit_delete_edit">Delete</button>

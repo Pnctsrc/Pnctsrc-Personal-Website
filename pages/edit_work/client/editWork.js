@@ -39,83 +39,11 @@ Template.editWork.onCreated(function(){
             return;
           }
 
-          editDict.set("work_object", data);
+          editDict.set("data_object", data);
 
-          //initialize page elements
-          setTimeout(function () {
-            const s3hash = result;
-
-            $('.fr-view-edit').froalaEditor({
-              imageUploadURL: '/api/v1/pic?api_key=' + encodeURIComponent(access_key),
-              fileUploadURL: '/api/v1/file?api_key=' + encodeURIComponent(access_key),
-              codeMirror: true,
-              codeMirrorOptions: {
-                indentWithTabs: true,
-                lineNumbers: true,
-                lineWrapping: true,
-                mode: 'text/html',
-                tabMode: 'indent',
-                tabSize: 4
-              },
-              tabSpaces: 4,
-            })
-
-            $('.fr-view-edit').on('froalaEditor.image.error', function (e, editor, error, response) {
-              if(error && error.code != 3){
-                window.alert(error.message);
-              } else {
-                if(response){
-                  const result = JSON.parse(response);
-                  window.alert(result.message + " [" + result.error +"]");
-                }
-              }
-            });
-
-            $('.fr-view-edit').on('froalaEditor.image.beforeRemove', function (e, editor, $img) {
-              $.ajax({
-                type: "DELETE",
-                url: "/api/v1/pic",
-                data: {
-                  src: $img[0].currentSrc,
-                  api_key: access_key
-                },
-                dataType: "application/json"
-              });
-            });
-
-            $('.fr-view-edit').on('froalaEditor.file.error', function (e, editor, error, response) {
-              if(error && error.code != 3){
-                window.alert(error.message);
-              } else {
-                if(response){
-                  const result = JSON.parse(response);
-                  window.alert(result.message + " [" + result.error +"]");
-                }
-              }
-            });
-
-            $('.fr-view-edit').on('froalaEditor.file.inserted', function (e, editor, $file, response) {
-              $file.attr("target", "_blank");
-            });
-
-            $('.fr-view-edit').on('froalaEditor.file.unlink', function (e, editor, link) {
-              $.ajax({
-                type: "DELETE",
-                url: "/api/v1/file",
-                data: {
-                  filename: link.href.substring(link.href.lastIndexOf("/") + 1),
-                  api_key: access_key
-                },
-                dataType: "application/json"
-              });
-            });
-
-            $('#work_type_edit')
-              .dropdown('set selected', data.type);
-            ;
-
-            editDict.set("data_ready", true);//shows content after the initialization is finished
-          }, 300);
+          $('#work_type_edit')
+            .dropdown('set selected', data.type);
+          ;
         })
       }
     })
@@ -124,7 +52,7 @@ Template.editWork.onCreated(function(){
 
 Template.editWork.helpers({
   "work": function(){
-    return Template.instance().editDict.get("work_object");
+    return Template.instance().editDict.get("data_object");
   },
 
   "editDict": function(){
@@ -143,10 +71,10 @@ Template.editWork.events({
     $("#work_submit_delete_edit").attr("class", "ui left floated red loading disabled button");
 
     const access_key = Template.instance().authDict.get("access_key");
-    const work_object = Template.instance().editDict.get("work_object");
+    const work_object = Template.instance().editDict.get("data_object");
     const work_id = work_object._id;
     const submit_object = {
-      HTML_content: $('.fr-view-edit').froalaEditor('html.get', true),
+      HTML_content: $('#summernote').summernote('code'),
       title: $("#work_title_edit").val(),
       description: $("#work_description_edit textarea").val(),
       date: $("#work_date_edit").val(),
@@ -215,7 +143,7 @@ Template.editWork.events({
     $("#work_submit_delete_edit").attr("class", "ui left floated red loading disabled button");
 
     const access_key = Template.instance().authDict.get("access_key");
-    const work_object = Template.instance().editDict.get("work_object");
+    const work_object = Template.instance().editDict.get("data_object");
     const work_id = work_object._id;
 
     Meteor.call("delete_work", work_id, access_key, function(err, result){
@@ -231,7 +159,7 @@ Template.editWork.events({
   },
 
   "change #work_pic_edit": function(event){
-    const work_object = Template.instance().editDict.get("work_object");
+    const work_object = Template.instance().editDict.get("data_object");
 
     if($("#work_pic_edit").val()){
       const file_type = event.currentTarget.files[0].type;
