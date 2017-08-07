@@ -31,10 +31,7 @@
     </div>
   </div>
   <hr>
-  <div class="summernote_wrapper">
-    {{> summernote HTML_content=post.HTML_content editorDict=editDict}}
-  </div>
-  <div class="summernote_popover_wrapper"></div>
+  {{> summernote HTML_content=post.HTML_content editorDict=editDict}}
   <hr>
   <button class="ui left floated red button" id="post_submit_delete">Delete</button>
   <button class="ui right floated blue button" id="post_submit_edit">Update</button>
