@@ -52,7 +52,14 @@ Template.comments.onRendered(function(){
   quill.on('text-change', () => {
     var beautify = require('js-beautify').html_beautify;
     const html_content = $("#editor .ql-editor")[0].innerHTML;
-    txtArea.value = beautify(html_content);
+
+    //sanitize HTML
+    var sanitizeHtml = require('sanitize-html');
+    var safe_html = sanitizeHtml(html_content, {
+      allowedTags: ['a','strong','blockquote','code','h1','h2','h3','i','li','ol','p','pre','ul','br','hr','s','em','u'],
+      allowedAttributes: false,
+    });
+    txtArea.value = beautify(safe_html);
   })
 
   this.editor = quill;
@@ -149,7 +156,14 @@ Template.comments.events({
     quill.on('text-change', () => {
       var beautify = require('js-beautify').html_beautify;
       const html_content = $("#editor-reply .ql-editor")[0].innerHTML;
-      txtArea.value = beautify(html_content);
+
+      //sanitize HTML
+      var sanitizeHtml = require('sanitize-html');
+      var safe_html = sanitizeHtml(html_content, {
+        allowedTags: ['a','strong','blockquote','code','h1','h2','h3','i','li','ol','p','pre','ul','br','hr','s','em','u'],
+        allowedAttributes: false,
+      });
+      txtArea.value = beautify(safe_html);
     })
 
     instance.editor_reply = quill;
@@ -170,10 +184,7 @@ Template.comments.events({
     const html_content = $("#editor .ql-editor")[0].innerHTML;
 
     //validate text_input
-    if(html_content.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
-      window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr>, <s>, <em>, <u> are OK to use.");
-      return;
-    } else if($(html_content).text().length == 0 || /^ *$/gi.test($(html_content).text())){
+    if($(html_content).text().length == 0 || /^ *$/gi.test($(html_content).text())){
       window.alert("Empty comment.");
       return;
     }
@@ -264,10 +275,7 @@ Template.comment_row.events({
     const text_input = $("#editor-reply .ql-editor")[0].innerHTML;
 
     //validate text_input
-    if(text_input.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
-      window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr>, <s>, <em>, <u> are OK to use.");
-      return;
-    } else if($(text_input).text().length == 0 || /^ *$/gi.test($(text_input).text())){
+    if($(text_input).text().length == 0 || /^ *$/gi.test($(text_input).text())){
       window.alert("Empty comment.");
       return;
     }
