@@ -8,9 +8,12 @@ SimpleSchema.messages({
     "invalidDeleteMark": "Invalid delete mark",
     "invalidParentComment": "Invalid parent comment",
     "invalidTargetComment": "Invalid target comment",
+    "invalidComment": "Invalid comment",
     "noSuchUser": "User does not exist",
     "noSuchComment": "Comment does not exist",
     "noSuchDocument": "Document does not exist",
+    "notTheSameDocument": "Not the same document",
+    "sameUser" : "Same user",
 })
 
 Schemas.Google = new SimpleSchema({
@@ -470,3 +473,96 @@ Schemas.Comments = new SimpleSchema({
 });
 
 Comments.attachSchema(Schemas.Comments);
+
+Schemas.Notifications = new SimpleSchema({
+  userId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    custom: function(){
+      if(!Meteor.users.findOne(this.value)){
+        return "noSuchUser";
+      }
+
+      if(this.value === this.field("sender").value){
+        return "sameUser";
+      }
+    }
+  },
+  sender: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    custom: function(){
+      if(!Meteor.users.findOne(this.value)){
+        return "noSuchUser";
+      }
+
+      if(this.value === this.field("userId").value){
+        return "sameUser";
+      }
+    }
+  },
+  createdAt: {
+    type: Date,
+    custom: function(){
+      if(this.value > new Date()){
+        return "invalidDate";
+      }
+    }
+  },
+  read: {
+    type: Boolean
+  },
+  from_comment: {
+    type: String,
+    regEx:  /^(deleted_)?[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/,
+    custom: function(){
+      if(this.value.substring(0, 8) !== "deleted_"){
+        if(!Comments.findOne(this.value)){
+          return "noSuchComment";
+        }
+      } else {
+        if(Comments.findOne(this.value.replace("deleted_", ""))){
+          return "invalidComment";
+        }
+      }
+    }
+  },
+  comment_id: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+    custom: function(){
+      if(this.value){
+        const comment_document = Comments.findOne(this.value);
+        if(!comment_document){
+          return "noSuchComment";
+        }
+
+        if(comment_document.document_id !== this.field("document_id").value){
+          return "notTheSameDocument";
+        }
+      }
+    }
+  },
+  document_id: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    custom: function(){
+      if(!Posts.findOne(this.value) && !Works.findOne(this.value)){
+        return "noSuchDocument";
+      }
+
+      if(this.field("comment_id").value){
+        if(this.value !== Comments.findOne(this.field("comment_id").value).document_id){
+          return "notTheSameDocument";
+        }
+      }
+    }
+  },
+  type: {
+    type: String,
+    allowedValues: ["posts", "works"]
+  }
+});
+
+Notifications.attachSchema(Schemas.Notifications);
