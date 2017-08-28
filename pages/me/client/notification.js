@@ -5,9 +5,9 @@ Template.notification.onRendered(function(){
 Template.notification.helpers({
   "notification_list": function(filter){
     if(filter == "new"){
-      return Notifications.find({read: false}).fetch();
+      return Notifications.find({read: false}, {sort: {createdAt: -1}}).fetch();
     } else {
-      return Notifications.find().fetch();
+      return Notifications.find({}, {sort: {createdAt: -1}}).fetch();
     }
   },
   "hasNotifications": function(filter){
