@@ -3,7 +3,14 @@ Schemas = {};
 SimpleSchema.messages({
     "unsafeHTML": "HTML is unsafe",
     "invalidTitle": "Invalid title",
-    "notUniqueTitle": "Title is not unique"
+    "notUniqueTitle": "Title is not unique",
+    "invalidDate": "Invalid Date",
+    "invalidDeleteMark": "Invalid delete mark",
+    "invalidParentComment": "Invalid parent comment",
+    "invalidTargetComment": "Invalid target comment",
+    "noSuchUser": "User does not exist",
+    "noSuchComment": "Comment does not exist",
+    "noSuchDocument": "Document does not exist",
 })
 
 Schemas.Google = new SimpleSchema({
@@ -338,3 +345,128 @@ Schemas.About = new SimpleSchema({
 });
 
 About.attachSchema(Schemas.About);
+
+Schemas.Comments = new SimpleSchema({
+  parent_comment: {
+    type: String,
+    regEx: /^(deleted_)?[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/,
+    optional: true,
+    custom: function(){
+      //if a parent comment exists,
+      //it must be either the same as the target comment or the parent of the target comment
+      //and it must be in the same post/work as that of the current comment
+
+      //if it is marked as deleted, check if it is actually deleted
+      if(this.value){
+        if(this.value.substring(0, 8) !== "deleted_"){
+          const parent_comment = Comments.findOne(this.value);
+          const target_comment = Comments.findOne(this.field("target_comment").value);
+          const document_id = this.field('document_id').value;
+
+          if(!parent_comment){
+            return "noSuchComment";
+          }
+
+          if(parent_comment.document_id !== document_id){
+            return "invalidParentComment";
+          }
+
+          if(target_comment){
+            if(this.value !== this.field("target_comment").value){
+              if(this.value !== target_comment.parent_comment){
+                return "invalidParentComment";
+              }
+            }
+          }
+        } else {
+          if(Comments.findOne(this.value.replace("deleted_", ""))){
+            return "invalidDeleteMark";
+          }
+        }
+      }
+    }
+  },
+  target_comment: {
+    type: String,
+    regEx: /^(deleted_)?[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/,
+    optional: true,
+    custom: function(){
+      //if a target comment exists,
+      //and it must be in the same post/work as that of the current comment
+
+      //if it is marked as deleted, check if it is actually deleted
+      if(this.value){
+        if(this.value.substring(0, 8) !== "deleted_"){
+          const target_comment = Comments.findOne(this.value);
+
+          if(!target_comment){
+            return "noSuchComment";
+          }
+
+          if(target_comment.document_id !== this.field("document_id").value){
+            return "invalidTargetComment";
+          }
+        } else {
+          if(Comments.findOne(this.value.replace("deleted_", ""))){
+            return "invalidDeleteMark";
+          }
+        }
+      }
+    }
+  },
+  text: {
+    type: String,
+    min: 1,
+    autoValue: function(){
+      var sanitizeHtml = require('sanitize-html');
+      var safe_html = sanitizeHtml(this.value, {
+        allowedTags: ['a','strong','blockquote','code','h1','h2','h3','i','li','ol','p','pre','ul','br','hr','s','em','u'],
+        allowedAttributes: false,
+      });
+
+      return safe_html;
+    }
+  },
+  document_id: {
+    type: String,
+    regEx: /^(deleted_)?[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/,
+    custom: function(){
+      //check only when the document_id is not marked as deleted
+      if(this.value.substring(0, 8) !== "deleted_"){
+        if(!Posts.findOne(this.value) && !Works.findOne(this.value)){
+          return "noSuchDocument";
+        }
+      }
+    }
+  },
+  userId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    custom: function(){
+      if(!Meteor.users.findOne(this.value)){
+        return "noSuchUser";
+      }
+    }
+  },
+  createdAt: {
+    type: Date,
+    custom: function(){
+      if(this.value > new Date()){
+        return "invalidDate";
+      }
+    }
+  },
+  lastModified: {
+    type: Date,
+    optional: true,
+    custom: function(){
+      if(this.field("createdAt").value > this.value){
+        return "invalidDate";
+      } else if(this.value > new Date()){
+        return "invalidDate";
+      }
+    }
+  }
+});
+
+Comments.attachSchema(Schemas.Comments);

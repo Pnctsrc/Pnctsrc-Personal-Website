@@ -75,7 +75,7 @@ Template.comments.onRendered(function(){
 
 Template.comments.helpers({
   "commentsArray": function(){
-    return Comments.find({parent_comment: ""}, {$sort: {createdAt: -1}}).fetch();
+    return Comments.find({parent_comment: {$exists: false}}, {$sort: {createdAt: -1}}).fetch();
   },
   "commentsDict": function(){
     return Template.instance().commentsDict;
