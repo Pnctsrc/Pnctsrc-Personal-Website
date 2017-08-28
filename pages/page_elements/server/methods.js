@@ -3,11 +3,16 @@ Meteor.methods({
     //validate
     if(!this.userId){
       throw new Meteor.Error("403", "Not logged in.");
-    } else if(comment.text.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
-      throw new Meteor.Error("400", "Invalid HTML.");
     } else if(comment.text.replace(/<\/?(\w|\d)+>/gi, "").length == 0 || /^ *$/gi.test(comment.text)){
       throw new Meteor.Error("400", "Empty HTML content.");
     }
+
+    //sanitize HTML
+    var sanitizeHtml = require('sanitize-html');
+    comment.text = sanitizeHtml(comment.text, {
+      allowedTags: ['a','strong','blockquote','code','h1','h2','h3','i','li','ol','p','pre','ul','br','hr','s','em','u'],
+      allowedAttributes: false,
+    });
 
     comment.userId = this.userId;
     comment.createdAt = new Date();
