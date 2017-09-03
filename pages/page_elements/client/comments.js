@@ -178,6 +178,9 @@ Template.comments.events({
     })
   },
   "click .js-new-comment": function(event, instance){
+    //set loading status
+    $(".js-new-comment").attr("class", "ui blue loading disabled button js-new-comment");
+
     //get the current post/work data
     const current_document = instance.commentsDict.get("data_object");
     const quill = instance.editor;
@@ -199,10 +202,12 @@ Template.comments.events({
     Meteor.call("insert_comment", comment, function(err){
       if(err){
         window.alert(err);
+        $(".js-new-comment").attr("class", "ui blue button js-new-comment");
         return;
       }
       quill.pasteHTML("");
       $(".ui.reply.form textarea").val("");
+      $(".js-new-comment").attr("class", "ui blue button js-new-comment");
     });
   },
 })
@@ -264,6 +269,9 @@ Template.comment_row.helpers({
 
 Template.comment_row.events({
   "click .js-reply-comment": function(event, instance){
+    //set loading status
+    $(".js-reply-comment").attr("class", "ui blue loading disabled button js-reply-comment");
+
     //make sure the template is correct
     if(event.currentTarget.parentNode.parentNode !== instance.firstNode) return;
 
@@ -312,6 +320,7 @@ Template.comment_row.events({
     Meteor.call("insert_comment", comment, Router.current().route._path.match(/(works|posts)/)[0], function(err){
       if(err){
         window.alert(err);
+        $(".js-reply-comment").attr("class", "ui blue button js-reply-comment");
         return;
       }
 
