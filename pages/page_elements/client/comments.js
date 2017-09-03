@@ -52,7 +52,14 @@ Template.comments.onRendered(function(){
   quill.on('text-change', () => {
     var beautify = require('js-beautify').html_beautify;
     const html_content = $("#editor .ql-editor")[0].innerHTML;
-    txtArea.value = beautify(html_content);
+
+    //sanitize HTML
+    var sanitizeHtml = require('sanitize-html');
+    var safe_html = sanitizeHtml(html_content, {
+      allowedTags: ['a','strong','blockquote','code','h1','h2','h3','i','li','ol','p','pre','ul','br','hr','s','em','u'],
+      allowedAttributes: false,
+    });
+    txtArea.value = beautify(safe_html);
   })
 
   this.editor = quill;
@@ -68,7 +75,7 @@ Template.comments.onRendered(function(){
 
 Template.comments.helpers({
   "commentsArray": function(){
-    return Comments.find({parent_comment: ""}, {$sort: {createdAt: -1}}).fetch();
+    return Comments.find({parent_comment: {$exists: false}}, {$sort: {createdAt: -1}}).fetch();
   },
   "commentsDict": function(){
     return Template.instance().commentsDict;
@@ -149,7 +156,14 @@ Template.comments.events({
     quill.on('text-change', () => {
       var beautify = require('js-beautify').html_beautify;
       const html_content = $("#editor-reply .ql-editor")[0].innerHTML;
-      txtArea.value = beautify(html_content);
+
+      //sanitize HTML
+      var sanitizeHtml = require('sanitize-html');
+      var safe_html = sanitizeHtml(html_content, {
+        allowedTags: ['a','strong','blockquote','code','h1','h2','h3','i','li','ol','p','pre','ul','br','hr','s','em','u'],
+        allowedAttributes: false,
+      });
+      txtArea.value = beautify(safe_html);
     })
 
     instance.editor_reply = quill;
@@ -164,16 +178,16 @@ Template.comments.events({
     })
   },
   "click .js-new-comment": function(event, instance){
+    //set loading status
+    $(".js-new-comment").attr("class", "ui blue loading disabled button js-new-comment");
+
     //get the current post/work data
     const current_document = instance.commentsDict.get("data_object");
     const quill = instance.editor;
     const html_content = $("#editor .ql-editor")[0].innerHTML;
 
     //validate text_input
-    if(html_content.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
-      window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr>, <s>, <em>, <u> are OK to use.");
-      return;
-    } else if($(html_content).text().length == 0 || /^ *$/gi.test($(html_content).text())){
+    if($(html_content).text().length == 0 || /^ *$/gi.test($(html_content).text())){
       window.alert("Empty comment.");
       return;
     }
@@ -188,10 +202,12 @@ Template.comments.events({
     Meteor.call("insert_comment", comment, function(err){
       if(err){
         window.alert(err);
+        $(".js-new-comment").attr("class", "ui blue button js-new-comment");
         return;
       }
       quill.pasteHTML("");
       $(".ui.reply.form textarea").val("");
+      $(".js-new-comment").attr("class", "ui blue button js-new-comment");
     });
   },
 })
@@ -253,6 +269,9 @@ Template.comment_row.helpers({
 
 Template.comment_row.events({
   "click .js-reply-comment": function(event, instance){
+    //set loading status
+    $(".js-reply-comment").attr("class", "ui blue loading disabled button js-reply-comment");
+
     //make sure the template is correct
     if(event.currentTarget.parentNode.parentNode !== instance.firstNode) return;
 
@@ -264,10 +283,7 @@ Template.comment_row.events({
     const text_input = $("#editor-reply .ql-editor")[0].innerHTML;
 
     //validate text_input
-    if(text_input.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
-      window.alert("Only <a>, <strong>, <blockquote>, <code>, <h1>, <h2>, <h3>, <i>, <li>, <ol>, <p>, <pre>, <ul>, <br>, <hr>, <s>, <em>, <u> are OK to use.");
-      return;
-    } else if($(text_input).text().length == 0 || /^ *$/gi.test($(text_input).text())){
+    if($(text_input).text().length == 0 || /^ *$/gi.test($(text_input).text())){
       window.alert("Empty comment.");
       return;
     }
@@ -304,6 +320,7 @@ Template.comment_row.events({
     Meteor.call("insert_comment", comment, Router.current().route._path.match(/(works|posts)/)[0], function(err){
       if(err){
         window.alert(err);
+        $(".js-reply-comment").attr("class", "ui blue button js-reply-comment");
         return;
       }
 
@@ -311,6 +328,11 @@ Template.comment_row.events({
     });
   },
   "click .js-delete-comment": function(event, instance){
+    //set loading status
+    const $delete_button = instance.$(".js-delete-comment");
+    $("<div class=\"ui active inline delete loader\"></div>").insertAfter($delete_button);
+    $delete_button.css("display", "none");
+
     //make sure the template is correct
     if(event.currentTarget.parentNode.parentNode !== $(instance.firstNode)[0].firstElementChild) return;
     const current_comment = this.comment;
@@ -325,6 +347,8 @@ Template.comment_row.events({
     Meteor.call("delete_comment", current_comment._id, function(err){
       if(err){
         window.alert(err);
+        instance.$(".delete.loader").remove();
+        $delete_button.css("display", "inline-block");
         return;
       }
     })

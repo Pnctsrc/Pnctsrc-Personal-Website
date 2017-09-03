@@ -12,6 +12,7 @@
     "js-beautify": "^1.6.14",
     "meteor-node-stubs": "~0.2.4",
     "quill": "^1.3.0",
+    "sanitize-html": "^1.14.1",
     "summernote": "^0.8.6"
   },
   "devDependencies": {

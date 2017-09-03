@@ -3,11 +3,16 @@ Meteor.methods({
     //validate
     if(!this.userId){
       throw new Meteor.Error("403", "Not logged in.");
-    } else if(comment.text.match(/<((?!(a|strong|blockquote|code|h1|h2|h3|i|li|ol|p|pre|ul|br|hr|s|em|u)).)*>/gi)){
-      throw new Meteor.Error("400", "Invalid HTML.");
     } else if(comment.text.replace(/<\/?(\w|\d)+>/gi, "").length == 0 || /^ *$/gi.test(comment.text)){
       throw new Meteor.Error("400", "Empty HTML content.");
     }
+
+    //sanitize HTML
+    var sanitizeHtml = require('sanitize-html');
+    comment.text = sanitizeHtml(comment.text, {
+      allowedTags: ['a','strong','blockquote','code','h1','h2','h3','i','li','ol','p','pre','ul','br','hr','s','em','u'],
+      allowedAttributes: false,
+    });
 
     comment.userId = this.userId;
     comment.createdAt = new Date();
@@ -40,8 +45,14 @@ Meteor.methods({
       throw new Meteor.Error("400", "No the same user.")
     }
 
-    //remove all related comments
+    //keep a copy of the original comment
     const comment_document = Comments.findOne(comment_id);
+
+    //remove the comment
+    Comments.remove(comment_id);
+    const date = new Date();
+
+    //remove all related comments
     if(Comments.findOne({parent_comment: comment_id})){
       const user_list = new Set();
       var related_comments = Comments.find({parent_comment: comment_id}).fetch();
@@ -49,10 +60,16 @@ Meteor.methods({
       while(related_comments.length != 0){
         const current_doc = related_comments.splice(0, 1)[0];
         related_comments = related_comments.concat(Comments.find({parent_comment: current_doc._id}).fetch());
+
+        //mark comments that are going to be deleted
+        var target_comment, parent_comment;
+        target_comment = current_doc.target_comment === comment_id ? "deleted_" + current_doc.target_comment : current_doc.target_comment;
+        parent_comment = current_doc.parent_comment === comment_id ? "deleted_" + current_doc.parent_comment : current_doc.parent_comment;
+
         Comments.update(current_doc._id, {$set: {
           document_id: "deleted_" + current_doc.document_id,
-          target_comment: "deleted_" + current_doc.target_comment,
-          parent_comment: "deleted_" + current_doc.parent_comment
+          target_comment: target_comment,
+          parent_comment: parent_comment
         }});
         if(current_doc.userId !== this.userId){
           user_list.add(current_doc.userId);
@@ -60,7 +77,6 @@ Meteor.methods({
       }
 
       //send Notifications
-      const date = new Date();
       for(var userId of user_list){
         const notification = {
           userId: userId,
@@ -87,7 +103,5 @@ Meteor.methods({
         userId: Comments.findOne(comment_document.target_comment).userId
       });
     }
-
-    Comments.remove(comment_id);
   }
 })
