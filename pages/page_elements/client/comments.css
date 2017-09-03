@@ -86,3 +86,14 @@ div.document_comment .ql-custom > textarea {
   min-height: 140px !important;
   max-height: none !important;
 }
+
+div.document_comment .delete.loader {
+  width: 1em;
+  height: 1em;
+  margin-left: 1em;
+}
+
+div.document_comment .delete.loader::after, div.document_comment .delete.loader::before {
+  width: 1em;
+  height: 1em;
+}

@@ -328,6 +328,11 @@ Template.comment_row.events({
     });
   },
   "click .js-delete-comment": function(event, instance){
+    //set loading status
+    const $delete_button = instance.$(".js-delete-comment");
+    $("<div class=\"ui active inline delete loader\"></div>").insertAfter($delete_button);
+    $delete_button.css("display", "none");
+
     //make sure the template is correct
     if(event.currentTarget.parentNode.parentNode !== $(instance.firstNode)[0].firstElementChild) return;
     const current_comment = this.comment;
@@ -342,6 +347,8 @@ Template.comment_row.events({
     Meteor.call("delete_comment", current_comment._id, function(err){
       if(err){
         window.alert(err);
+        instance.$(".delete.loader").remove();
+        $delete_button.css("display", "inline-block");
         return;
       }
     })
