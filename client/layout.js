@@ -7,6 +7,9 @@ Template.layout.helpers({
 
     const page_type = Router.current().route._path.match(/(works|posts|about|me)/)[0];
     return name === page_type ? "active" : "";
+  },
+  "isView": function(){
+    return Router.current().route._path.match(/\/view\//);
   }
 })
 

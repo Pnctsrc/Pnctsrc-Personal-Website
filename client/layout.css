@@ -33,6 +33,10 @@
   font-weight: bold;
 }
 
+.goback:hover {
+  cursor: pointer;
+}
+
 #side_nav_bar {
   background-color: #383838;
   width: 100%;

@@ -1,0 +1,58 @@
+.affix_view .nav .active {
+  font-weight: bold;
+}
+
+.affix_view .nav .nav {
+  display: none;
+}
+
+.affix_view .nav .active .nav {
+  display: block;
+  padding-left: 15px;
+}
+
+.affix_view .nav li {
+  font-size: 0.85em;
+}
+
+.affix_view .nav .nav li {
+  font-size: 0.68em;
+}
+
+.affix_view a {
+  display: block;
+}
+
+.affix_view .nav .nav a {
+  font-weight: normal;
+}
+
+.affix_view .nav .nav span {
+  margin: 0 5px 0 2px;
+}
+
+.affix_view .nav .nav .active a,
+.affix_view .nav .nav .active:hover a,
+.affix_view .nav .nav .active:focus a {
+  font-weight: bold;
+  padding-left: 10px;
+  border-left: 5px solid white;
+}
+
+.affix_view .nav .nav .active span,
+.affix_view .nav .nav .active:hover span,
+.affix_view .nav .nav .active:focus span {
+  display: none;
+}
+
+.affix_view ul {
+  list-style: none;
+  list-style-type: none;
+  line-height: normal;
+}
+
+.affix_view {
+  display: none;
+  transition: visibility 0s, opacity 0.35s linear;
+  opacity: 0;
+}

@@ -10,18 +10,35 @@
         <h1>{{homepage.name}}</h1>
         <p>{{homepage.description}}</p>
         <hr>
-        <div id="link_list">
-          <a href="/about" class="{{ifActive 'about'}}">About</a>
-          <a href="/posts?page=1" class="{{ifActive 'posts'}}">Blog</a>
-          <a href="/works?page=1" class="{{ifActive 'works'}}">Works</a>
-        </div>
-        <div class="login">
-          {{#if currentUser}}
-            <a href="/me/profile" class="js-profile {{ifActive 'me'}}">Profile</a>
-          {{else}}
-            <a class="js-login">Sign in</a>
-          {{/if}}
-        </div>
+
+        {{#if isView}}
+          <div id="link_list">
+            <a class="goback" onclick="window.history.back()">Go Back</a>
+          </div>
+          <div class="login">
+            {{#if currentUser}}
+              <a href="/me/profile" class="js-profile {{ifActive 'me'}}">Profile</a>
+            {{else}}
+              <a class="js-login">Sign in</a>
+            {{/if}}
+          </div>
+          <div class="affix_view">
+            {{> affix}}
+          </div>
+        {{else}}
+          <div id="link_list">
+            <a href="/about" class="{{ifActive 'about'}}">About</a>
+            <a href="/posts?page=1" class="{{ifActive 'posts'}}">Blog</a>
+            <a href="/works?page=1" class="{{ifActive 'works'}}">Works</a>
+          </div>
+          <div class="login">
+            {{#if currentUser}}
+              <a href="/me/profile" class="js-profile {{ifActive 'me'}}">Profile</a>
+            {{else}}
+              <a class="js-login">Sign in</a>
+            {{/if}}
+          </div>
+        {{/if}}
         <div class="copyright">© {{homepage.copyrightYear}} <a href="{{homepage.siteURL}}">Pnctsrc.me</a></div>
       </nav>
 
