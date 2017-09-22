@@ -20,6 +20,9 @@ Template.workView.onRendered(function(){
     workViewDict.set("data_object", result);
     workViewDict.set("data_ready", true);
 
+    //initialize affix
+    Session.set("view_html_content", result.HTML_content);
+
     setTimeout(function () {
       $("div#card_view").css("opacity", 1);
     }, 200);
