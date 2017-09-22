@@ -55,4 +55,47 @@
   display: none;
   transition: visibility 0s, opacity 0.35s linear;
   opacity: 0;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.affix_view::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.affix_view::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+
+.affix_view::-webkit-scrollbar-thumb {
+  background: #e1e1e1;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+
+.affix_view::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+
+.affix_view::-webkit-scrollbar-thumb:active {
+  background: #000000;
+}
+.affix_view::-webkit-scrollbar-track {
+  background: #666666;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+
+.affix_view::-webkit-scrollbar-track:hover {
+  background: #666666;
+}
+
+.affix_view::-webkit-scrollbar-track:active {
+  background: #333333;
+}
+
+.affix_view::-webkit-scrollbar-corner {
+  background: transparent;
 }
