@@ -7,7 +7,7 @@ Template.affix.onRendered(function(){
     target: '.scrollspy'
   });
 
-  //disable default scroll on affix 
+  //disable default scroll on affix
   $('.affix_view').on('mousewheel DOMMouseScroll', function(e){
     var e0 = e.originalEvent;
     var delta = e0.wheelDelta || -e0.detail;
@@ -21,10 +21,7 @@ Template.affix.onDestroyed(function(){
   Session.set("view_html_content");
 
   //hide the affix
-  $(".affix_view").css("opacity", 0);
-  setTimeout(function () {
-    $(".affix_view").css("display", "block");
-  }, 350);
+  $(".affix_view").toggle("hide");
 })
 
 Template.affix_tag_list.helpers({
@@ -42,17 +39,18 @@ Template.affix_tag_list.helpers({
         tag_regex = new RegExp("id=\"" + parent_tag + "-\\w+\"", "gi");
       } else {
         tag_regex = new RegExp("id=\"\\w+\"", "gi");
-
-        //display the affix
-        $(".affix_view").css("display", "block");
-        setTimeout(function () {
-          $(".affix_view").css("opacity", 1);
-        }, 350);
       }
 
       if(tag.match(tag_regex)){
         tags.push(tag.match(/(\w|-|\d)+/gi)[2]);
       }
+    }
+
+    //display the affix
+    if(!parent_tag){
+      setTimeout(function(){
+        $(".affix_view").toggle("hide");
+      }, 350)
     }
 
     return tags;
