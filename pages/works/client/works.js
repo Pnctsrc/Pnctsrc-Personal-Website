@@ -122,3 +122,10 @@ Template.works.helpers({
     return encodeURIComponent(work_title.replace(/ +/g, "_"));
   },
 })
+
+Template.works.events({
+  "click .work_title_link": function(){
+    var page_url = Router.current().originalUrl;
+    Session.set("last_visited_work_url", page_url);
+  }
+})

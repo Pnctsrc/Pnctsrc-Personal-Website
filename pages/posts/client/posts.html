@@ -13,7 +13,7 @@
     {{#each post in post_list}}
       <div class="ui fluid card">
         <div class="content">
-          <div class="header"><a href="/posts/view/{{getTitleURL post.title}}">{{post.title}}</a></div>
+          <div class="header"><a href="/posts/view/{{getTitleURL post.title}}" class="post_title_link">{{post.title}}</a></div>
           <div class="right floated meta">
             <span id="post_time"><i class="calendar icon"></i>{{getTime post.createdAt}}</span>
           </div>

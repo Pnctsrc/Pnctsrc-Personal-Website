@@ -141,3 +141,10 @@ Template.posts.helpers({
     return encodeURIComponent(post_title.replace(/ +/g, "_"));
   },
 })
+
+Template.posts.events({
+  "click .post_title_link": function(){
+    var page_url = Router.current().originalUrl;
+    Session.set("last_visited_post_url", page_url);
+  }
+})
