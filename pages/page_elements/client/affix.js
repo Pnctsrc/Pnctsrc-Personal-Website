@@ -30,19 +30,19 @@ Template.affix_tag_list.helpers({
     var tags = [];
 
     var HTML_content = Session.get("view_html_content");
-    var tag_list = HTML_content.match(/<h[1-6] id=\"(\w|-|\d)+\">/gi);
+    var tag_list = HTML_content.match(/<h[1-6] id=\"([\w_\d]+-?)+\">/gi);
     if(!tag_list) return;
 
     for(var tag of tag_list){
       var tag_regex;
       if(parent_tag){
-        tag_regex = new RegExp("id=\"" + parent_tag + "-\\w+\"", "gi");
+        tag_regex = new RegExp("id=\"" + parent_tag + "-[\\w_\\d]+\"", "gi");
       } else {
-        tag_regex = new RegExp("id=\"\\w+\"", "gi");
+        tag_regex = new RegExp("id=\"[\\w_\\d]+\"", "gi");
       }
 
       if(tag.match(tag_regex)){
-        tags.push(tag.match(/(\w|-|\d)+/gi)[2]);
+        tags.push(tag.match(/([\w_\d]|-)+/gi)[2]);
       }
     }
 
@@ -52,21 +52,21 @@ Template.affix_tag_list.helpers({
         $(".affix_view").toggle("hide");
       }, 350)
     }
-
+    
     return tags;
   },
   "has_sub_tags": function(parent_tag){
     if(!Session.get("view_html_content")) return;
 
     var HTML_content = Session.get("view_html_content");
-    var tag_list = HTML_content.match(/<h[1-6] id=\"(\w|-|\d)+\">/gi);
+    var tag_list = HTML_content.match(/<h[1-6] id=\"([\w_\d]+-?)+\">/gi);
 
     for(var tag of tag_list){
       var tag_regex;
       if(parent_tag){
-        tag_regex = new RegExp("id=\"" + parent_tag + "-\\w+\"", "gi");
+        tag_regex = new RegExp("id=\"" + parent_tag + "-[\\w_\\d]+\"", "gi");
       } else {
-        tag_regex = new RegExp("id=\"\\w+\"", "gi");
+        tag_regex = new RegExp("id=\"[\\w_\\d]+\"", "gi");
       }
 
       if(tag.match(tag_regex)) return true;
@@ -79,5 +79,8 @@ Template.affix_tag_list.helpers({
   },
   "getId": function(parent_tag){
     return parent_tag ? null : "affix_nav";
+  },
+  "getTagName": function(tag){
+    return tag.replace(/_/gi, " ");
   }
 })

@@ -8,7 +8,7 @@
   <ul class="nav" data-spy="{{getAttrSpy parent_tag}}" id="{{getId parent_tag}}">
     {{#each tag in current_level_tags parent_tag}}
       <li>
-        <a href="#{{tag}}">{{tag}}</a>
+        <a href="#{{tag}}">{{getTagName tag}}</a>
         {{#if has_sub_tags parent_tag}}
           {{> affix_tag_list parent_tag=tag}}
         {{/if}}
