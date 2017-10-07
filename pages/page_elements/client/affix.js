@@ -30,7 +30,7 @@ Template.affix_tag_list.helpers({
     var tags = [];
 
     var HTML_content = Session.get("view_html_content");
-    var tag_list = HTML_content.match(/<h[1-6] id=\"([\w_\d]+-?)+\">/gi);
+    var tag_list = HTML_content.match(/<h[1-6] id=\"[\w_\d]+(-[\w_\d]+)?\">/gi);
     if(!tag_list) return;
 
     for(var tag of tag_list){
@@ -42,7 +42,7 @@ Template.affix_tag_list.helpers({
       }
 
       if(tag.match(tag_regex)){
-        tags.push(tag.match(/([\w_\d]|-)+/gi)[2]);
+        tags.push(tag.match(/[\w_\d]+(-[\w_\d]+)?/gi)[2]);
       }
     }
 
@@ -52,7 +52,7 @@ Template.affix_tag_list.helpers({
         $(".affix_view").toggle("hide");
       }, 350)
     }
-    
+
     return tags;
   },
   "has_sub_tags": function(parent_tag){
@@ -81,6 +81,10 @@ Template.affix_tag_list.helpers({
     return parent_tag ? null : "affix_nav";
   },
   "getTagName": function(tag){
-    return tag.replace(/_/gi, " ");
+    if(tag.indexOf("-") === -1){
+      return tag.replace(/_/gi, " ");
+    } else {
+      return tag.substring(tag.indexOf("-") + 1).replace(/_/gi, " ");
+    }
   }
 })
