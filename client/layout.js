@@ -9,6 +9,7 @@ Template.layout.helpers({
     return name === page_type ? "active" : "";
   },
   "isView": function(){
+    if(!Router.current().route) return;
     var view_regex = new RegExp("^\\/(works|posts)\\/view\\/:(post|work)_title$");
     return Router.current().route._path.match(view_regex);
   },
