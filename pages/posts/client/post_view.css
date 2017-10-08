@@ -20,6 +20,7 @@ div#card_view {
 
 .fr-view > pre {
   text-align: center;
+  white-space: pre;
 }
 
 .fr-view > pre > code {
