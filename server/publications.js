@@ -7,6 +7,7 @@ Meteor.publish({
     if(!document_id || typeof document_id !== "string") return;
 
     const self = this;
+    const user_comments = {};
     Comments.find({document_id: document_id}).forEach(function(comment){
       const comment_id = comment._id;
       const profile = Meteor.users.findOne(comment.userId);
@@ -20,28 +21,41 @@ Meteor.publish({
         comment.username = username;
         self.added("comments", comment_id, comment);
       }
+
+      if(comment.userId === self.userId) user_comments[comment_id] = comment;//save user's own comments for later use
     });
 
     var handle = Comments.find({document_id: document_id}).observeChanges({
       added: function(id) {
         const comment = Comments.findOne(id);
-        const profile = Meteor.users.findOne(comment.userId);
-        const first_name = profile.pnctsrc.first_name;
-        const last_name = profile.pnctsrc.last_name;
-        const username = (first_name + " " + last_name).replace(/ +/gi, " ").trim();
-        if(/^ +$/gi.test(username)){
-          comment.username = "Member";
-          self.added("comments", id, comment);
-        } else {
-          comment.username = username;
-          self.added("comments", id, comment);
+        //only update user's own comment
+        if(comment.userId === self.userId){
+          const profile = Meteor.users.findOne(comment.userId);
+          const first_name = profile.pnctsrc.first_name;
+          const last_name = profile.pnctsrc.last_name;
+          const username = (first_name + " " + last_name).replace(/ +/gi, " ").trim();
+          if(/^ +$/gi.test(username)){
+            comment.username = "Member";
+            self.added("comments", id, comment);
+          } else {
+            comment.username = username;
+            self.added("comments", id, comment);
+          }
+          user_comments[id] = comment;//save user's own comments for later use
         }
       },
       changed: function(id, fields){
-        self.changed("comments", id, fields);
+        //only modify user's own comment
+        if(Comments.findOne(id).userId === self.userId){
+          self.changed("comments", id, fields);
+        }
       },
       removed: function(id){
-        self.removed("comments", id);
+        //only remove user's own comment
+        if(user_comments[id].userId === self.userId){
+          delete user_comments[id];//delete the stored user comment
+          self.removed("comments", id);
+        }
       }
     })
 
