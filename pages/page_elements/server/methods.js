@@ -3,6 +3,10 @@ Meteor.methods({
     //validate
     if(!this.userId){
       throw new Meteor.Error("403", "Not logged in.");
+    } else if(!comment || !comment instanceof Object){
+      throw new Meteor.Error("400", "Invalid comment.");
+    } else if(type && typeof type !== "string"){
+      throw new Meteor.Error("400", "Invalid type.");
     } else if(comment.text.replace(/<\/?(\w|\d)+>/gi, "").length == 0 || /^ *$/gi.test(comment.text)){
       throw new Meteor.Error("400", "Empty HTML content.");
     }
@@ -39,8 +43,10 @@ Meteor.methods({
     //validate
     if(!this.userId){
       throw new Meteor.Error("403", "Not logged in.");
+    } else if(!comment_id || typeof comment_id !== "string"){
+      throw new Meteor.Error("400", "Invalid comment ID.");
     } else if (!Comments.findOne(comment_id)){
-      throw new Meteor.Error("400", "No such comment.")
+      throw new Meteor.Error("404", "No such comment.")
     } else if (Comments.findOne(comment_id).userId !== this.userId){
       throw new Meteor.Error("400", "No the same user.")
     }

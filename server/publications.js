@@ -3,6 +3,9 @@ Meteor.publish({
     return Homepage.find();
   },
   "comments": function(document_id){
+    //validate
+    if(!document_id || typeof document_id !== "string") return;
+
     const self = this;
     Comments.find({document_id: document_id}).forEach(function(comment){
       const comment_id = comment._id;

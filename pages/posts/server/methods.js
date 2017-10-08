@@ -1,6 +1,9 @@
 Meteor.methods({
   "get_posts": function(query){
     //validation
+    if(!query || !query instanceof Object){
+      throw new Meteor.Error(400, "Invalid query.");
+    }
     const requested_page = query.page;
     const total_pages = Math.ceil(MetaData.findOne({type: "posts"}).total_count / MetaData.findOne({type: "posts"}).posts_per_page);
     if (!/^-?\d+$/i.test(requested_page)) {
@@ -80,23 +83,28 @@ Meteor.methods({
 
   "get_post_by_id": function(post_id){
     //validation
-    if(!/^[0-9A-Za-z]{17}$/ig.test(post_id)){
-      throw new Meteor.Error(404, "Invalid id");
+    if(!post_id || typeof post_id !== "string"){
+      throw new Meteor.Error(400, "Invalid post ID.");
+    } else if(!/^[0-9A-Za-z]{17}$/ig.test(post_id)){
+      throw new Meteor.Error(400, "Invalid ID.");
     } else if(!Posts.findOne(post_id)){
-      throw new Meteor.Error(404, "No such post");
+      throw new Meteor.Error(404, "No such post.");
     }
 
     return Posts.findOne(post_id);
   },
 
   "get_post_by_title": function(post_title){
+    if(!post_title || typeof post_title !== "string"){
+      throw new Meteor.Error(400, "Invalid post title.");
+    }
     const title_replaced = post_title.replace(/_/g, " ");
 
     //validation
     if(title_replaced.length < 1){
-      throw new Meteor.Error(404, "Invalid title");
+      throw new Meteor.Error(400, "Invalid title.");
     } else if(!Posts.findOne({title: title_replaced})){
-      throw new Meteor.Error(404, "No such post");
+      throw new Meteor.Error(404, "No such post.");
     }
 
     return Posts.findOne({title: title_replaced});
@@ -104,10 +112,12 @@ Meteor.methods({
 
   "viewCount+1": function(post_id){
     //validation
-    if(!/^[0-9A-Za-z]{17}$/ig.test(post_id)){
-      throw new Meteor.Error(404, "Invalid id");
+    if(!post_id || typeof post_id !== "string"){
+      throw new Meteor.Error(400, "Invalid post ID.");
+    } else if(!/^[0-9A-Za-z]{17}$/ig.test(post_id)){
+      throw new Meteor.Error(400, "Invalid ID.");
     } else if(!Posts.findOne(post_id)){
-      throw new Meteor.Error(404, "No such post");
+      throw new Meteor.Error(404, "No such post.");
     }
 
     //update the view count
@@ -129,6 +139,9 @@ Meteor.methods({
 
   "get_posts_metadata": function(query){
     //validation
+    if(!query || !query instanceof Object){
+      throw new Meteor.Error(400, "Invalid query.");
+    }
     const requested_cate = query.category;
     if(requested_cate !== "music" &&
        requested_cate !== "tech" &&

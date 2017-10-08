@@ -3,14 +3,22 @@ Meteor.methods({
     //server-side validation
     if(access_key !== Meteor.settings.PNCTSRC_ACCESS_KEY){
       console.log("key - " + access_key);
-      throw new Meteor.Error(100, "Access denied");
+      throw new Meteor.Error(100, "Access denied.");
     }
   },
   "save_work_thumbnail": function(object, image_base64, file_type, access_key, work_id){
     //server-side validation
     if(access_key !== Meteor.settings.PNCTSRC_ACCESS_KEY){
       console.log("key - " + access_key);
-      throw new Meteor.Error(100, "Access denied");
+      throw new Meteor.Error(100, "Access denied.");
+    } else if(!object || !object instanceof Object){
+      throw new Meteor.Error(400, "Invalid work.");
+    } else if(!file_type || typeof file_type !== "string"){
+      throw new Meteor.Error(400, "Invalid file type.");
+    } else if(work_id && typeof work_id !== "string"){
+      throw new Meteor.Error(400, "Invalid work ID.");
+    } else if(!image_base64 || typeof image_base64 !== "string"){
+      throw new Meteor.Error(400, "Invalid base64.");
     }
 
     if(_.indexOf(["jpg", "jpeg", "png"], file_type) === -1){

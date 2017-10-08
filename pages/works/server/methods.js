@@ -1,6 +1,9 @@
 Meteor.methods({
   "get_works": function(query){
     //validation
+    if(!query instanceof Object){
+      throw new Meteor.Error(400, "Invalid query.");
+    }
     const requested_page = query.page;
     const total_pages = Math.ceil(MetaData.findOne({type: "works"}).total_count / MetaData.findOne({type: "works"}).works_per_page);
     if (!/^-?\d+$/i.test(requested_page)) {
@@ -84,23 +87,28 @@ Meteor.methods({
 
   "get_work_by_id": function(work_id){
     //validation
-    if(!/^[0-9A-Za-z]{17}$/ig.test(work_id)){
-      throw new Meteor.Error(404, "Invalid id");
+    if(!work_id || typeof work_id !== "string"){
+      throw new Meteor.Error(400, "Invalid work ID.");
+    } else if(!/^[0-9A-Za-z]{17}$/ig.test(work_id)){
+      throw new Meteor.Error(400, "Invalid work ID.");
     } else if(!Works.findOne(work_id)){
-      throw new Meteor.Error(404, "No such post");
+      throw new Meteor.Error(404, "No such post.");
     }
 
     return Works.findOne(work_id);
   },
 
   "get_work_by_title": function(work_title){
+    if(!work_title || typeof work_title !== "string"){
+      throw new Meteor.Error(400, "Invalid work title.");
+    }
     const title_replaced = work_title.replace(/_/g, " ");
 
     //validation
     if(title_replaced.length < 1){
-      throw new Meteor.Error(404, "Invalid title");
+      throw new Meteor.Error(400, "Invalid title.");
     } else if(!Works.findOne({title: title_replaced})){
-      throw new Meteor.Error(404, "No such work");
+      throw new Meteor.Error(404, "No such work.");
     }
 
     return Works.findOne({title: title_replaced});
@@ -109,10 +117,12 @@ Meteor.methods({
 
   "viewCount+1_work": function(work_id){
     //validation
-    if(!/^[0-9A-Za-z]{17}$/ig.test(work_id)){
-      throw new Meteor.Error(404, "Invalid id");
+    if(!work_id || typeof work_id !== "string"){
+      throw new Meteor.Error(400, "Invalid work ID.");
+    } else if(!/^[0-9A-Za-z]{17}$/ig.test(work_id)){
+      throw new Meteor.Error(400, "Invalid ID.");
     } else if(!Works.findOne(work_id)){
-      throw new Meteor.Error(404, "No such work");
+      throw new Meteor.Error(404, "No such work.");
     }
 
     //update the view count
@@ -134,6 +144,9 @@ Meteor.methods({
 
   "get_works_metadata": function(query){
     //validation
+    if(!query || !query instanceof Object){
+      throw new Meteor.Error(400, "Invalid query.");
+    }
     const requested_cate = query.category;
     if(requested_cate !== "music" &&
        requested_cate !== "tech" &&

@@ -3,6 +3,8 @@ Meteor.methods({
     //validate
     if(!this.userId){
       throw new Meteor.Error("403", "Not logged in.");
+    } else if(!profile || !profile instanceof Object){
+      throw new Meteor.Error("400", "Invalid profile.");
     } else if (!/^[a-zA-Z]{2,50}$/.test(profile.first_name)){
       throw new Meteor.Error("400", "Invalid first name.");
     } else if (!/^[a-zA-Z]{2,50}$/.test(profile.last_name)){
@@ -22,13 +24,15 @@ Meteor.methods({
   },
   "set_read": function(notification_id){
     //validate
+    if(!notification_id || typeof notification_id !== "string"){
+      throw new Meteor.Error("400", "Invalid notification ID.");
+    }
+
     const notification = Notifications.findOne(notification_id);
     if(!this.userId){
       throw new Meteor.Error("403", "Not logged in.");
-    } else if(!notification_id){
-      throw new Meteor.Error("400", "No notification id.");
     } else if(!notification){
-      throw new Meteor.Error("400", "No such notification.");
+      throw new Meteor.Error("404", "No such notification.");
     }
 
     const notification_user = notification.userId;
@@ -41,13 +45,15 @@ Meteor.methods({
   },
   "delete_notification": function(notification_id){
     //validate
+    if(!notification_id || typeof notification_id !== "string"){
+      throw new Meteor.Error("400", "Invalid notification ID.");
+    }
+
     const notification = Notifications.findOne(notification_id);
     if(!this.userId){
       throw new Meteor.Error("403", "Not logged in.");
-    } else if(!notification_id){
-      throw new Meteor.Error("400", "No notification id.");
     } else if(!notification){
-      throw new Meteor.Error("400", "No such notification.");
+      throw new Meteor.Error("404", "No such notification.");
     }
 
     const notification_user = notification.userId;

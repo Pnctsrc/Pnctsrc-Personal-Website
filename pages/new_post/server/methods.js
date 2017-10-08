@@ -3,7 +3,9 @@ Meteor.methods({
     //server-side validation
     if(access_key !== Meteor.settings.PNCTSRC_ACCESS_KEY){
       console.log("key - " + access_key);
-      throw new Meteor.Error(100, "Access denied");
+      throw new Meteor.Error(100, "Access denied.");
+    } else if(!object || !object instanceof Object){
+      throw new Meteor.Error(400, "Invalid post.");
     }
 
     //insert into database
