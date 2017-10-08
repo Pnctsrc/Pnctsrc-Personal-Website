@@ -14,56 +14,6 @@ Template.comments.onRendered(function(){
     }
   });
 
-  import Quill from 'quill'
-
-  var quill_buttons = [{ 'header': 1 }, { 'header': 2 }, 'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', { 'list': 'ordered'}, { 'list': 'bullet' }, { 'indent': '-1'}, { 'indent': '+1' }, { 'align': [] },'clean', 'source'];
-  var quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-       toolbar: {
-         container: quill_buttons,
-         handlers: {
-           'source': function(){
-             //show warning
-             $(".ui.message.hidden").transition('fade');
-
-             const textarea = $("#editor .ql-custom textarea");
-             if(textarea.css("display") === "none"){
-               $(".ui.reply.form.bottom .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
-               $(".ui.reply.form.bottom .ql-formats > span").css("visibility", "hidden");
-               textarea.css("display", "block");
-             } else {
-               var html = txtArea.value;
-               this.quill.pasteHTML(html);
-               $(".ui.reply.form.bottom .ql-formats > button[class!='ql-source']").css("visibility", "visible");
-               $(".ui.reply.form.bottom .ql-formats > span").css("visibility", "visible");
-               textarea.css("display", "none");
-             }
-           },
-         }
-       }
-     },
-  });
-
-  //add source view
-  var txtArea = document.createElement('textarea');
-  var htmlEditor = quill.addContainer('ql-custom');
-  htmlEditor.appendChild(txtArea);
-  quill.on('text-change', () => {
-    var beautify = require('js-beautify').html_beautify;
-    const html_content = $("#editor .ql-editor")[0].innerHTML;
-
-    //sanitize HTML
-    var sanitizeHtml = require('sanitize-html');
-    var safe_html = sanitizeHtml(html_content, {
-      allowedTags: ['a','strong','blockquote','code','h1','h2','h3','i','li','ol','p','pre','ul','br','hr','s','em','u'],
-      allowedAttributes: false,
-    });
-    txtArea.value = beautify(safe_html);
-  })
-
-  this.editor = quill;
-
   //initialize message
   $('.message .close').on('click', function(){
     $(this).closest('.message').transition('fade');
@@ -183,7 +133,7 @@ Template.comments.events({
 
     //get the current post/work data
     const current_document = instance.commentsDict.get("data_object");
-    const quill = instance.editor;
+    const quill = Session.editor;
     const html_content = $("#editor .ql-editor")[0].innerHTML;
 
     //validate text_input
@@ -363,5 +313,59 @@ Template.comment_row.events({
       event.currentTarget.parentNode.parentNode.nextElementSibling.style.display = "";
       event.currentTarget.innerHTML = 'Hide&uarr;';
     }
+  }
+})
+
+Template.editor_wrapper.onRendered(function(){
+  if(Meteor.userId()){
+    import Quill from 'quill'
+
+    var quill_buttons = [{ 'header': 1 }, { 'header': 2 }, 'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', { 'list': 'ordered'}, { 'list': 'bullet' }, { 'indent': '-1'}, { 'indent': '+1' }, { 'align': [] },'clean', 'source'];
+    var quill = new Quill('#editor', {
+      theme: 'snow',
+      modules: {
+         toolbar: {
+           container: quill_buttons,
+           handlers: {
+             'source': function(){
+               //show warning
+               $(".ui.message.hidden").transition('fade');
+
+               const textarea = $("#editor .ql-custom textarea");
+               if(textarea.css("display") === "none"){
+                 $(".ui.reply.form.bottom .ql-formats > button[class!='ql-source']").css("visibility", "hidden");
+                 $(".ui.reply.form.bottom .ql-formats > span").css("visibility", "hidden");
+                 textarea.css("display", "block");
+               } else {
+                 var html = txtArea.value;
+                 this.quill.pasteHTML(html);
+                 $(".ui.reply.form.bottom .ql-formats > button[class!='ql-source']").css("visibility", "visible");
+                 $(".ui.reply.form.bottom .ql-formats > span").css("visibility", "visible");
+                 textarea.css("display", "none");
+               }
+             },
+           }
+         }
+       },
+    });
+
+    //add source view
+    var txtArea = document.createElement('textarea');
+    var htmlEditor = quill.addContainer('ql-custom');
+    htmlEditor.appendChild(txtArea);
+    quill.on('text-change', () => {
+      var beautify = require('js-beautify').html_beautify;
+      const html_content = $("#editor .ql-editor")[0].innerHTML;
+
+      //sanitize HTML
+      var sanitizeHtml = require('sanitize-html');
+      var safe_html = sanitizeHtml(html_content, {
+        allowedTags: ['a','strong','blockquote','code','h1','h2','h3','i','li','ol','p','pre','ul','br','hr','s','em','u'],
+        allowedAttributes: false,
+      });
+      txtArea.value = beautify(safe_html);
+    })
+
+    Session.editor = quill;
   }
 })
