@@ -228,7 +228,7 @@ API = {
         busboy.on('finish', function() {
           if(ifError) return;
 
-          API.utility.response(context, 200, {link: "http://localhost:3000/resources/files/" + final_filename});
+          API.utility.response(context, 200, {link: "/resources/files/" + final_filename});
         });
 
         context.request.pipe(busboy);
