@@ -40,7 +40,8 @@ Template.editWork.onCreated(function(){
           }
 
           editDict.set("data_object", data);
-
+          editDict.set("access_key", access_key);
+          
           $('#work_type_edit')
             .dropdown('set selected', data.type);
           ;

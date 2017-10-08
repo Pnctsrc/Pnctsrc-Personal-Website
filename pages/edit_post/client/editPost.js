@@ -40,6 +40,7 @@ Template.editPost.onCreated(function(){
           }
 
           editDict.set("data_object", data);
+          editDict.set("access_key", access_key);
 
           $('#post_type')
             .dropdown("set selected", data.type);
