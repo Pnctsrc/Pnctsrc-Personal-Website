@@ -22,6 +22,7 @@ Template.about.onCreated(function(){
 
         aboutDict.set("data_object", data);
         aboutDict.set("isEditing", true);
+        aboutDict.set("access_key", access_key);
       })
     })
   } else {

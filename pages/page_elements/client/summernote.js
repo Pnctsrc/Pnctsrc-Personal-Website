@@ -75,7 +75,7 @@ Template.summernote_editor.onRendered(function(){
           $.ajax({
             data: data,
             type: "POST",
-            url: "/api/v1/pic?api_key=" + encodeURIComponent(access_key),
+            url: "/api/v1/pic?api_key=" + encodeURIComponent(self.editorDict.get("access_key")),
             cache: false,
             contentType: false,
             processData: false,
@@ -94,7 +94,7 @@ Template.summernote_editor.onRendered(function(){
             url: "/api/v1/pic",
             data: {
               src: $img[0].src,
-              api_key: access_key
+              api_key: self.editorDict.get("access_key")
             },
             dataType: "application/json"
           });
