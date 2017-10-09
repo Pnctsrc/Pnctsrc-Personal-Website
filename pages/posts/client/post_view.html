@@ -7,7 +7,7 @@
           <span id="post_view_time" class="post_time"><i class="calendar icon"></i>{{getTime post.createdAt}}</span>
         </div>
         <div class="fr-view">
-          {{{post.HTML_content}}}
+          {{> content_view content=post.HTML_content}}
         </div>
         {{#if post.lastModified}}
           <div class="right floated meta">

@@ -4,11 +4,6 @@ Template.workView.onCreated(function(){
 })
 
 Template.workView.onRendered(function(){
-  if(Router.current().params.hash){
-    window.location.hash = "";
-    window.location.hash = Router.current().params.hash;
-  }
-
   const workViewDict = Template.instance().workViewDict;
   Meteor.call("get_work_by_title", Router.current().params.work_title, function(err, result){
     if(err){
@@ -22,10 +17,6 @@ Template.workView.onRendered(function(){
 
     //initialize affix
     Session.set("view_html_content", result.HTML_content);
-
-    setTimeout(function () {
-      $("div#card_view").css("opacity", 1);
-    }, 200);
 
     //update view count
     const work_id = workViewDict.get("data_object")._id;

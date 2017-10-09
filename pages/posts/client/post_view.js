@@ -4,11 +4,6 @@ Template.postView.onCreated(function(){
 })
 
 Template.postView.onRendered(function(){
-  if(Router.current().params.hash){
-    window.location.hash = "";
-    window.location.hash = Router.current().params.hash;
-  }
-
   const postViewDict = Template.instance().postViewDict;
   Meteor.call("get_post_by_title", Router.current().params.post_title, function(err, result){
     if(err){
@@ -22,19 +17,6 @@ Template.postView.onRendered(function(){
 
     //initialize affix
     Session.set("view_html_content", result.HTML_content);
-
-    setTimeout(function () {
-      $("div#card_view").css("opacity", 1);
-
-      //initialize the code blocks
-      const hljs = require("highlight.js");
-      hljs.configure({
-        tabReplace: '  '
-      })
-      $('pre code').each(function(i, block) {
-        hljs.highlightBlock(block);
-      });
-    }, 200);
 
     //update view count
     const post_id = postViewDict.get("data_object")._id;
