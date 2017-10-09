@@ -1,6 +1,10 @@
-div.document_comment .ui.attached.reply.form {
-  transition: visibility 0s, opacity 0.35s linear;
+div.document_comment, {
+  transition: opacity 0.35s linear;
   opacity: 0;
+}
+
+div.document_comment .ui.attached.reply.form {
+ display: none;
 }
 
 div.document_comment .ui.comments .comment .text {
@@ -47,6 +51,11 @@ div.document_comment .ui.minimal.comments .actions {
 
 div.document_comment .ui.form .field {
   max-width: 500px;
+}
+
+div.document_comment .ui.form div.reply.editor {
+  transition: opacity 0.35s linear;
+  opacity: 0;
 }
 
 div.document_comment div#editor .ql-editor, div.document_comment div#editor-reply .ql-editor {

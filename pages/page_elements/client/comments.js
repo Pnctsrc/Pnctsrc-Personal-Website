@@ -21,6 +21,9 @@ Template.comments.onRendered(function(){
       $(".ui.message").remove();
     }, 500)
   })
+
+  //display comment block
+  $(".document_comment").css("opacity", 1);
 })
 
 Template.comments.helpers({
@@ -48,22 +51,8 @@ Template.comments.events({
     if($(".ui.attached.reply.form")[0]){
       //don't attach new one if it's the same comment
       if($(".ui.attached.reply.form")[0].parentNode === event.currentTarget.parentNode.parentNode.parentNode){
-        const current_opacity = $(".ui.attached.reply.form").css("opacity");
-        const current_display = $(".ui.attached.reply.form").css("display");
-
         //toggle display
-        if(current_display === "none"){
-          $(".ui.attached.reply.form").css("display", "block");
-          setTimeout(function(){
-            $(".ui.attached.reply.form").css("opacity", Math.abs(current_opacity - 1));
-          }, 100);
-        } else {
-          $(".ui.attached.reply.form").css("opacity", Math.abs(current_opacity - 1));
-          setTimeout(function(){
-            $(".ui.attached.reply.form").css("display", "none");
-          }, 350);
-        }
-
+        $(".ui.attached.reply.form").toggle(150);
         return;
       }
     }
@@ -119,13 +108,10 @@ Template.comments.events({
     instance.editor_reply = quill;
 
     //show editor
-    $(".ui.attached.reply.form").css("opacity", "1");
+    $(".ui.attached.reply.form").toggle(150);
     const comment_width = $(".ui.minimal.comments").width();
     const form_width = $('.ui.attached.reply.form').width();
     $('.ui.attached.reply.form > .field').css('padding-right', (form_width - comment_width) + "px");
-    setTimeout(function(){
-
-    })
   },
   "click .js-new-comment": function(event, instance){
     //set loading status
@@ -367,5 +353,10 @@ Template.editor_wrapper.onRendered(function(){
     })
 
     Session.editor = quill;
+
+    setTimeout(function(){
+      //display the reply editor
+      $(".reply.editor").css("opacity", 1);
+    }, 200)
   }
 })
