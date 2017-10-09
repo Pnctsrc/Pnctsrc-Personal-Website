@@ -1,4 +1,4 @@
-div.document_comment, {
+div.document_comment {
   transition: opacity 0.35s linear;
   opacity: 0;
 }
