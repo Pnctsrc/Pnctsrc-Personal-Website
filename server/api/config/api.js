@@ -168,7 +168,11 @@ API = {
           const fs = require("fs");
           if(fs.existsSync(Meteor.settings.FILE_PATH + fileName)){
             const data = fs.readFileSync(Meteor.settings.FILE_PATH + fileName);
-            API.utility.responseFILE(context, 200, data, false);
+            if(fileType === "pdf"){
+              API.utility.responsePDF(context, 200, data);
+            } else {
+              API.utility.responseFILE(context, 200, data, false);
+            }
           } else {
             API.utility.responseFILE(context, 404, {
               error: 404,
@@ -299,6 +303,11 @@ API = {
         context.response.setHeader('Content-Type', 'application/octet-stream');
         context.response.end(data);
       }
+    },
+    responsePDF: function(context, statusCode, data){
+      context.response.statusCode = statusCode;
+      context.response.setHeader('Content-Type', 'application/pdf');
+      context.response.end(data);
     }
   }
 };
