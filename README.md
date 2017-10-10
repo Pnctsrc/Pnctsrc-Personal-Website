@@ -52,6 +52,8 @@ This is my personal page project using Meteor framework.
 * [Collection2](https://atmospherejs.com/aldeed/collection2)
 * [Iron:router](https://github.com/iron-meteor/iron-router)
 * [JS Beautifier](http://jsbeautifier.org/)
+* [Bootstrap Affix](https://getbootstrap.com/docs/3.3/javascript/#affix)
+* [Bootstrap Scrollspy](https://getbootstrap.com/docs/3.3/javascript/#scrollspy)
 
 ## License
 
