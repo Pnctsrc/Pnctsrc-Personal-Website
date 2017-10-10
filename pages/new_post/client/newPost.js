@@ -22,6 +22,7 @@ Template.newPost.onCreated(function(){
     }
 
     newDict.set("data_object", true);
+    newDict.set("access_key", access_key);
     $('#post_type')
       .dropdown()
     ;

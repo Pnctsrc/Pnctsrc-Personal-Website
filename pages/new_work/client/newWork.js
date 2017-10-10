@@ -22,7 +22,7 @@ Template.newWork.onCreated(function(){
     }
 
     newDict.set("data_object", true);
-
+    newDict.set("access_key", access_key);
     $('#work_type')
       .dropdown()
     ;
