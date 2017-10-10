@@ -170,6 +170,9 @@ API = {
             const data = fs.readFileSync(Meteor.settings.FILE_PATH + fileName);
             if(fileType === "pdf"){
               API.utility.responsePDF(context, 200, data);
+            } else if(fileType === "mp3" || fileType === "mp4"){
+              var stat = fs.statSync(Meteor.settings.FILE_PATH + fileName);
+              API.utility.responseMEDIA(context, 200, data, fileType, stat.size);
             } else {
               API.utility.responseFILE(context, 200, data, false);
             }
@@ -308,6 +311,18 @@ API = {
       context.response.statusCode = statusCode;
       context.response.setHeader('Content-Type', 'application/pdf');
       context.response.end(data);
-    }
+    },
+    responseMEDIA: function(context, statusCode, data, fileType, size){
+      context.response.statusCode = statusCode;
+      context.response.setHeader('Content-Length', size);
+      context.response.setHeader('Accept-Ranges', 'bytes');
+
+      if(fileType === "mp4"){
+        context.response.setHeader('Content-Type', 'video/mp4');
+      } else if(fileType === "mp3"){
+        context.response.setHeader('Content-Type', 'audio/mp3');
+      }
+      context.response.end(data);
+    },
   }
 };
