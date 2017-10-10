@@ -8,11 +8,16 @@ Template.content_view.onRendered(function(){
     hljs.highlightBlock(block);
   });
 
+  if($(".mejs__player")[0]){
+    //initialize the media player if there is
+    $(".mejs__player").mediaelementplayer();
+  }
+
   setTimeout(function(){
     //display the content
     $("div#card_view").css("opacity", 1);
   }, 200)
-  
+
   //jump to hashtag if there is
   if(Router.current().params.hash){
     window.location.hash = "";
